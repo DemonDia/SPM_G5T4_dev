@@ -23,7 +23,7 @@ def seedData(url):
 def resetDataToDefaults(url):
     deleteResults = deleteAll(url)
     seedResults = seedData(url)
-    print(seedResults)
+    
     returningResult = deleteResults["success"] == seedResults["success"]
     message = ""
     if(returningResult):

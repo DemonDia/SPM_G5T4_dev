@@ -62,6 +62,7 @@ def addDataTest():
         "duration":180.0,
     }
     addDataFailResult = addRow(BASE,jsonToAddFail)
+    print("addDataFailResult",addDataFailResult)
     validateOutcome(addDataFailResult,False)
     print()
 
@@ -101,6 +102,6 @@ if __name__ == "__main__":
     resetDataToDefaultTest()
     getAllDataTest()
     getDataByIdTest()
-    # addDataTest()
+    addDataTest()
     updateDataTest()
     deleteDataTest()
