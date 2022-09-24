@@ -1,6 +1,11 @@
 from fastapi import FastAPI
-DB_FILE = "db.sqlite3"
-database_route = f"sqlite:///{DB_FILE}"
+from os import getenv
+from dotenv import load_dotenv
+# ============this loads the environment variables from .env============
+load_dotenv()
+
+# this retrieves the database URL from .env file 
+database_route = getenv("DATABASE_URL")
 # instantiate the FasAPI app
 app = FastAPI()
 # adding of middleware
