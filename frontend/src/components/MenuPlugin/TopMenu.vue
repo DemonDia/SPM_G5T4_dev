@@ -1,6 +1,6 @@
 <template>
-    <div class="sidebar">
-      <div class="sidebar-wrapper">
+    <div class="topmenu">
+      <div class="topmenu-wrapper">
         <div class="logo">
           <a href="#" class="simple-text">
             {{title}}
@@ -11,12 +11,12 @@
         <ul>
           <!--By default vue-router adds an active class to each route link. This way the links are colored when clicked-->
           <slot>
-            <sidebar-link v-for="(link,index) in menuBarLinks"
+            <topmenu-link v-for="(link,index) in topMenuLinks"
                           :key="link.name + index"
                           :to="link.path"
                           :link="link">
               <p>{{link.name}}</p>
-            </sidebar-link>
+            </topmenu-link>
           </slot>
         </ul>
       </div>
@@ -34,7 +34,7 @@
           type: String,
           default: 'Learning Journey Management System'
         },
-        menuBarLinks: {
+        topMenuLinks: {
           type: Array,
           default: () => []
         },
