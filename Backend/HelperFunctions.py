@@ -1,5 +1,3 @@
-from ast import If
-import json
 import pathlib
 from sqlmodel import Session, select, delete
 from database import *
@@ -39,19 +37,14 @@ def createRecords(modelName,noOfRecords):
 # seed data for given entity
 def seedInitialData(modelName,model,NoOfRecords = 25):
     try:
-        fileName = "track.json"
-        DATAFILE = pathlib.Path() / "data" / fileName
-
         session = Session(engine)
         stmt = select(model)
         result = session.exec(stmt).first()
-        print("result",result)
         # check if duplicates
         if result is None:
             # autogen data
             recordsToAdd = createRecords(modelName,NoOfRecords)
             for record in recordsToAdd:
-                print(record)
                 session.add(model(**record))
             session.commit()
         session.close()

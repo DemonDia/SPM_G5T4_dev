@@ -98,11 +98,11 @@ def deleteDataTest():
     print()
 
 if __name__ == "__main__":
-    deleteAllDataTest()
-    seedDataTest()
+    # deleteAllDataTest()
+    # seedDataTest()
     resetDataToDefaultTest()
-    getAllDataTest()
-    getDataByIdTest()
+    # getAllDataTest()
+    # getDataByIdTest()
     addDataTest()
-    updateDataTest()
-    deleteDataTest()
+    # updateDataTest()
+    # deleteDataTest()
