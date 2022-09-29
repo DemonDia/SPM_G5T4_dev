@@ -1,4 +1,4 @@
-import service from '@store/services/roles-service';
+import service from '../services/roles-service';
 
 const state = {
   list: {},
