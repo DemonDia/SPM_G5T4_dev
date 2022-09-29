@@ -1,28 +1,54 @@
-import json
 import pathlib
 from sqlmodel import Session, select, delete
 from database import *
+from ColumnNames import dataColumns
+from datetime import datetime
+
+#each field for each column, returns column value
+def createColumnValue(columnName,columnType, currentIndex):
+    if columnType == "str":
+        return "{columnName} #{value}".format(columnName = columnName, value = str(currentIndex))
+    if columnType == "float":
+        return float(currentIndex)
+    if columnType == "int":
+        return int(currentIndex)
+    if columnType == "boolean":
+        return True
+    if columnType == "datetime":
+        return datetime.now()
+    return None
+
+#create records with given size (yet to be inserted into the database)
+def createRecords(modelName,noOfRecords):
+    # to return
+    records = []
+
+    columns = dataColumns[modelName]
+    for i in range(1,noOfRecords+1):
+        currentRecord = {}
+        # each column
+        for columnName,columnType in columns:
+            currentRecord[columnName] = createColumnValue(columnName,columnType,i)
+        records.append(currentRecord)
+    return records
+
+
 
 # seed data for given entity
-def seedInitialData(fileName,model):
+def seedInitialData(modelName,model,NoOfRecords = 25):
     try:
-        fileName = fileName+".json"
-        DATAFILE = pathlib.Path() / "data" / fileName
-        print(DATAFILE)
-
         session = Session(engine)
         stmt = select(model)
         result = session.exec(stmt).first()
         # check if duplicates
-        print(result)
         if result is None:
             # autogen data
-            with open(DATAFILE, "r") as f:
-                items = json.load(f)
-                for item in items:
-                    session.add(model(**item))
+            recordsToAdd = createRecords(modelName,NoOfRecords)
+            for record in recordsToAdd:
+                session.add(model(**record))
             session.commit()
         session.close()
+
         return {
             "success":True,
             "message":"Data is seeded"

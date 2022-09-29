@@ -27,6 +27,7 @@ def resetDataToDefaultTest():
 def getAllDataTest():
     print("4) Get all data")
     result = getAllRows(BASE)
+    print("No of records:",len(result["data"]))
     validateOutcome(result,True)
     print()
 
@@ -34,7 +35,7 @@ def getAllDataTest():
 def getDataByIdTest():
     print("5) Get data by ID")
     print("5)a)ID exists")
-    idExists = getSingleRow(BASE,200)
+    idExists = getSingleRow(BASE,2)
     validateOutcome(idExists,True)
 
     print("5)b)ID does not exist")
@@ -76,7 +77,7 @@ def updateDataTest():
         "duration":180.0,
         "last_play":"2017-04-01T08:31:33"
     }
-    updatePass = updateRow(BASE,87,updateData)
+    updatePass = updateRow(BASE,2,updateData)
     validateOutcome(updatePass,True)
 
     print("7)b) Update unsuccessful due to ID not found")
@@ -88,7 +89,7 @@ def updateDataTest():
 def deleteDataTest():
     print("8) Delete data")
     print("8)a) Delete successful")
-    deletePass = deleteRow(BASE,87)
+    deletePass = deleteRow(BASE,3)
     validateOutcome(deletePass,True)
 
     print("8)b) Delete unsuccessful due to ID not found")
@@ -97,11 +98,11 @@ def deleteDataTest():
     print()
 
 if __name__ == "__main__":
-    deleteAllDataTest()
-    seedDataTest()
+    # deleteAllDataTest()
+    # seedDataTest()
     resetDataToDefaultTest()
-    getAllDataTest()
-    getDataByIdTest()
+    # getAllDataTest()
+    # getDataByIdTest()
     addDataTest()
-    updateDataTest()
-    deleteDataTest()
+    # updateDataTest()
+    # deleteDataTest()
