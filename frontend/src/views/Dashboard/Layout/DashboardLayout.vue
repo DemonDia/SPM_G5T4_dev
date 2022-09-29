@@ -1,19 +1,21 @@
 <template>
-    
+    <div>
     <!-- Menu for HR -->
-    <topmenu-bar>
+    <TopMenu>
       <!-- <mobile-menu slot="content"></mobile-menu> -->
         <topmenu-link to="/admin/overview">
             <p>Home</p>
         </topmenu-link>
-    </topmenu-bar>
+    </TopMenu>
 
     <!-- Main Content -->
 
-    
+    <slot />   
+
+  </div>
 </template>
 <script>
-    import TopMenu from './components/MenuPlugin/TopMenu.vue';
+    import TopMenu from '@/components/MenuPlugin/TopMenu.vue';
 
     export default {
       components: {
