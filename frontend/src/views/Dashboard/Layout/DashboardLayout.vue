@@ -4,7 +4,7 @@
     <TopMenu>
       <!-- <mobile-menu slot="content"></mobile-menu> -->
         <topmenu-link to="/admin/overview">
-            <p>Home</p>
+            <p>hi</p>
         </topmenu-link>
     </TopMenu>
 

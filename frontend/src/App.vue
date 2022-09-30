@@ -1,22 +1,22 @@
 <template>
   <div>
     <DashboardLayout>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-</DashboardLayout>
-</div>
+      <img alt="Vue logo" src="./assets/logo.png" />
+      <HelloWorld msg="Welcome to Your Vue.js App" />
+    </DashboardLayout>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import DashboardLayout from './views/Dashboard/Layout/DashboardLayout.vue'
+import HelloWorld from "./components/HelloWorld.vue";
+import DashboardLayout from "./views/Dashboard/Layout/DashboardLayout.vue";
 export default {
-  name: 'App',
+  name: "App",
   components: {
     HelloWorld,
-    DashboardLayout
-  }
-}
+    DashboardLayout,
+  },
+};
 </script>
 
 <style>
