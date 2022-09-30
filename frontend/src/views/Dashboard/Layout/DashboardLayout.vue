@@ -1,7 +1,9 @@
 <template>
+  
   <div>
+    
     <!-- Menu for HR -->
-    <nav class="navbar navbar-expand-lg bg-light">
+    <nav class="navbar navbar-expand-lg bg-white">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">{{ title }}</a>
       <button
@@ -16,7 +18,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0" v-for="(link, index) in topMenuLinks" :key="link.name + index" :to="link.path" :link="link">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0" v-for="(link, index) in topMenuLinks" :key="link.name + index" :to="link.path" :link="link">
               <li class="nav-item">
                 <router-link class="nav-link" :to="link.path">{{link.name}}</router-link>
               </li>
@@ -43,11 +45,11 @@ export default {
     topMenuLinks: {
       type: Array,
       default: () => [
-          {name: 'Home',path: ''},
-          {name: 'Roles',path: ''},
-          {name: 'Skills',path: ''},
-          {name: 'Courses',path: ''},
-          {name: 'Learning Journey',path: ''},
+          {name: 'Home',path: '/'},
+          {name: 'Roles',path: '/roles'},
+          {name: 'Skills',path: '/skills'},
+          {name: 'Courses',path: '/courses'},
+          {name: 'Learning Journey',path: '/learningjourney'},
       ],
     },
   },
@@ -55,3 +57,6 @@ export default {
   methods: {},
 };
 </script>
+<style scoped>
+
+</style>
