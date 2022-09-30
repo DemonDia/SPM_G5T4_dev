@@ -1,31 +1,57 @@
 <template>
-    <div>
+  <div>
     <!-- Menu for HR -->
-    <TopMenu>
-      <!-- <mobile-menu slot="content"></mobile-menu> -->
-        <topmenu-link to="/admin/overview">
-            <p>hi</p>
-        </topmenu-link>
-    </TopMenu>
+    <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">{{ title }}</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarText"
+        aria-controls="navbarText"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" v-for="(link, index) in topMenuLinks" :key="link.name + index" :to="link.path" :link="link">
+              <li class="nav-item">
+                <router-link class="nav-link" :to="link.path">{{link.name}}</router-link>
+              </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
     <!-- Main Content -->
 
-    <slot />   
-
+    <slot />
   </div>
 </template>
 <script>
-    import TopMenu from '@/components/MenuPlugin/TopMenu.vue';
-
-    export default {
-      components: {
-        TopMenu
-      },
-      data() {
-        
-      },
-      methods: {
-        
-      }
-    }
-  </script>
+export default {
+  components: {
+    
+  },
+  props: {
+    title: {
+      type: String,
+      default: "LJMS",
+    },
+    topMenuLinks: {
+      type: Array,
+      default: () => [
+          {name: 'Home',path: ''},
+          {name: 'Roles',path: ''},
+          {name: 'Skills',path: ''},
+          {name: 'Courses',path: ''},
+          {name: 'Learning Journey',path: ''},
+      ],
+    },
+  },
+  data() {},
+  methods: {},
+};
+</script>
