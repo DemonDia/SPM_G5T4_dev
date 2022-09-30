@@ -1,17 +1,16 @@
 <template>
-  <div class="cards-component">
-    <div class="card-component col-3">
-      <div class="menu-frame">
-        <div class="menu-dot"></div>
+  <div class="card-component col-sm-6 col-md-3 my-3 mx-auto">
+    <div class="menu-frame">
+      <div class="menu-dot">
       </div>
-      <div class="card-component-header">
-        <h5 class="card-component-title">{{ title }}</h5>
-      </div>
-      <div class="card-component-body">
-        <p class="card-component-text">
-          {{ desc }}
-        </p>
-      </div>
+    </div>
+    <div class="card-component-header m-1 p-1">
+      <h5 class="card-component-title">{{ title }}</h5>
+    </div>
+    <div class="card-component-body">
+      <p class="card-component-text">
+        {{ desc }}
+      </p>
     </div>
   </div>
 </template>
@@ -33,20 +32,10 @@ export default {
   font-family: "Poppins", sans-serif;
 }
 
-.cards-component {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  max-width: 1200px;
-  padding: 0 20px;
-}
-
 .card-component {
   padding: 20px 16px;
-  /* background-color: rgb(243, 243, 243); */
-  border-radius: 10px;
+  background-color: white;
+  border-radius: 15px;
   cursor: pointer;
   transition: 0.2s;
 }
@@ -56,7 +45,6 @@ export default {
   justify-content: space-between;
   background-color: transparent;
   align-items: center;
-  margin-bottom: 16px;
 }
 
 .card-component-body {
@@ -89,4 +77,5 @@ export default {
   margin-left: auto;
   margin-right: 8px;
 }
+
 </style>
