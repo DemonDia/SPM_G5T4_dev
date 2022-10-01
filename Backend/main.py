@@ -3,6 +3,7 @@ from Models.TrackModel import TrackModel
 from config import app
 from Routes.TrackRoutes import *
 from Routes.RoleRoutes import *
+from Routes.SkillRoutes import *
 from HelperFunctions import *
 from ErrorHandler import *
 # instantiate the FasAPI app
