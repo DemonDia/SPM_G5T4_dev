@@ -7,4 +7,4 @@ class Skill(SQLModel,table=True):
     SkillId: Optional[int] = Field(default=None, primary_key=True)
     SkillName: str
     SkillDescription: str
-    Active: Bool
+    Active: bool

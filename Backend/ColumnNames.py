@@ -10,7 +10,7 @@ from datetime import datetime
 # the key of the dictionary is  name of the model
 #format:
 '''
-Format: 
+Format:
 model_name:[
     (column_name,column_datatype)
 ]
@@ -24,12 +24,19 @@ dataColumns = {
         ("duration", "float"),
         ("last_play", "datetime")
     ],
-    
+
     "role": [
         ("id", "int"),
         ("role_name", "str"),
         ("role_description","str"),
         ("active","bool")
+    ],
+    "skill":[
+        ("SkillId","int"),
+        ("SkillName","str"),
+        ("SkillDescription","str"),
+        ("Active","bool")
+
     ]
 
 }
