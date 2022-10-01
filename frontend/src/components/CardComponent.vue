@@ -1,8 +1,14 @@
 <template>
   <div class="card-component mt-3 mb-3 mx-auto">
     <div class="menu-frame">
-      <div class="menu-dot">
-      </div>
+        <button class="menu-dot" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><a class="dropdown-item" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Another action</a></li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+     
     </div>
     <div class="card-component-header m-1 p-1">
       <h5 class="card-component-title">{{ title }}</h5>
@@ -17,8 +23,8 @@
 
 <script>
 export default {
-    name: 'CardComponent', 
-    props: ['title', 'desc']
+  name: "CardComponent",
+  props: ["title", "desc"],
 };
 </script>
 
@@ -52,7 +58,7 @@ export default {
   word-wrap: break-word;
 }
 
-/* .menu-frame {
+.menu-frame {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -64,7 +70,7 @@ export default {
   margin-right: 8px;
   border-radius: 20px;
   background-color: rgb(238, 238, 238);
-} */
+}
 
 .menu-dot {
   background-color: #9b9ba5;
@@ -74,8 +80,11 @@ export default {
   border: 0;
   padding: 0;
   border-radius: 50%;
-  margin-left: auto;
-  margin-right: 8px;
+ 
+}
+
+.dropdown-toggle::after {
+    display: none !important;
 }
 
 </style>
