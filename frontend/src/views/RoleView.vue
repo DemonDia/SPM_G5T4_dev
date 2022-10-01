@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
         <div v-for="(value, key) in roles">
-          <card-component :title="value.title" :desc="value.desc"/>
+          <card-component :title="value.title" :desc="value.desc" :active="value.active" />
         </div>
       </div>
       </div>
@@ -28,26 +28,32 @@ export default {
         {
           title: "Sous Chef - Egg Machine",
           desc: "Beat 30 eggs in 1 second",
+          active: true,
         },
         {
           title: "Rapper",
           desc: "Sample Description",
+          active: true,
         },
         {
           title: "Rapper",
           desc: "Sample Description",
+          active: false,
         },
         {
           title: "Rapper",
           desc: "Sample Description",
+          active: true,
         },
         {
           title: "Rapper",
           desc: "Sample Description",
+          active: false,
         },
         {
           title: "Rapper",
           desc: "Sample Description",
+          active: false,
         },
       ],
       results: [] /* temporary array */,

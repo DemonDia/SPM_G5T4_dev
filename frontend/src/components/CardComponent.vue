@@ -1,12 +1,11 @@
 <template>
-  <div class="card-component mt-3 mb-3 mx-auto">
+  <div class="card-component mt-3 mb-3 mx-auto" v-if="active">
     <div class="menu-frame">
         <button class="menu-dot" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
+          <li><a class="dropdown-item" href="#">Update</a></li>
+          <li><a class="dropdown-item" href="#">Delete</a></li>
         </ul>
      
     </div>
@@ -24,7 +23,7 @@
 <script>
 export default {
   name: "CardComponent",
-  props: ["title", "desc"],
+  props: ["title", "desc", "active"],
 };
 </script>
 
