@@ -1,10 +1,12 @@
 <template>
   <DashboardLayout>
     <div class="container-fluid">
-      <div v-for="(value, key) in roles">
-        <card-component :title="value.title" :desc="value.desc"/>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
+        <div v-for="(value, key) in roles">
+          <card-component :title="value.title" :desc="value.desc"/>
+        </div>
       </div>
-    </div>
+      </div>
   </DashboardLayout>
 </template>
 

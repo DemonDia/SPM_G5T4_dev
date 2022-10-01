@@ -1,5 +1,5 @@
 <template>
-  <div class="card-component col-sm-6 col-md-3 my-3 mx-auto">
+  <div class="card-component mt-3 mb-3 mx-auto">
     <div class="menu-frame">
       <div class="menu-dot">
       </div>
