@@ -2,7 +2,7 @@
   <DashboardLayout>
     <div class="container-fluid">
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
-        <div v-for="(value, key) in roles">
+        <div v-for="(value, key) in roles" v-bind:key="key">
           <card-component :title="value.title" :desc="value.desc" :active="value.active" />
         </div>
       </div>
