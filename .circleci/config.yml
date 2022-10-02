@@ -8,7 +8,7 @@ jobs:
     executor:
       name: python/default
       tag: '3.9'
-    working_directory: ~/project
+    working_directory: ~/project/Backend
     steps:
       - checkout
       - run: ls -a
