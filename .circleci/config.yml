@@ -16,6 +16,7 @@ jobs:
       - run:
           name: Go back to backend
           command: cd Backend
+      - run: ls -a
       - run:
           name: Install dependencies
           command: pip3 install -r requirements.txt
