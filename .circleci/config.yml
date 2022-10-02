@@ -11,6 +11,7 @@ jobs:
       tag: '3.9'
     working_directory: ~/project
     steps:
+      - checkout
       - run: ls -a
       - restore_cache:
             keys:
