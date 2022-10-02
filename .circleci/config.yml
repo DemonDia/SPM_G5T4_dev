@@ -12,10 +12,10 @@ jobs:
       - checkout
       - run:
           name: Go back to backend
-          command: cd Backend
+          command: cd ./Backend
       - run:
           name: Install dependencies
-          command: pip3 install -r ./requirements.txt
+          command: pip3 install -r requirements.txt
       - run: 
           name: Database setup
           command: python3.9 database.py
