@@ -10,8 +10,7 @@ jobs:
       tag: '3.9'
     working_directory: ~/project
     steps:
-      # - checkout:
-      #     path: ~/project/Backend
+      - checkout
       - run: ls -a
       # - run:
       #     name: Go back to backend
