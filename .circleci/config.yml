@@ -11,7 +11,8 @@ jobs:
       tag: '3.9'
     working_directory: ~/project
     steps:
-      - checkout
+      - checkout:
+          path: ~/project/Backend
       - run: ls -a
       - save_cache:
           paths:
