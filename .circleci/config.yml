@@ -12,9 +12,9 @@ jobs:
     steps:
       - checkout
       - run: ls -a
-      # - run:
-      #     name: Go back to backend
-      #     command: cd Backend
+      - run:
+          name: Go back to backend
+          command: cd Backend
       - run:
           name: Install dependencies
           command: pip3 install -r ./backend/requirements.txt
