@@ -8,9 +8,10 @@ jobs:
     executor:
       name: python/default
       tag: '3.9'
+    working_directory: ~/project
     steps:
       - checkout:
-          path: SPM_G5T4_dev
+          path: ~/project
       - run: ls -a
       - run:
           name: Go back to backend
