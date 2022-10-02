@@ -10,9 +10,9 @@ jobs:
       tag: '3.9'
     steps:
       - checkout
-      # - run:
-      #     name: Go back to backend
-      #     command: cd backend
+      - run:
+          name: Go back to backend
+          command: cd Backend
       - run:
           name: Install dependencies
           command: pip3 install -r requirements.txt
