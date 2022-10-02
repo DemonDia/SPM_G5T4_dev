@@ -10,7 +10,7 @@ jobs:
       tag: '3.9'
     steps:
       - checkout:
-          path: ~/SPM_G5T4_dev
+          path: SPM_G5T4_dev
       - run: ls -a
       - run:
           name: Go back to backend
