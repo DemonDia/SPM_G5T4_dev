@@ -10,11 +10,12 @@ jobs:
       tag: '3.9'
     working_directory: ~/project
     steps:
-      - checkout
+      - checkout:
+          path: ~/project/Backend
       - run: ls -a
-      - run:
-          name: Go back to backend
-          command: cd Backend
+      # - run:
+      #     name: Go back to backend
+      #     command: cd Backend
       - run:
           name: Install dependencies
           command: pip3 install -r requirements.txt
