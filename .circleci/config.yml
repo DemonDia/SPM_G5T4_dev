@@ -37,10 +37,7 @@ jobs:
           command: pip3 install -r ./Backend/requirements.txt
 
       # - run: cd ./Backend/
-      - run:
-          name: create packages
-          command: |
-            make package
+    
       # - run:
       #     name: Go back to backend
       #     command: cd Backend
