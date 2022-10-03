@@ -29,7 +29,9 @@ jobs:
           name: Find requirements.txt
           command: find . -regex '.*requirements.txt$'
 
-      # - run: ls -a
+      - run: 
+          name: Checking of backend folders
+          command: ls ./Backend -a
       - run:
           name: Install dependencies
           command: pip3 install -r ./Backend/requirements.txt
