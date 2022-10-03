@@ -71,31 +71,35 @@
 #     check_response(HOST, PORT)
 #     check_response_time(HOST, PORT)
 
-import contextlib
-import time
-import threading
-import uvicorn
+import multiprocessing
+from time import sleep
 
-class Server(uvicorn.Server):
-    def install_signal_handlers(self):
-        pass
+from fastapi import FastAPI
+from uvicorn import Config, Server
 
-    @contextlib.contextmanager
-    def run_in_thread(self):
-        thread = threading.Thread(target=self.run)
-        thread.start()
-        try:
-            while not self.started:
-                time.sleep(1e-3)
-            yield
-        finally:
-            self.should_exit = True
-            thread.join()
 
-config = uvicorn.Config("main:app", host="127.0.0.1", port=8765, log_level="info", loop="asyncio")
-server = Server(config=config)
+class UvicornServer(multiprocessing.Process):
+    def __init__(self, config: Config):
+        super().__init__()
+        self.config = config
 
-with server.run_in_thread():
-    # Server started.
-    ...
-# Server stopped.
+    def stop(self):
+        self.terminate()
+
+    def run(self, *args, **kwargs):
+        server = Server(config=self.config)
+        server.run()
+
+app = FastAPI()
+
+def main():  # POC
+    u = UvicornServer(config=Config(app=app))
+
+    u.start()
+    sleep(5)  # Start timeout
+
+    u.stop()
+    sleep(5)  # Stop timeout & Prevent EOF termination
+
+if __name__ == '__main__':
+    main()
