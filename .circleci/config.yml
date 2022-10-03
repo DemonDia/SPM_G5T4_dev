@@ -27,15 +27,17 @@ jobs:
       #         - v1-dependencies-
       # - checkout
 
-      - run: find . -regex '.*requirements.txt$'
-      
+      - run: |
+        find . -regex '.*requirements.txt$'
+        pip3 install -r requirements.txt
+    
       # - run:
       #     name: Go back to backend
       #     command: cd Backend
 
-      - run:
-          name: Install dependencies
-          command: pip3 install -r requirements.txt
+      # - run:
+      #     name: Install dependencies
+      #     command: pip3 install -r requirements.txt
       
 
       - run: 
