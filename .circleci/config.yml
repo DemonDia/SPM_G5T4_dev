@@ -53,9 +53,9 @@ jobs:
           command: echo $database_URL
 
       # UNCOMMENT THIS AFTER FIXING DB
-      # - run:
-      #     name: Run the API
-      #     command: uvicorn main:app --reload  
+      - run:
+          name: Run the API
+          command: uvicorn main:app --reload  
       
 
 workflows:
