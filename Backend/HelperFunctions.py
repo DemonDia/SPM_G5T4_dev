@@ -1,7 +1,7 @@
 import pathlib
 from sqlmodel import Session, select, delete
-from database import *
-from ColumnNames import dataColumns
+from Backend.database import *
+from Backend.ColumnNames import dataColumns
 from datetime import datetime
 
 #each field for each column, returns column value
