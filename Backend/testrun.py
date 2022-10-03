@@ -75,38 +75,33 @@
 
 # -- TEST SOL 2 --
 from multiprocessing import Process
-from multiprocessing.pool import ApplyResult
+
+import pytest
+import requests
 import uvicorn
+from fastapi import FastAPI
 
-# global process variable
-proc = None
-
-def run(): 
-    """
-    This function to run configured uvicorn server.
-    """
-    uvicorn.run(app="main:app", host="127.0.0.1", port=8765)
+app = FastAPI()
 
 
-def start():
-    """
-    This function to start a new process (start the server).
-    """
-    global proc
-    # create process instance and set the target to run function.
-    # use daemon mode to stop the process whenever the program stopped.
-    proc = Process(target=run, args=(), daemon=True)
-    proc.start()
+@app.get("/")
+async def read_main():
+    return {"msg": "Hello World"}
 
 
-def stop(): 
-    """
-    This function to join (stop) the process (stop the server).
-    """
-    global proc
-    # check if the process is not None
-    if proc: 
-        # join (stop) the process with a timeout setten to 0.25 seconds.
-        # using timeout (the optional arg) is too important in order to
-        # enforce the server to stop.
-        proc.join(0.25)
+def run_server():
+    uvicorn.run(app)
+
+
+@pytest.fixture
+def server():
+    proc = Process(target=run_server, args=(), daemon=True)
+    proc.start() 
+    yield
+    proc.kill() # Cleanup after test
+
+
+def test_read_main(server):
+    response = requests.get("http://localhost:8000/")
+    assert response.status_code == 200
+    assert response.json() == {"msg": "Hello World"}
