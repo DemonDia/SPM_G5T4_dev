@@ -25,6 +25,18 @@ def addSeedData():
 def getRoles(session: Session = Depends(get_session)):
     stmt = select(RoleModel)
     result = session.exec(stmt).all()
+    for i in result:
+        print(i.active)
+    # return result
+    return {
+        "success": True,
+        "data": result
+    }
+
+@app.get('/roles/available/')
+def getRoles(session: Session = Depends(get_session)):
+    stmt = select(RoleModel).where(RoleModel.active == 1)
+    result = session.exec(stmt).all()
     # return result
     return {
         "success": True,
