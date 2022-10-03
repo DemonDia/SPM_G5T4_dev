@@ -1,7 +1,7 @@
 from config import app
-from Backend.Routes.TrackRoutes import *
-from Backend.HelperFunctions import *
-from Backend.ErrorHandler import *
+from Routes.TrackRoutes import *
+from HelperFunctions import *
+from ErrorHandler import *
 
 
 from multiprocessing import Process
