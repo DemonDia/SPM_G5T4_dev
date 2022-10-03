@@ -1,5 +1,5 @@
 from multiprocessing import Process
-from Backend.main import *
+# from Backend.main import *
 
 
 from multiprocessing import Process
