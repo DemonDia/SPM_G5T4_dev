@@ -9,10 +9,11 @@ jobs:
     executor:
       name: python/default
       tag: '3.9'
-    # working_directory: ~/project/Backend
+    working_directory: ~/project
     steps:
-      - checkout:
-          path: ~/project/Backend/Backend
+      - checkout
+          # :
+          # path: ~/project/Backend
       - run: ls -a
 
       # - save_cache:
@@ -26,9 +27,7 @@ jobs:
       #         - v1-dependencies-
       # - checkout
 
-      - run:
-          name: Create requirements.txt
-          command: pip freeze requirements.txt
+      - run: find . -regex '.*requirements.txt$'
       
       # - run:
       #     name: Go back to backend
