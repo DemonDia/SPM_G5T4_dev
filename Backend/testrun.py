@@ -71,35 +71,31 @@
 #     check_response(HOST, PORT)
 #     check_response_time(HOST, PORT)
 
-import multiprocessing
-from time import sleep
-
+import time
+import uvicorn
+import asyncio
+import sys
 from fastapi import FastAPI
-from uvicorn import Config, Server
-
-
-class UvicornServer(multiprocessing.Process):
-    def __init__(self, config: Config):
-        super().__init__()
-        self.config = config
-
-    def stop(self):
-        self.terminate()
-
-    def run(self, *args, **kwargs):
-        server = Server(config=self.config)
-        server.run()
-
+from pydantic import BaseModel
 app = FastAPI()
 
-def main():  # POC
-    u = UvicornServer(config=Config(app=app))
+@app.get("/kill")
+async def kill():
+    global server
+    global loop
+    loop.stop()
+    await server.shutdown()
 
-    u.start()
-    sleep(5)  # Start timeout
+config = uvicorn.Config(app=app, host="127.0.0.1", port=5000, log_level="debug")
+server = uvicorn.Server(config=config)
+loop = None
 
-    u.stop()
-    sleep(5)  # Stop timeout & Prevent EOF termination
-
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+	try:
+		config.setup_event_loop()
+		loop = asyncio.get_event_loop()
+		loop.run_until_complete(server.serve())
+	except:
+		print(sys.exc_info())
+	while True:
+		time.sleep(1)
