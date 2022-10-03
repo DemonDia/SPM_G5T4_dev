@@ -5,8 +5,6 @@ orbs:
 
 jobs:
   build-and-test:
-    context:
-      - Database
     executor:
       name: python/default
       tag: '3.9'
@@ -69,3 +67,5 @@ workflows:
             branches:
               only:
                 - "circleci-testing"
+          context:
+            - Database
