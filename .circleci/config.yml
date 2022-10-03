@@ -50,7 +50,8 @@ jobs:
 
       - run:
           name: Run the API
-          command: uvicorn Backend.testrun:app --reload
+          command: pytest testrun.py
+          # uvicorn Backend.main:app --reload
       
 
 workflows:
