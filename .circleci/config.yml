@@ -44,14 +44,13 @@ jobs:
       #     name: Database setup
       #     command: python3.9 ./Backend/database.py
 
-      - run:
-          name: Database Setup
-          command: echo database_URL
-
-      # UNCOMMENT THIS AFTER FIXING DB
       # - run:
-      #     name: Run the API
-      #     command: uvicorn main:app --reload  
+      #     name: Database Setup
+      #     command: echo database_URL
+
+      - run:
+          name: Run the API
+          command: uvicorn main:app --reload  
       
 
 workflows:
