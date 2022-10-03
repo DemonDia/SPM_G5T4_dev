@@ -74,3 +74,6 @@ def test_main(server):
     check_response_time(HOST, PORT)
     check_response(HOST, PORT)
     check_response_time(HOST, PORT)
+
+if __name__ == "__main__":
+    server()
