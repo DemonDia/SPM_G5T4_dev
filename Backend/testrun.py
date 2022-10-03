@@ -52,7 +52,7 @@ def shutdown_server(proc: Process):
 
 
 def check_response(host: str, port: int):
-    assert requests.get(f"http://{host}:{port}").text == 'OK'
+    assert requests.get(f"http://{host}:{port}").text == '"hello world"'
 
 
 def check_response_time(host: str, port: int, tol: float = 1e-2):
@@ -76,6 +76,3 @@ def test_main(server):
     check_response_time(HOST, PORT)
     check_response(HOST, PORT)
     check_response_time(HOST, PORT)
-
-if __name__ == "__main__":
-    server()
