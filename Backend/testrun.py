@@ -12,7 +12,7 @@ import time
 import uvicorn
 
 HOST = "127.0.0.1"
-PORT = 8000
+PORT = 8765
 WORKERS = 3
 
 
