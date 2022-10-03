@@ -55,7 +55,7 @@ jobs:
       # UNCOMMENT THIS AFTER FIXING DB
       - run:
           name: Run the API
-          command: uvicorn main:app --reload  
+          command: uvicorn backend.main:app --reload  
       
 
 workflows:
