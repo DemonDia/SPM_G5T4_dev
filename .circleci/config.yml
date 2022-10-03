@@ -12,7 +12,7 @@ jobs:
     # working_directory: ~/project/Backend
     steps:
       - checkout:
-          path: ~/project/Backend
+          path: ~/project/Backend/Backend
       - run: ls -a
 
       # - save_cache:
