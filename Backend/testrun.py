@@ -1,4 +1,4 @@
-from Backend.config import app
+from config import app
 from Backend.Routes.TrackRoutes import *
 from Backend.HelperFunctions import *
 from Backend.ErrorHandler import *
