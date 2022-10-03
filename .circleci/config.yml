@@ -40,13 +40,13 @@ jobs:
       #     name: Go back to backend
       #     command: cd Backend
 
+      - run:
+          name: Database Setup
+          command: echo database_URL
+
       # - run: 
       #     name: Database setup
       #     command: python3.9 ./Backend/database.py
-
-      # - run:
-      #     name: Database Setup
-      #     command: echo database_URL
 
       - run:
           name: Run the API
