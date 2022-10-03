@@ -15,21 +15,26 @@ jobs:
       # :
       #     path: ~/project/Backend
       - run: ls -a
-      - save_cache:
-          paths:
-            - ./venv
-          key: v1-dependencies-{{ checksum "./Backend/requirements.txt" }}
-      - restore_cache:
-            keys:
-              - v1-dependencies-{{ checksum "./Backend/requirements.txt" }}
-              # fallback to using the latest cache if no exact match is found
-              - v1-dependencies-
+
+      # - save_cache:
+      #     paths:
+      #       - ./venv
+      #     key: v1-dependencies-{{ checksum "./Backend/requirements.txt" }}
+      # - restore_cache:
+      #       keys:
+      #         - v1-dependencies-{{ checksum "./Backend/requirements.txt" }}
+      #         # fallback to using the latest cache if no exact match is found
+      #         - v1-dependencies-
       # - checkout
 
+      - run:
+          name: Create requirements.txt
+          command: pip freeze requirements.txt
       
       # - run:
       #     name: Go back to backend
       #     command: cd Backend
+      
       - run:
           name: Install dependencies
           command: pip3 install -r requirements.txt
