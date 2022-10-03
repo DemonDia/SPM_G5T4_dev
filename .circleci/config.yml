@@ -45,7 +45,7 @@ jobs:
 
       - run: 
           name: Database setup
-          command: python3.9 database.py
+          command: python3.9 ./Backend/database.py
       - run:
           name: Run the API
           command: uvicorn main:app --reload  
