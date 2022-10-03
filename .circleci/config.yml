@@ -30,7 +30,6 @@ jobs:
           command: find . -regex '.*requirements.txt$'
 
       # - run: ls -a
-
       - run:
           name: Install dependencies
           command: pip3 install -r ./Backend/requirements.txt
@@ -70,3 +69,5 @@ workflows:
                 - "main"
           context:
             - Database
+
+
