@@ -40,7 +40,7 @@ jobs:
 
       - run:
           name: Install dependencies
-          command: pip3 install -r requirements.txt
+          command: pip3 install -r ./Backend/requirements.txt
       
 
       - run: 
