@@ -1,5 +1,5 @@
 # from Models.TrackModel import TrackModel
-from config import app
+from Backend.config import app
 from Routes.TrackRoutes import *
 from HelperFunctions import *
 from ErrorHandler import *
