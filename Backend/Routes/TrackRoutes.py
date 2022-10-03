@@ -1,10 +1,10 @@
 
 from fastapi import Response, Depends
-from Schema.TrackSchema import Track
-from database import *
+from Backend.Schema.TrackSchema import Track
+from Backend.database import *
 from sqlmodel import Session, select, delete
-from config import  app
-from Models.TrackModel import TrackModel
+from Backend.config import  app
+from Backend.Models.TrackModel import TrackModel
 from HelperFunctions import *
 
 # ===========================test functions===========================
