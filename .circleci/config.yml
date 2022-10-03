@@ -29,7 +29,9 @@ jobs:
           name: Find requirements.txt
           command: find . -regex '.*requirements.txt$'
 
-      # - run: ls -a
+      - run: 
+          name: Checking of backend folders
+          command: ls ./Backend -a
       - run:
           name: Install dependencies
           command: pip3 install -r ./Backend/requirements.txt
@@ -50,12 +52,12 @@ jobs:
 
       - run:
           name: Database Setup
-          command: echo database_URL
+          command: echo $database_URL
 
       # UNCOMMENT THIS AFTER FIXING DB
-      # - run:
-      #     name: Run the API
-      #     command: uvicorn main:app --reload  
+      - run:
+          name: Run the API
+          command: uvicorn Backend.main:app --reload  
       
 
 workflows:
