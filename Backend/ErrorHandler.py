@@ -3,9 +3,10 @@ from pydantic import BaseModel, ValidationError
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from Backend.config import app
-# SOURCE: https://github.com/tiangolo/fastapi/issues/484
+from config import app # requires Backend.
 
+
+# SOURCE: https://github.com/tiangolo/fastapi/issues/484
 
 @app.exception_handler(RequestValidationError)
 async def handler1(request: Request, exc: Exception):

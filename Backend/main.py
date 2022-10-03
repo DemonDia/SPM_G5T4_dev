@@ -1,9 +1,10 @@
-from Backend.Models.TrackModel import TrackModel
-from Backend.config import app
-from Backend.Routes.TrackRoutes import *
-from Backend.HelperFunctions import *
-from Backend.ErrorHandler import *
-# instantiate the FasAPI app
+from Models.TrackModel import TrackModel # requires Backend.
+from config import app # requires Backend.
+from Routes.TrackRoutes import * # requires Backend.
+from HelperFunctions import * # requires Backend.
+from ErrorHandler import * # requires Backend.
+
+# instantiate the FastAPI app
 
 @app.on_event("startup")
 async def startup_event():
