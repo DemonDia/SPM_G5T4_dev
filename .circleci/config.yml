@@ -67,5 +67,6 @@ workflows:
             branches:
               only:
                 - "circleci-testing"
+                - "main"
           context:
             - Database
