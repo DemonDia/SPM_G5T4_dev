@@ -4,8 +4,9 @@ orbs:
   python: circleci/python@2.1.1
 
 jobs:
-
   build-and-test:
+    context:
+      - Database
     executor:
       name: python/default
       tag: '3.9'
@@ -52,7 +53,7 @@ jobs:
 
       - run:
           name: Database Setup
-          command: echo $database_URL
+          command: echo database_URL
 
       # UNCOMMENT THIS AFTER FIXING DB
       # - run:
