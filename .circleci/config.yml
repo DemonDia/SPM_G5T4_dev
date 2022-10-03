@@ -28,7 +28,9 @@ jobs:
           name: Find requirements.txt
           command: find . -regex '.*requirements.txt$'
 
-      # - run: ls -a
+      - run: 
+          name: Checking of backend folders
+          command: ls ./Backend -a
       - run:
           name: Install dependencies
           command: pip3 install -r ./Backend/requirements.txt
@@ -48,9 +50,13 @@ jobs:
       #     command: python3.9 ./Backend/database.py
 
       - run:
-          name: Run the API
+          name: Run Test File
           # command: uvicorn Backend.main:app --reload
           command: pytest ./Backend/testrun.py
+
+      # - run:
+      #     name: Run the API
+      #     command: uvicorn Backend.main:app --reload  
       
 
 workflows:
