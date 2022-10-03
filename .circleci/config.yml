@@ -42,7 +42,7 @@ jobs:
 
       - run:
           name: Database Setup
-          command: echo database_URL
+          command: echo $DATABASE_URL
 
       # - run: 
       #     name: Database setup
