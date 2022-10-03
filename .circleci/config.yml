@@ -42,7 +42,7 @@ jobs:
 
       - run: 
           name: Database setup
-          command: python3.9 ./Backend/database.py
+          command: python3.9 database.py
 
       # - run:
       #     name: Database Setup

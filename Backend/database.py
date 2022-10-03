@@ -1,5 +1,5 @@
 from sqlmodel import  SQLModel, create_engine, Session
-from Backend.config import database_route
+from config import database_route
 from Backend.Models.TrackModel import TrackModel
 
 engine = create_engine(database_route,echo=True)
