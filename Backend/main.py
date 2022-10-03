@@ -1,6 +1,6 @@
 from Backend.Models.TrackModel import TrackModel
 from Backend.config import app
-from Routes.TrackRoutes import *
+from Backend.Routes.TrackRoutes import *
 from Backend.HelperFunctions import *
 from Backend.ErrorHandler import *
 # instantiate the FasAPI app
