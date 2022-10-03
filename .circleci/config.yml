@@ -9,11 +9,10 @@ jobs:
     executor:
       name: python/default
       tag: '3.9'
-    working_directory: ~/project/Backend
+    # working_directory: ~/project/Backend
     steps:
-      - checkout
-      # :
-      #     path: ~/project/Backend
+      - checkout:
+          path: ~/project/Backend
       - run: ls -a
 
       # - save_cache:
@@ -34,7 +33,7 @@ jobs:
       # - run:
       #     name: Go back to backend
       #     command: cd Backend
-      
+
       - run:
           name: Install dependencies
           command: pip3 install -r requirements.txt
