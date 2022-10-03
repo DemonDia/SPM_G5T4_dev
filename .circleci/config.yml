@@ -9,11 +9,10 @@ jobs:
     executor:
       name: python/default
       tag: '3.9'
-    working_directory: ~/project
+    working_directory: ~/project/Backend
     steps:
-      - checkout
-          # :
-          # path: ~/project/Backend
+      - checkout:
+          path: ~/project/Backend
       # - run: ls -a
 
       # - save_cache:
@@ -32,7 +31,7 @@ jobs:
           command: find . -regex '.*requirements.txt$'
 
       - run: ls -a
-      
+
       # - run: cd ./Backend/
     
       # - run:
