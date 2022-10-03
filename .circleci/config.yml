@@ -40,10 +40,6 @@ jobs:
       #     name: Go back to backend
       #     command: cd Backend
 
-      - run:
-          name: Install dependencies
-          command: pip3 install -r ./Backend/requirements.txt
-
       # - run: 
       #     name: Database setup
       #     command: python3.9 ./Backend/database.py
