@@ -50,7 +50,7 @@ jobs:
 
       - run:
           name: Run the API
-          command: uvicorn main:app --reload  
+          command: uvicorn ./Backend/main:app --reload 0.0.0.0
       
 
 workflows:
