@@ -50,7 +50,7 @@ jobs:
 
       - run:
           name: Database Setup
-          command: echo $database_URL
+          command: echo database_URL
 
       # UNCOMMENT THIS AFTER FIXING DB
       # - run:
