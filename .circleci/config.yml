@@ -12,7 +12,6 @@ jobs:
     steps:
       - checkout:
           path: ~/project/Backend
-      - run: ls -a
 
       # - save_cache:
       #     paths:
