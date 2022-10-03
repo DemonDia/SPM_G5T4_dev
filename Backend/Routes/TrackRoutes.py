@@ -5,7 +5,7 @@ from Backend.database import *
 from sqlmodel import Session, select, delete
 from Backend.config import  app
 from Backend.Models.TrackModel import TrackModel
-from HelperFunctions import *
+from Backend.HelperFunctions import *
 
 # ===========================test functions===========================
 @app.delete("/tracks/deleteall")
