@@ -52,12 +52,12 @@ jobs:
 
       - run:
           name: Database Setup
-          command: echo database_URL
+          command: echo "database_URL"
 
-
-      - run:
-          name: Run the API
-          command: uvicorn main:app --reload  
+      # UNCOMMENT THIS AFTER FIXING DB
+      # - run:
+      #     name: Run the API
+      #     command: uvicorn main:app --reload  
       
 
 workflows:
