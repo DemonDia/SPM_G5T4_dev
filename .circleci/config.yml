@@ -62,7 +62,12 @@ jobs:
       - run:
           name: Create Zipfile archive of Dependencies
           command: |
+            cd env/lib/python3.9/sitepackages
+            zip -r9 ../../../../function.zip
             
+      - run:
+          name: Add backend to Zipfile
+          command: zip -g ./function.zip -r Backend
       
 
 workflows:
