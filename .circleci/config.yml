@@ -12,7 +12,6 @@ jobs:
     steps:
       - checkout:
           path: ~/project/Backend
-      # - run: ls -a
 
       # - save_cache:
       #     paths:
@@ -43,21 +42,21 @@ jobs:
       #     command: cd Backend
 
       - run:
-          name: Install dependencies
-          command: pip3 install -r ./Backend/requirements.txt
+          name: Database Setup
+          command: echo $DATABASE_URL
 
       # - run: 
       #     name: Database setup
       #     command: python3.9 ./Backend/database.py
 
       - run:
-          name: Database Setup
-          command: echo $database_URL
+          name: Run Test File
+          # command: uvicorn Backend.main:app --reload
+          command: pytest ./Backend/testrun.py
 
-      # UNCOMMENT THIS AFTER FIXING DB
-      - run:
-          name: Run the API
-          command: uvicorn Backend.main:app --reload  
+      # - run:
+      #     name: Run the API
+      #     command: uvicorn Backend.main:app --reload  
       
 
 workflows:
