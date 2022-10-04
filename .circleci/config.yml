@@ -96,7 +96,7 @@ jobs:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       - run:
           name: Upload to S3 
-          command: aws s3 cp functions.zip s3://spm_project/function.zip
+          command: aws s3 cp function.zip s3://spm_project/function.zip
       - run:        
           name: Deploy new Lambda        
           command: aws lambda update-function-code --function-name spm_fastapi --s3-bucket spm_project --s3-key function.zip
