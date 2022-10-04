@@ -1,22 +1,11 @@
 <template>
   <div>
-    <DashboardLayout>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-</DashboardLayout>
-</div>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import DashboardLayout from './views/Dashboard/Layout/DashboardLayout.vue'
-export default {
-  name: 'App',
-  components: {
-    HelloWorld,
-    DashboardLayout
-  }
-}
+
 </script>
 
 <style>
@@ -26,6 +15,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 0px;
+  background-color: #F8F8F8;
 }
 </style>

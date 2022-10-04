@@ -13,13 +13,13 @@ import HelloWorld from "@/components/HelloWorld.vue";
 import DashboardLayout from "@/views/Dashboard/Layout/DashboardLayout.vue";
 
 export default {
-  name: "HomeView",
+  name: "SkillView",
   components: {
     HelloWorld,
     DashboardLayout,
   },
   mounted() {
-   document.title = "LJMS - Home";
+   document.title = "LJMS - Skills";
   },
 };
 </script>
