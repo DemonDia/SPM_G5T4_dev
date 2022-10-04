@@ -60,14 +60,18 @@ jobs:
       #     command: uvicorn Backend.main:app --reload  
 
       - run:
-          name: Create Zipfile archive of Dependencies
-          command: |
-            cd env/lib/python3.9/sitepackages
-            zip -r9 ../../../../function.zip
+          name: Show Python folder
+          command: ls /home/circleci/.pyenv/versions/3.9.13/bin/python3.9 -a 
 
-      - run:
-          name: Add backend to Zipfile
-          command: zip -g ./function.zip -r Backend
+      # - run:
+      #     name: Create Zipfile archive of Dependencies
+      #     command: |
+      #       cd env/lib/python3.9/sitepackages
+      #       zip -r9 ../../../../function.zip
+
+      # - run:
+      #     name: Add backend to Zipfile
+      #     command: zip -g ./function.zip -r Backend
       
 
 workflows:
@@ -80,7 +84,5 @@ workflows:
                 - "circleci-deployment"
           context:
             - Database
-          post-steps:
-            - jira/notify
 
 
