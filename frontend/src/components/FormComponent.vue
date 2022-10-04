@@ -1,7 +1,9 @@
 <template>
 <div class="row d-flex justify-content-center m-5 ms-0">
     <div class="col-3 text-end pt-1">
-        <label class="form-label" v-if="label">{{ label }}</label>
+        <label class="form-label" v-if="label">
+          {{ label }}
+        </label>
     </div>
     <div class="col-sm-4">
       <div>
