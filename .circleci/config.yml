@@ -75,6 +75,9 @@ jobs:
           name: Add backend to Zipfile
           command: zip -g ./function.zip -r Backend
 
+      - run: 
+          name: Check root folder
+          command: ls ./ -a
 
       - persist_to_workspace:
           root: ./
