@@ -2,16 +2,11 @@
   <DashboardLayout>
     <div class="container-fluid">
       <h1>Create a role</h1>
-      <form>
+      <form @submit.prevent="createRole" method="POST">
         <FormComponent v-model="event.title" label="Role Name" type="text" />
+        <FormComponent v-model="event.description" label="Role Description" type="text"/>
 
-        <FormComponent
-          v-model="event.description"
-          label="Role Description"
-          type="text"
-        />
-
-        <button class="btn btn-secondary m-3" type="reset">Reset</button>
+        <button class="btn btn-secondary m-3" @click="resetForm" type="reset">Reset</button>
         <button class="btn btn-primary" type="submit">Submit</button>
       </form>
     </div>
@@ -35,7 +30,29 @@ export default {
         title: "",
         description: "",
       },
+      errors: [],
     };
+  },
+  methods: {
+    createRole() {
+      axios
+        .post("http://localhost:3000/roles", {
+            title: this.event.title,
+            description: this.event.description,
+        })
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((error) => {
+            this.errors = [];
+            this.errors.push(error.data.m);
+            console.log(error);
+        });
+    },
+    resetForm() {
+        this.event.title = "";
+        this.event.description = "";
+    },
   },
   mounted() {
     document.title = "LJMS - Create Roles";
