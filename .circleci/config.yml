@@ -61,7 +61,7 @@ jobs:
 
       - run:
           name: Show Python folder
-          command: ls /home/circleci/.pyenv/versions/3.9.13 -a 
+          command: pyenv local 
 
       # - run:
       #     name: Create Zipfile archive of Dependencies
