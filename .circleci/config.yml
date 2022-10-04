@@ -80,9 +80,9 @@ jobs:
           command: ls /home/circleci/project/Backend -a
 
       - persist_to_workspace:
-          root: ~/
+          root: .
           paths:
-            - functions.zip
+            - function.zip
 
 
   deploy-dev:
