@@ -77,7 +77,7 @@ jobs:
 
       - run: 
           name: Check root folder
-          command: ls /home/circleci/ -a
+          command: ls /home/circleci/project/backend -a
 
       - persist_to_workspace:
           root: ~/
