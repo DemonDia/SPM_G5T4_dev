@@ -67,7 +67,7 @@ jobs:
           name: Create Zipfile archive of Dependencies
           command: |
             cd /home/circleci/.pyenv/versions/3.9.13/lib/python3.9/site-packages
-            zip -r9 ../../../../../../../../function.zip .
+            zip -r9 ../../../../../../../../../function.zip .
             
      
       # - run:
