@@ -3,7 +3,7 @@ from pydantic import BaseModel, ValidationError
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from config import app # requires Backend.
+from config import app # requires 
 
 
 # SOURCE: https://github.com/tiangolo/fastapi/issues/484
