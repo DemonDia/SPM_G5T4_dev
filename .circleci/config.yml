@@ -59,15 +59,15 @@ jobs:
       #     name: Run the API
       #     command: uvicorn Backend.main:app --reload  
 
-      - run:
-          name: Show Python folder
-          command: pip --version
-
       # - run:
-      #     name: Create Zipfile archive of Dependencies
-      #     command: |
-      #       cd env/lib/python3.9/sitepackages
-      #       zip -r9 ../../../../function.zip
+      #     name: Show Python folder
+      #     command: pip --version
+
+      - run:
+          name: Create Zipfile archive of Dependencies
+          command: |
+            cd home/circleci/.pyenv/versions/3.9.13/lib/python3.9/site-packages
+            zip -r9 ../../../../function.zip
 
       # - run:
       #     name: Add backend to Zipfile
