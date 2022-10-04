@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
         <div v-for="(value, key) in skills" v-bind:key="key">
-          <card-component :title="value.title" :desc="value.desc" :active="value.active" />
+          <card-component :title="value.title" :desc="value.desc" :active="value.active"/>
         </div>
       </div>
       </div>
@@ -36,34 +36,20 @@ export default {
           active: true,
         },
         {
-          title: "Opening soju bottle",
-          desc: "With all the fluff and bartended skills",
-          active: false,
-        },
-        {
           title: "Eating",
-          desc: "Sample Description",
+          desc: "I think I do myself a disservice by comparing myself to Steve Jobs and Walt Disney and human beings that we've seen before. It should be more like Willy Wonka...and welcome to my chocolate factory. teve Jobs and Walt Disney and human beings that we've seen before. It should be more like Willy Wonka...and welcome to my chocolate factory.",
           active: true,
         },
-        {
-          title: "Eating",
-          desc: "Sample Description",
-          active: false,
-        },
-        {
-          title: "Eating",
-          desc: "Sample Description",
-          active: false,
-        },
       ],
-      results: [] /* temporary array */,
-      numSkills: 0 /* to populate based on length of array */,
+      results: [], // temporary array
+      numSkills: 0, // to populate based on length of array
     }
   },
   mounted() {
     document.title = "LJMS - Skills";
     axios.get("https://api.kanye.rest/").then((response) => {
-      this.roles[1].desc = response.data.quote;
+      // only retrieve active skills
+      this.skills[1].desc = response.data.quote;
     });
   },
 };
