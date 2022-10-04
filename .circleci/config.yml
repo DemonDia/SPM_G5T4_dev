@@ -80,7 +80,7 @@ jobs:
           command: ls . -a
 
       - persist_to_workspace:
-          root: .
+          root: ~/
           paths:
             - functions.zip
 
