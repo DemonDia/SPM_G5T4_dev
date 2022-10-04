@@ -58,6 +58,11 @@ jobs:
       # - run:
       #     name: Run the API
       #     command: uvicorn Backend.main:app --reload  
+
+      - run:
+          name: Create Zipfile archive of Dependencies
+          command: |
+            
       
 
 workflows:
