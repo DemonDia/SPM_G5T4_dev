@@ -73,6 +73,29 @@ jobs:
       - run:
           name: Add backend to Zipfile
           command: zip -g ./function.zip -r Backend
+
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - functions.zip
+
+
+  deploy-dev:
+    executor: aws-cli/default
+    steps:
+      - attach_workspace:
+          at: ./
+      - aws-cli/setup:
+          aws-region: AWS_DEFAULT_REGION
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      - run:
+          name: Upload to S3 
+          command: aws s3 cp functions.zip s3://spm_project/functions.zip
+      - run:        
+          name: Deploy new Lambda        
+          command: aws lambda update-function-code --function-name spm_fastapi --s3-bucket spm_project --s3-key function.zip
       
 
 workflows:
@@ -85,5 +108,15 @@ workflows:
                 - "circleci-deployment"
           context:
             - Database
+            - Deployment
+      - deploy-dev:
+          context:
+            - Deployment
+          requires:
+            - build-and-test    
+          filters:        
+            branches:
+              only:
+                - "circleci-deployment"
 
 
