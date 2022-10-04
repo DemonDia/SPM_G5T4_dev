@@ -1,13 +1,11 @@
 <template>
   <DashboardLayout>
     <div class="container-fluid">
-
       <div class="row mt-3">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
           <router-link to="/create-role" tag="button" class="btn btn-dark btn-lg">Create Role</router-link>
         </div>
       </div>
-
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
         <div v-for="(value, key) in roles" v-bind:key="key">
           <card-component :title="value.title" :desc="value.desc" :active="value.active" />
