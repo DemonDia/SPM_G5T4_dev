@@ -66,7 +66,7 @@ jobs:
 
       - run: 
           name: Check root folder
-          command: ls /home/circleci/.pyenv/versions/3.9.13/lib/python3.9/site-packages -a
+          command: ls /home/circleci/.pyenv/versions/3.9.13/lib/python3.9/ -a
 
 
       # need to solve this so that it can package the dependencies
