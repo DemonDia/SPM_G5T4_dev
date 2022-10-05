@@ -14,6 +14,17 @@ def deleteAll():
 def addSeedData():
     return seedInitialData("skill",SkillModel)
 
+# ===========================actual CRUD functions===========================
+@app.get('/skills/')
+def getSkills(session: Session = Depends(get_session)):
+    stmt = select(SkillModel)
+    result = session.exec(stmt).all()
+    # return result
+    return {
+        "success": True,
+        "data": result
+    }
+
 @app.post('/skills/')
 def CreateSkills(skill: SkillModel, session: Session = Depends(get_session)):
     try:
