@@ -81,9 +81,9 @@ jobs:
           name: Add backend to Zipfile
           command: zip -g ./function.zip -r ./Backend/*
 
-      # - run: f
-      #     name: Check root folder
-      #     command: ls /home/circleci/project/Backend -a
+      - run: f
+          name: Check root folder
+          command: ls /home/circleci/project/Backend -a
 
       - persist_to_workspace:
           root: .
