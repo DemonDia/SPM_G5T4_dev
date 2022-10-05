@@ -31,18 +31,18 @@ export default {
       roles: /* to get roles from database */
       [
         {
-          title: "Sous Chef - Egg Machine",
-          desc: "Beat 30 eggs in 1 second",
+          role_name: "Sous Chef - Egg Machine",
+          role_description: "Beat 30 eggs in 1 second",
           active: true,
         },
         {
-          title: "Rapper",
-          desc: "Sample Description",
+          role_name: "Rapper",
+          role_description: "Sample Description",
           active: true,
         },
         {
-          title: "Rapper",
-          desc: "Sample Description",
+          role_name: "Rapper",
+          role_description: "Sample Description",
           active: true,
         },
       ],
