@@ -12,7 +12,7 @@
           :value="modelValue"
           :placeholder="label"
           @input="$emit('update:modelValue', $event.target.value)"
-          v-on:keydown="this.checkChar"
+          v-on:keyup="this.checkChar"
           class="form-control"
         >
       </div>
@@ -33,6 +33,10 @@
       modelValue: {
         type: [String, Number],
         default: ''
+      },
+      limit: {
+        type: Number,
+        default: ''
       }
     },
     data() {
@@ -43,8 +47,8 @@
     },
     methods: {
       checkChar(){
-        if (this.modelValue.length > 178) {
-          var excess = this.modelValue.length - 178
+        if (this.modelValue.length > this.limit) {
+          var excess = this.modelValue.length - this.limit
           this.error = "You are " + excess + " character(s) over the limit!"
           this.overLimit = true
         }
