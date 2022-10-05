@@ -79,7 +79,7 @@ jobs:
      # need to package this so that the api exposes on the main folder
       - run:
           name: Add backend to Zipfile
-          command: zip -g ./function.zip -r -j ./Backend/
+          command: zip -g ./function.zip -r ./Backend/ *
 
       # - run: f
       #     name: Check root folder
