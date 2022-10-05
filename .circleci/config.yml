@@ -80,7 +80,7 @@ jobs:
       - run:
           name: Add backend to Zipfile
           command: 
-              cd ./Backend/
+              cd ./Backend
               zip -g ./function.zip -r .
 
       # - run: f
