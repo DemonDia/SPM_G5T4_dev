@@ -75,5 +75,3 @@ def deleteAllData(model):
         "success":False,
         "message":"Failed to delete"
     }
-
-

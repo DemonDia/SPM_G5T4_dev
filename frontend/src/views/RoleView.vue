@@ -1,9 +1,14 @@
 <template>
   <DashboardLayout>
     <div class="container-fluid">
+      <div class="row mt-3">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <router-link to="/create-role" tag="button" class="btn btn-dark btn-lg">Create Role</router-link>
+        </div>
+      </div>
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
         <div v-for="(value, key) in roles" v-bind:key="key">
-          <card-component :title="value.title" :desc="value.desc" :active="value.active" />
+          <card-component :title="value.role_name" :desc="value.role_description" :active="value.active" />
         </div>
       </div>
       </div>
@@ -26,34 +31,19 @@ export default {
       roles: /* to get roles from database */
       [
         {
-          title: "Sous Chef - Egg Machine",
-          desc: "Beat 30 eggs in 1 second",
+          role_name: "Sous Chef - Egg Machine",
+          role_description: "Beat 30 eggs in 1 second",
           active: true,
         },
         {
-          title: "Rapper",
-          desc: "Sample Description",
+          role_name: "Rapper",
+          role_description: "Sample Description",
           active: true,
         },
         {
-          title: "Rapper",
-          desc: "Sample Description",
-          active: false,
-        },
-        {
-          title: "Rapper",
-          desc: "Sample Description",
+          role_name: "Rapper",
+          role_description: "Sample Description",
           active: true,
-        },
-        {
-          title: "Rapper",
-          desc: "Sample Description",
-          active: false,
-        },
-        {
-          title: "Rapper",
-          desc: "Sample Description",
-          active: false,
         },
       ],
       results: [] /* temporary array */,
