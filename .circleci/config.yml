@@ -69,17 +69,17 @@ jobs:
       #     command: ls /home/circleci/.pyenv/versions/3.9.13/lib/python3.9/ -a
 
 
-      # need to solve this so that it can package the dependencies
-      # - run:
-      #     name: Create Zipfile archive of Dependencies
-      #     command: |
-      #       cd /home/circleci/.pyenv/versions/3.9.14/lib/python3.9/site-packages/
-      #       zip -r9 ./function.zip .
+      need to solve this so that it can package the dependencies
+      - run:
+          name: Create Zipfile archive of Dependencies
+          command: |
+            cd /home/circleci/.pyenv/versions/3.9.14/lib/python3.9/site-packages/
+            zip -r9 ../../../../../../../../function.zip .
             
      # need to package this so that the api exposes on the main folder
       - run:
           name: Add backend to Zipfile
-          command: zip -g ./function.zip -r ./Backend/
+          command: zip -g ./function.zip -r ./Backend/../
 
       # - run: 
       #     name: Check root folder
