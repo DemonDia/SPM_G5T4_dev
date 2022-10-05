@@ -11,7 +11,7 @@
           v-bind="$attrs"
           :value="modelValue"
           :placeholder="label"
-          @input="$emit('update:modelValue', $event.target.value)"
+          @input="$emit('update:modelValue', e)"
           v-on:keyup="this.checkChar"
           class="form-control"
         >
@@ -62,7 +62,6 @@
   }
   </script>
   <style scoped>
-  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
   
   * {
     margin: 0;

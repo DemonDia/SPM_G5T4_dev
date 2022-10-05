@@ -3,14 +3,16 @@
     <div class="container-fluid">
       <h1>Create a role</h1>
 
-      <div class="alert alert-danger" v-if="errors.length">
+      <ModalComponent type="Role" :errors="errors" />
+
+      <!-- <div class="alert alert-danger" v-if="errors.length">
         <b>Please correct the following error(s):</b>
         <ul>
           <li v-for="(error, index) in errors" v-bind:key="index">
             {{ error }}
           </li>
         </ul>
-      </div>
+      </div> -->
 
       <form @submit.prevent="createRole" method="POST">
         <FormComponent
@@ -28,7 +30,9 @@
         <button class="btn btn-secondary m-3" @click="resetForm" type="reset">
           Reset
         </button>
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <button class="btn btn-primary" type="submit" data-bs-toggle="modal" data-bs-target="#submitModal">
+          Submit
+        </button>
       </form>
     </div>
   </DashboardLayout>
@@ -37,6 +41,7 @@
 <script>
 import DashboardLayout from "./Dashboard/Layout/DashboardLayout.vue";
 import FormComponent from "../components/FormComponent.vue";
+import ModalComponent from "../components/ModalComponent.vue";
 import axios from "axios";
 
 export default {
@@ -44,6 +49,7 @@ export default {
   components: {
     DashboardLayout,
     FormComponent,
+    ModalComponent,
   },
   data() {
     return {
@@ -56,19 +62,20 @@ export default {
   },
   methods: {
     createRole() {
-      axios
-        .post("http://localhost:3000/roles", {
-          role_name: this.event.title,
-          role_description: this.event.description,
-        })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          this.errors = [];
-          this.errors.push(error.data.message);
-          console.log(error);
-        });
+      // === LINKING FRONT TO BACKEND ===
+      // axios
+      //   .post("http://localhost:3000/roles", {
+      //     role_name: this.event.title,
+      //     role_description: this.event.description,
+      //   })
+      //   .then((response) => {
+      //     console.log(response);
+      //   })
+      //   .catch((error) => {
+      //     this.errors = [];
+      //     this.errors.push(error.data.message);
+      //     console.log(error);
+      //   });
     },
     resetForm() {
       this.event.title = "";
@@ -83,3 +90,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+  
+</style>
