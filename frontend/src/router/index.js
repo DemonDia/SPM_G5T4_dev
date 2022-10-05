@@ -4,12 +4,18 @@ import RoleView from '../views/RoleView.vue'
 import CourseView from '../views/CourseView.vue'
 import SkillView from '../views/SkillView.vue'
 import LJView from '../views/LJView.vue'
+import CreateRole from '../views/CreateRole.vue'
 
 const routes = [
   {
     path: '/',
     name: 'home',
     component: HomeView
+  },
+  {
+    path: '/create-role',
+    name: 'create-role',
+    component: CreateRole
   },
   {
     path: '/roles',
