@@ -2,7 +2,7 @@
 # data types:
 # float --> corresponding number (.0)
 # int --> corresponding number
-# boolean --> True
+# bool --> True/False
 # string -->  col_name #number
 # datetime --> datetime.today()  (import datetime)
 
@@ -24,5 +24,12 @@ dataColumns = {
         ("duration", "float"),
         ("last_play", "datetime")
     ],
+    
+    "role": [
+        ("id", "int"),
+        ("role_name", "str"),
+        ("role_description","str"),
+        ("active","bool")
+    ]
 
 }

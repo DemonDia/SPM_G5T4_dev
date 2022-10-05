@@ -1,21 +1,25 @@
 <template>
-  <div class="card-component mt-3 mb-3 mx-auto" v-if="active">
-    <div class="menu-frame">
+  <div class="card-component mt-3 mb-3 mx-auto">
+    <div class="row">
+      <div class="card-component-header m-1 ps-3 col">
+        <h5 class="card-component-title">{{ title }}</h5>
+      </div>
+
+      <div class="menu-frame col">
         <button class="menu-dot" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           <li><a class="dropdown-item" href="#">Update</a></li>
           <li><a class="dropdown-item" href="#">Delete</a></li>
         </ul>
-     
-    </div>
-    <div class="card-component-header m-1 p-1">
-      <h5 class="card-component-title">{{ title }}</h5>
-    </div>
-    <div class="card-component-body">
-      <p class="card-component-text">
-        {{ desc }}
-      </p>
+      </div>
+
+      <div class="card-component-body p-2 ps-4">
+        <p class="card-component-text text-start">
+          {{ desc }}
+        </p>
+      </div>
+
     </div>
   </div>
 </template>
@@ -43,6 +47,7 @@ export default {
   border-radius: 15px;
   cursor: pointer;
   transition: 0.2s;
+  height: 160px;
 }
 
 .card-component-header {
@@ -54,7 +59,11 @@ export default {
 
 .card-component-body {
   font-size: 0.8em;
-  word-wrap: break-word;
+  max-height: 85px;
+  overflow: hidden;
+}
+
+.card-component-text {
 }
 
 .menu-frame {
@@ -62,7 +71,7 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  height: 40px;
+  height: 20px;
   max-width: 60px;
   padding: 0 20px;
   margin-left: auto;
@@ -79,7 +88,6 @@ export default {
   border: 0;
   padding: 0;
   border-radius: 50%;
- 
 }
 
 .dropdown-toggle::after {
