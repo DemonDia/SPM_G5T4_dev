@@ -3,8 +3,8 @@
     <div class="container-fluid">
       <h1>Create a role</h1>
       <form @submit.prevent="createRole" method="POST">
-        <FormComponent v-model="event.title" label="Role Name" type="text" />
-        <FormComponent v-model="event.description" label="Role Description" type="text"/>
+        <FormComponent v-model="event.title" label="Role Name" type="text" limit="30" />
+        <FormComponent v-model="event.description" label="Role Description" type="text" limit="170" />
         <button class="btn btn-secondary m-3" @click="resetForm" type="reset">Reset</button>
         <button class="btn btn-primary" type="submit">Submit</button>
       </form>

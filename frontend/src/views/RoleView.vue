@@ -43,22 +43,7 @@ export default {
         {
           title: "Rapper",
           desc: "Sample Description",
-          active: false,
-        },
-        {
-          title: "Rapper",
-          desc: "Sample Description",
           active: true,
-        },
-        {
-          title: "Rapper",
-          desc: "Sample Description",
-          active: false,
-        },
-        {
-          title: "Rapper",
-          desc: "Sample Description",
-          active: false,
         },
       ],
       results: [] /* temporary array */,
