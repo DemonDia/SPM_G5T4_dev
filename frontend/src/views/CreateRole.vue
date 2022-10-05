@@ -3,8 +3,8 @@
     <div class="container-fluid">
       <h1>Create a role</h1>
       <form @submit.prevent="createRole" method="POST">
-        <FormComponent v-model="event.title" label="Role Name" type="text" limit="30" />
-        <FormComponent v-model="event.description" label="Role Description" type="text" limit="170" />
+        <FormComponent v-model="event.role_name" label="Role Name" type="text" limit="30" />
+        <FormComponent v-model="event.role_description" label="Role Description" type="text" limit="170" />
         <button class="btn btn-secondary m-3" @click="resetForm" type="reset">Reset</button>
         <button class="btn btn-primary" type="submit">Submit</button>
       </form>
@@ -26,18 +26,20 @@ export default {
   data() {
     return {
       event: {
-        title: "",
-        description: "",
+        role_name: "",
+        role_description: "",
       },
       errors: [],
     };
   },
   methods: {
+
+  /// hi  
     createRole() {
       axios
         .post("http://localhost:3000/roles", {
-            title: this.event.title,
-            description: this.event.description,
+            role_name: this.event.role_name,
+            role_description: this.event.role_description,
         })
         .then((response) => {
             console.log(response);
@@ -49,15 +51,12 @@ export default {
         });
     },
     resetForm() {
-        this.event.title = "";
-        this.event.description = "";
+        this.event.role_name = "";
+        this.event.role_description = "";
     },
   },
   mounted() {
     document.title = "LJMS - Create Roles";
-    axios.get("https://api.kanye.rest/").then((response) => {
-      console.log(response.data.quote);
-    });
   },
 };
 </script>
