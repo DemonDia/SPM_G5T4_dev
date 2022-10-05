@@ -6,12 +6,10 @@ from Routes.RoleRoutes import *
 from Routes.SkillRoutes import *
 from HelperFunctions import *
 from ErrorHandler import *
-# instantiate the FasAPI app
 
 @app.on_event("startup")
 async def startup_event():
     seedInitialData("track",TrackModel)
-
 
 @app.get("/")
 async def hello():
