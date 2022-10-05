@@ -33,6 +33,7 @@ def getRoles(session: Session = Depends(get_session)):
         "data": result
     }
 
+
 @app.get('/roles/available/')
 def getRoles(session: Session = Depends(get_session)):
     stmt = select(RoleModel).where(RoleModel.active == 1)
@@ -44,13 +45,13 @@ def getRoles(session: Session = Depends(get_session)):
     }
 
 
-@app.get("/roles/{track_id}/")
-def role(track_id: int, session: Session = Depends(get_session)):
-    role = session.get(RoleModel, track_id)
+@app.get("/roles/{role_id}/")
+def role(role_id: int, session: Session = Depends(get_session)):
+    role = session.get(RoleModel, role_id)
     if not role:
         return {
             "success": False,
-            "message": "Track not found"
+            "message": "role not found"
         }
     # return role
     return {
@@ -63,7 +64,8 @@ def role(track_id: int, session: Session = Depends(get_session)):
 def createRoles(role: RoleModel, session: Session = Depends(get_session)):
     try:
         # check for duplicate role name
-        findDuplicateRoleStatement = select(RoleModel).where(RoleModel.role_name == role.role_name)
+        findDuplicateRoleStatement = select(RoleModel).where(
+            RoleModel.role_name == role.role_name)
         results = session.exec(findDuplicateRoleStatement)
         for duplicateRoles in results:
             return {
@@ -72,12 +74,16 @@ def createRoles(role: RoleModel, session: Session = Depends(get_session)):
             }
 
         # check for description length limit
-        if len(role.role_description) > 300:
+        if len(role.role_description) > 170:
             return {
                 "success": False,
-                "message": "Job Description exceeds character limit of 300! Please try again"
+                "message": "Job Description exceeds character limit of 170! Please try again"
             }
-
+        if len(role.role_name) > 30:
+            return {
+                "success": False,
+                "message": "Job name exceeds character limit of 30! Please try again"
+            }
         session.add(role)
         session.commit()
         session.refresh(role)
