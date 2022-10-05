@@ -38,8 +38,8 @@ export default {
     createRole() {
       axios
         .post("http://localhost:3000/roles", {
-            role_name: this.event.title,
-            role_description: this.event.description,
+            role_name: this.event.role_name,
+            role_description: this.event.role_description,
         })
         .then((response) => {
             console.log(response);
@@ -51,15 +51,12 @@ export default {
         });
     },
     resetForm() {
-        this.event.title = "";
-        this.event.description = "";
+        this.event.role_name = "";
+        this.event.role_description = "";
     },
   },
   mounted() {
     document.title = "LJMS - Create Roles";
-    axios.get("https://api.kanye.rest/").then((response) => {
-      console.log(response.data.quote);
-    });
   },
 };
 </script>
