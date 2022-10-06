@@ -115,6 +115,7 @@ jobs:
           paths:
             - .
 
+#redeploy
 
   deploy-frontend:
     executor: aws-cli/default
