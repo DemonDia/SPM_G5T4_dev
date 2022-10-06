@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
         <div v-for="(value, key) in skills" v-bind:key="key">
-          <card-component :title="value.title" :desc="value.desc" :active="value.active"/>
+          <card-component :title="value.SkillName" :desc="value.SkillDescription" :active="value.active"/>
         </div>
       </div>
       </div>
@@ -26,18 +26,18 @@ export default {
       skills: /* to get roles from database */
       [
         {
-          title: "Beating Eggs",
-          desc: "Masterchef level",
+          SkillName: "Beating Eggs",
+          SkillDescription: "Masterchef level",
           active: true,
         },
         {
-          title: "Rapping Nicki Minaj",
-          desc: "No cap",
+          SkillName: "Rapping Nicki Minaj",
+          SkillDescription: "No cap",
           active: true,
         },
         {
-          title: "Eating",
-          desc: "I think I do myself a disservice by comparing myself to Steve Jobs and Walt Disney and human beings that we've seen before. It should be more like Willy Wonka...and welcome to my chocolate factory. teve Jobs and Walt Disney and human beings that we've seen before. It should be more like Willy Wonka...and welcome to my chocolate factory.",
+          SkillName: "Eating",
+          SkillDescription: "I think I do myself a disservice by comparing myself to Steve Jobs and Walt Disney and human beings that we've seen before. It should be more like Willy Wonka...and welcome to my chocolate factory. teve Jobs and Walt Disney and human beings that we've seen before. It should be more like Willy Wonka...and welcome to my chocolate factory.",
           active: true,
         },
       ],
@@ -47,10 +47,11 @@ export default {
   },
   mounted() {
     document.title = "LJMS - Skills";
-    axios.get("https://api.kanye.rest/").then((response) => {
-      // only retrieve active skills
-      this.skills[1].desc = response.data.quote;
-    });
+    var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/";
+      axios.get(url).then((response) => {
+        var result = response.data.data
+        this.skills = result
+      });
   },
 };
 </script>
