@@ -27,8 +27,6 @@ def getRoles(session: Session = Depends(get_session)):
     try:
         stmt = select(RoleModel)
         result = session.exec(stmt).all()
-        for i in result:
-            print(i.active)
         # return result
         return {
             "success": True,
@@ -48,6 +46,7 @@ def getRoles(session: Session = Depends(get_session)):
     try:
         stmt = select(RoleModel).where(RoleModel.active == 1)
         result = session.exec(stmt).all()
+
         # return result
         return {
             "success": True,
@@ -66,8 +65,10 @@ def role(role_id: int, session: Session = Depends(get_session)):
     errors = []
     try:
         role = session.get(RoleModel, role_id)
+        # role not found
         if not role:
             errors.append("Job not found")
+
         if len(errors) > 0:
             return {
                 "success": False,
@@ -98,18 +99,20 @@ def createRoles(role: RoleModel, session: Session = Depends(get_session)):
         for duplicateRoles in results:
             errors.append("Job already exists! Please try again")
             break
-
+        # empty role name
         if len(role.role_name) == 0:
             errors.append("Job name cannot be empty! Please try again")
 
+        # role name longer than 30 characters
         if len(role.role_name) > 30:
             errors.append("Job name exceeds character limit of 30! Please try again")
 
-        if len(role.role_name) == 0:
+        # role description is empty
+        if len(role.role_description) == 0:
             errors.append(
                 "Job Description cannot be empty! Please try again")
 
-        # check for description length limit
+        # role description longer than 170 characters
         if len(role.role_description) > 170:
             errors.append("Job Description exceeds character limit of 170! Please try again")
 
@@ -123,10 +126,12 @@ def createRoles(role: RoleModel, session: Session = Depends(get_session)):
         session.commit()
         session.refresh(role)
         session.close()
+
         return {
             "success": True,
             "message": "Successfully added"
         }
+        
     except Exception as e:
         return {
             "success": False,
