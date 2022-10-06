@@ -73,7 +73,7 @@ def createRoles(role: RoleModel, session: Session = Depends(get_session)):
         if len(role.role_name) > 30:
             return {
                 "success": False,
-                "message": "Job Description exceeds character limit of 30! Please try again"
+                "message": "Job name exceeds character limit of 30! Please try again"
             }
         # check for description length limit
         if len(role.role_description) > 170:
