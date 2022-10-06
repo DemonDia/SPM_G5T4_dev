@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   python: circleci/python@2.1.1
   jira: circleci/jira@1.3.1
+  aws-cli: circleci/aws-cli@1.2.1
 
 jobs:
   build-and-test:
@@ -33,14 +34,15 @@ jobs:
           name: Checking of backend folders
           command: ls ./Backend -a
       - run:
-          name: Install backend dependencies
+          name: Install dependencies
           command: pip3 install -r ./Backend/requirements.txt
 
       - run:
-        name: Install frontend dependencies
-        command: |
-            cd /home/circleci/project/Backend/frontend/
-            npm install && npm run build
+          name: Install frontend dependencies
+          command: |
+              cd /home/circleci/project/Backend/frontend/
+              npm install 
+              npm run build
 
       # - run: cd ./Backend/
     
@@ -59,11 +61,40 @@ jobs:
       - run:
           name: Run Test File
           # command: uvicorn Backend.main:app --reload
-          command: pytest ./Backend/testrun.py
+          command: python ./Backend/testrun.py
 
       # - run:
       #     name: Run the API
       #     command: uvicorn Backend.main:app --reload  
+
+      - run:
+          name: Add backend to Zipfile
+          command: |
+              cd /home/circleci/project/Backend/Backend/
+              zip -g ./function.zip -r .
+
+
+      - persist_to_workspace:
+          root: ./Backend
+          paths:
+            - function.zip
+# testing12345
+
+  deploy-dev:
+    executor: aws-cli/default
+    steps:
+      - attach_workspace:
+          at: ./
+      - aws-cli/setup:
+          aws-region: AWS_DEFAULT_REGION
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      - run:
+          name: Upload to S3 
+          command: aws s3 cp function.zip s3://spm-bigbucket/function.zip
+      - run:        
+          name: Deploy new Lambda        
+          command: aws lambda update-function-code --function-name spm_fastapi --s3-bucket spm-bigbucket --s3-key function.zip
       
 
 workflows:
@@ -77,5 +108,16 @@ workflows:
                 - "main"
           context:
             - Database
+            - Deployment
           post-steps:
             - jira/notify
+      - deploy-dev:
+          context:
+            - Deployment
+          requires:
+            - build-and-test    
+          filters:        
+            branches:
+              only:
+                - "circleci-testing"
+                - "main"
