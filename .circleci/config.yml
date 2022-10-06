@@ -101,9 +101,7 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          command: |
-              cd /home/circleci/project/Frontend/frontend/
-              npm install
+          command: cd /home/circleci/project/Frontend/frontend/ && npm install
           name: Import Frontend Dependencies
       - run:
           command: |
