@@ -1,5 +1,4 @@
 
-from tkinter import E
 from fastapi import Response, Depends
 from Schema.RoleSchema import Role
 from database import *
