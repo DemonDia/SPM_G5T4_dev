@@ -1,11 +1,11 @@
 
 from fastapi import Response, Depends
-from Backend.Schema.TrackSchema import Track
-from Backend.database import *
+from Schema.TrackSchema import Track
+from database import *
 from sqlmodel import Session, select, delete
-from Backend.config import  app
-from Backend.Models.TrackModel import TrackModel
-from Backend.HelperFunctions import *
+from config import  app
+from Models.TrackModel import TrackModel
+from HelperFunctions import *
 
 # ===========================test functions===========================
 @app.delete("/tracks/deleteall")

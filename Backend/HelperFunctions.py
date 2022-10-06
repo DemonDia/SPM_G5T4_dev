@@ -12,7 +12,7 @@ def createColumnValue(columnName,columnType, currentIndex):
         return float(currentIndex)
     if columnType == "int":
         return int(currentIndex)
-    if columnType == "boolean":
+    if columnType == "bool":
         return True
     if columnType == "datetime":
         return datetime.now()
@@ -75,5 +75,3 @@ def deleteAllData(model):
         "success":False,
         "message":"Failed to delete"
     }
-
-
