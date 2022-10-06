@@ -94,17 +94,17 @@ jobs:
 
   frontend_build_and_test: # this can be any name you choose
     executor: node/default # use the default executor defined within the orb
-    working_directory: ~/project/Frontend
+    working_directory: ~/project/Frontend/frontend
     steps:
       - checkout:
           path: ~/project/Frontend
       - node/install-packages:
           pkg-manager: npm
       - run:
-          command: npm install ~/project/Frontend/frontend
+          command: npm install 
           name: Import Frontend Dependencies
       - run:
-          command: npm run build ~/project/Frontend/frontend
+          command: npm run build
           name: Build Frontend into Production
       - persist_to_workspace:
           root: ./Frontend
