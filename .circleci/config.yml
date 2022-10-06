@@ -39,13 +39,6 @@ jobs:
           name: Install dependencies
           command: pip3 install -r ./Backend/requirements.txt
 
-      - run:
-          name: Install frontend dependencies
-          command: |
-              cd /home/circleci/project/Backend/frontend/
-              npm install 
-              npm run build
-
       # - run: cd ./Backend/
     
       # - run:
@@ -99,6 +92,25 @@ jobs:
           command: aws lambda update-function-code --function-name spm_fastapi --s3-bucket spm-bigbucket --s3-key function.zip
       
 
+  frontend_build_and_test: # this can be any name you choose
+    executor: node/default # use the default executor defined within the orb
+    working_directory: ~/project/Frontend
+    steps:
+      - checkout:
+          path: ~/project/Frontend
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          command: npm install
+          name: Import Frontend Dependencies
+      - run:
+          command: npm run build
+          name: Build Frontend into Production
+      - persist_to_workspace:
+          root: ./Frontend
+          paths:
+            - .
+
 workflows:
   build-test-and-deploy:
     jobs:
@@ -123,3 +135,14 @@ workflows:
               only:
                 - "circleci-testing"
                 - "main"
+      - frontend_build_and_test:
+          context:
+            - Deployment
+          requires:
+            - build-and-test
+            - deploy-dev  
+          filters:        
+            branches:
+              only:
+                - "circleci-testing"
+                
