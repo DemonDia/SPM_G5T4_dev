@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <h1>Create a role</h1>
 
-      <ModalComponent type="Role" :errors="errors" />
+      <ModalComponent type="Role" :isSuccess="isSuccess" />
 
       <!-- <div class="alert alert-danger" v-if="errors.length">
         <b>Please correct the following error(s):</b>
@@ -16,16 +16,20 @@
 
       <form @submit.prevent="createRole" method="POST">
         <FormComponent
-          v-model="event.role_name"
-          label="Role Name"
+          v-model="role_name.role_name"
+          :label="role_name.label"
           type="text"
-          limit="30"
+          :limit="role_name.limit"
+          :errors="role_name.errors"
+          :isSubmitted="isSubmitted"
         />
         <FormComponent
-          v-model="event.role_description"
-          label="Role Description"
+          v-model="role_description.role_description"
+          :label="role_description.label"
           type="text"
-          limit="170"
+          :limit="role_description.limit"
+          :errors="role_description.errors"
+          :isSubmitted="isSubmitted"
         />
         <button class="btn btn-secondary m-3" @click="resetForm" type="reset">
           Reset
@@ -53,11 +57,20 @@ export default {
   },
   data() {
     return {
-      event: {
+      role_name: {
         role_name: "",
-        role_description: "",
+        label: "Role Name",
+        limit: "30",
+        errors: ["Role already exists! Please try again"],
       },
-      errors: ["Role already exists! Please try again","Job Description exceeds character limit of 300! Please try again"],
+      role_description: {
+        role_description: "",
+        label: "Role Description",
+        limit: "170",
+        errors: ["Role already exists! Please try again","Job Description exceeds character limit of 300! Please try again"],
+      },
+      isSuccess: false,
+      isSubmitted: false
     };
   },
   methods: {
@@ -76,10 +89,13 @@ export default {
       //     this.errors.push(error.data.message);
       //     console.log(error);
       //   });
+      this.isSubmitted = true;
+
+      // isSuccess is false if there are errors
     },
     resetForm() {
-      this.event.title = "";
-      this.event.description = "";
+      this.role_name.role_name = "";
+      this.role_description.role_description = "";
     },
   },
   mounted() {
