@@ -1,62 +1,143 @@
 <template>
   <DashboardLayout>
-    <div class="container-fluid">
+    <div class="container-fluid p-5" id="createRoleMain">
       <h1>Create a role</h1>
+
+      <div v-show="checked">
+        <ModalComponent type="Role" :isSuccess="isSuccess" @clicked="onClickModal"/>
+      </div>
+
+      <!-- <div class="alert alert-danger" v-if="errors.length">
+        <b>Please correct the following error(s):</b>
+        <ul>
+          <li v-for="(error, index) in errors" v-bind:key="index">
+            {{ error }}
+          </li>
+        </ul>
+      </div> -->
+
       <form @submit.prevent="createRole" method="POST">
-        <FormComponent v-model="event.role_name" label="Role Name" type="text" limit="30" />
-        <FormComponent v-model="event.role_description" label="Role Description" type="text" limit="170" />
-        <button class="btn btn-secondary m-3" @click="resetForm" type="reset">Reset</button>
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <FormComponent
+          v-model="role_name.role_name"
+          :label="role_name.label"
+          type="text"
+          :limit="role_name.limit"
+          :errors="role_name.errors"
+          :isSubmitted="isSubmitted"
+        />
+        <FormComponent
+          v-model="role_description.role_description"
+          :label="role_description.label"
+          type="text"
+          :limit="role_description.limit"
+          :errors="role_description.errors"
+          :isSubmitted="isSubmitted"
+        />
+        <button class="btn btn-secondary m-3" @click="resetForm" type="reset">
+          Reset
+        </button>
+        <button class="btn btn-primary" type="submit" data-bs-toggle="modal" data-bs-target="#submitModal">
+          Submit
+        </button>
       </form>
     </div>
   </DashboardLayout>
 </template>
 
 <script>
-import DashboardLayout from "./Dashboard/Layout/DashboardLayout.vue";
-import FormComponent from "../components/FormComponent.vue";
-import axios from "axios";
+  import DashboardLayout from "./Dashboard/Layout/DashboardLayout.vue";
+  import FormComponent from "../components/FormComponent.vue";
+  import ModalComponent from "../components/ModalComponent.vue";
+  import axios from "axios";
 
-export default {
-  name: "RoleView",
-  components: {
-    DashboardLayout,
-    FormComponent,
-  },
-  data() {
-    return {
-      event: {
-        role_name: "",
-        role_description: "",
+  export default {
+    name: "RoleView",
+    components: {
+      DashboardLayout,
+      FormComponent,
+      ModalComponent,
+    },
+    data() {
+      return {
+        role_name: {
+          role_name: "",
+          label: "Role Name",
+          limit: "30",
+          errors: [],
+        },
+        role_description: {
+          role_description: "",
+          label: "Role Description",
+          limit: "170",
+          errors: [],
+        },
+        isSuccess: false,
+        isSubmitted: false,
+        checked: false,
+      };
+    },
+    methods: {
+      createRole() {
+        // === LINKING FRONT TO BACKEND ===
+        var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/"
+        axios
+          .post(url, {
+            "role_name": this.role_name.role_name,
+            "role_description": this.role_description.role_description,
+            "active": true
+          })
+          .then((response) => {
+            // reset fields
+            this.role_name.errors = []
+            this.role_description.errors = []
+            this.isSubmitted = NaN
+
+            // submitted form
+            this.isSubmitted = true;
+
+            // console.log(response.data);
+            if (response.data.success) {
+              // console.log("success")
+              // success case
+              this.isSuccess = true;
+            } 
+            else {
+              // console.log("failure")
+              this.isSuccess = false;
+              if (response.data.message == "Job already exists! Please try again") {
+                this.role_name.errors.push(response.data.message)
+              }
+              else {
+                this.role_description.errors.push(response.data.message)
+              }
+            }
+            // show Modal
+            this.checked = true;
+          });
+          this.resetForm()
       },
-      errors: [],
-    };
-  },
-  methods: {
+      resetForm() {
+        this.role_name.role_name = "";
+        this.role_description.role_description = "";
+      },
+      onClickModal(value) {
+        // console.log("got value from Modal")
+        // console.log(value)
 
-  /// hi  
-    createRole() {
-      axios
-        .post("http://localhost:3000/roles", {
-            role_name: this.event.role_name,
-            role_description: this.event.role_description,
-        })
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((error) => {
-            this.errors = [];
-            this.errors.push(error.data.m);
-            console.log(error);
-        });
+        // reset checked value:
+        this.checked = value;
+      }
     },
-    resetForm() {
-        this.event.role_name = "";
-        this.event.role_description = "";
+    mounted() {
+      document.title = "LJMS - Create Roles";
     },
-  },
-  mounted() {
-    document.title = "LJMS - Create Roles";
-  },
-};
+  };
 </script>
+
+<style scoped>
+
+  #createRoleMain {
+    min-height: 100vh;
+  }
+  
+</style>
