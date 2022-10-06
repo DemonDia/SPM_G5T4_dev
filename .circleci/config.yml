@@ -73,7 +73,6 @@ jobs:
           root: ./Backend
           paths:
             - function.zip
-# testing12345
 
   deploy-dev:
     executor: aws-cli/default
@@ -106,16 +105,30 @@ jobs:
       - run:
           command: npm run build
           name: Build Frontend into Production
-      - run:
-          name: Add frontend to Zipfile
-          command: |
-              cd /home/circleci/project/Frontend/frontend/dist/
-              zip -g ../frontend.zip -r .
+      # - run:
+      #     name: Add frontend to Zipfile
+      #     command: |
+      #         cd /home/circleci/project/Frontend/frontend/dist/
+      #         zip -g ../frontend.zip -r .
       - persist_to_workspace:
-          root: ./
+          root: .
           paths:
-            - frontend.zip
-   
+            - .
+
+
+  deploy-frontend:
+    executor: aws-cli/default
+    steps:
+      - attach_workspace:
+          at: ./
+      - aws-cli/setup:
+          aws-region: AWS_DEFAULT_REGION
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      - run:
+          name: Deploy on S3 
+          command: aws s3 sync ./frontend/dist s3://spm-smallbucket
+      
 
 workflows:
   build-test-and-deploy:
@@ -147,6 +160,17 @@ workflows:
           requires:
             - build-and-test
             - deploy-dev  
+          filters:        
+            branches:
+              only:
+                - "circleci-testing"
+      - deploy-frontend:
+          context:
+            - Deployment
+          requires:
+            - build-and-test
+            - deploy-dev  
+            - frontend_build_and_test
           filters:        
             branches:
               only:
