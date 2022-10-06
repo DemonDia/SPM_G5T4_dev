@@ -101,10 +101,14 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          command: npm install
+          command: |
+              cd /home/circleci/project/Frontend/frontend/
+              npm install
           name: Import Frontend Dependencies
       - run:
-          command: npm run build
+          command: |
+              cd /home/circleci/project/Frontend/frontend/
+              npm run build
           name: Build Frontend into Production
       - persist_to_workspace:
           root: ./Frontend
