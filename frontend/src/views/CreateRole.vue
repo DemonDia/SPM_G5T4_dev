@@ -74,6 +74,11 @@
         isSuccess: false,
         isSubmitted: false,
         checked: false,
+        RNerrors: [
+          "Job name cannot be empty! Please try again",
+          "Job already exists! Please try again",
+          "Job name exceeds character limit of 30! Please try again"
+        ]
       };
     },
     methods: {
@@ -104,11 +109,14 @@
             else {
               // console.log("failure")
               this.isSuccess = false;
-              if (response.data.message == "Job already exists! Please try again") {
-                this.role_name.errors.push(response.data.message)
-              }
-              else {
-                this.role_description.errors.push(response.data.message)
+              for (let err in response.data.message) {
+                let msg = response.data.message[err]
+                if (this.RNerrors.includes(msg)) {
+                  this.role_name.errors.push(msg)
+                }
+                else {
+                  this.role_description.errors.push(msg)
+                }
               }
             }
             // show Modal
