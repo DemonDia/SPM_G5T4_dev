@@ -1,5 +1,4 @@
 from fastapi import Response, Depends
-from Schema.TrackSchema import Track
 from database import *
 from sqlmodel import Session, select, delete
 from config import  app
