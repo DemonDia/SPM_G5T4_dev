@@ -5,6 +5,7 @@ import CourseView from '../views/CourseView.vue'
 import SkillView from '../views/SkillView.vue'
 import LJView from '../views/LJView.vue'
 import CreateRole from '../views/CreateRole.vue'
+import CreateSkill from '../views/CreateSkill.vue'
 
 const routes = [
   {
@@ -16,6 +17,11 @@ const routes = [
     path: '/create-role',
     name: 'create-role',
     component: CreateRole
+  },
+  {
+    path: '/create-skill',
+    name: 'create-skill',
+    component: CreateSkill
   },
   {
     path: '/roles',
