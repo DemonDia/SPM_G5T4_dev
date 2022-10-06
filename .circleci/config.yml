@@ -106,10 +106,16 @@ jobs:
       - run:
           command: npm run build
           name: Build Frontend into Production
+      - run:
+          name: Add backend to Zipfile
+          command: |
+              cd /home/circleci/project/Frontend/frontend/dist/
+              zip -g ./frontend.zip -r .
       - persist_to_workspace:
           root: ./Frontend
           paths:
-            - .
+            - frontend.zip
+   
 
 workflows:
   build-test-and-deploy:
