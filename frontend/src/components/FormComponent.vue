@@ -1,6 +1,6 @@
 <template>
   <div class="row d-flex justify-content-center m-5 ms-0">
-    <div class="col-3 text-end pt-1">
+    <div class="col-2 text-end pt-1">
         <label class="form-label" v-if="label">
           {{ label }}
         </label>
@@ -17,31 +17,34 @@
           :class="[this.errors.length > 0 && this.isSubmitted ? 'is-invalid' : '']"
         >
       </div>
-
-      <!-- Character limit warning (before submission) -->
-      <p v-if="this.overLimit" class="p-2 text-start text-danger">
-        {{this.warning}}
-      </p>
-
-      <!-- Show errors -->
-      <div v-if="this.errors.length == 1 && this.isSubmitted" class="text-start text-danger">
-        <!-- <p class="text-start text-danger">
-          Please fix these errors:
-        </p> -->
-        <p class="ps-2 text-start text-danger">
-          {{ this.errors[0] }}
+      <span class="text-start text-danger">
+        <!-- Character limit warning (before submission) -->
+        <p v-if="this.overLimit" class="p-1">
+          {{ this.warning }}
         </p>
-      </div>
-      <div v-if="this.errors.length > 1 && this.isSubmitted" class="text-start text-danger">
-        <!-- <p class="text-start text-danger">
-          Please fix these errors:
-        </p> -->
-        <ul class="ps-4">
-          <li v-for="(error, index) in this.errors" v-bind:key="index">
-            {{ error }}
-          </li>
-        </ul>
-      </div>
+        <p v-else class="p-1">
+        </p>
+
+        <!-- Show errors -->
+        <div v-if="this.errors.length == 1 && this.isSubmitted">
+          <!-- <p class="text-start text-danger">
+            Please fix these errors:
+          </p> -->
+          <p class="ps-1">
+            {{ this.errors[0] }}
+          </p>
+        </div>
+        <div v-if="this.errors.length > 1 && this.isSubmitted">
+          <!-- <p class="text-start text-danger">
+            Please fix these errors:
+          </p> -->
+          <ul class="ps-4">
+            <li v-for="(error, index) in this.errors" v-bind:key="index">
+              {{ error }}
+            </li>
+          </ul>
+        </div>
+      </span>
     </div>
   </div>
 </template>
@@ -73,7 +76,7 @@
       checkChar(){
         if (this.modelValue.length > Number(this.limit)) {
           var excess = this.modelValue.length - Number(this.limit)
-          this.warning = "You are " + excess + " character(s) over the limit!"
+          this.warning = "WARNING: You are " + excess + " character(s) over the limit!"
           this.overLimit = true
         }
         else {
