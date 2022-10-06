@@ -1,5 +1,5 @@
 <template>
-<div class="row d-flex justify-content-center m-5 ms-0">
+  <div class="row d-flex justify-content-center m-5 ms-0">
     <div class="col-3 text-end pt-1">
         <label class="form-label" v-if="label">
           {{ label }}
@@ -11,7 +11,7 @@
           v-bind="$attrs"
           :value="modelValue"
           :placeholder="label"
-          @input="$emit('update:modelValue', e)"
+          @input="$emit('update:modelValue', $event.target.value)"
           v-on:keyup="this.checkChar"
           class="form-control"
         >
@@ -20,10 +20,10 @@
         {{this.error}}
       </p>
     </div>
-</div>
-  </template>
+  </div>
+</template>
   
-  <script>
+<script>
   export default {
     props: {
       label: {
@@ -35,7 +35,7 @@
         default: ''
       },
       limit: {
-        type: Number,
+        type: String,
         default: ''
       }
     },
@@ -47,8 +47,8 @@
     },
     methods: {
       checkChar(){
-        if (this.modelValue.length > this.limit) {
-          var excess = this.modelValue.length - this.limit
+        if (this.modelValue.length > Number(this.limit)) {
+          var excess = this.modelValue.length - Number(this.limit)
           this.error = "You are " + excess + " character(s) over the limit!"
           this.overLimit = true
         }
@@ -60,8 +60,8 @@
       }
     }
   }
-  </script>
-  <style scoped>
+</script>
+<style scoped>
   
   * {
     margin: 0;
@@ -70,5 +70,4 @@
     font-family: "Poppins", sans-serif;
   }
  
-  </style>
-  
+</style>
