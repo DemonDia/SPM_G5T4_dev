@@ -110,7 +110,7 @@ jobs:
           name: Add frontend to Zipfile
           command: |
               cd /home/circleci/project/Frontend/frontend/dist/
-              zip -g ./frontend.zip -r .
+              zip -g ../frontend.zip -r .
       - persist_to_workspace:
           root: ./
           paths:
