@@ -6,6 +6,7 @@ from Routes.RoleRoutes import *
 from Routes.SkillRoutes import *
 from HelperFunctions import *
 from ErrorHandler import *
+from mangum import Mangum
 
 @app.on_event("startup")
 async def startup_event():
@@ -14,3 +15,5 @@ async def startup_event():
 @app.get("/")
 async def hello():
     return "OK"
+    
+handler = Mangum(app)
