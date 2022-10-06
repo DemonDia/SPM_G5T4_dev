@@ -11,7 +11,7 @@ def addDataTest():
     print("Check if HR can create new role successfully")
     createRolesData1 = {
         "role_name": "Product Manager",
-        "role_description": "Product Manager needs to collaborate effectively with cross-functional stakeholders from Product, Design, Engineering, and Operations to create a smooth user experience for job seekers and employers",
+        "role_description": "Product Manager needs to collaborate effectively with cross-functional stakeholders to create a smooth user experience for job seekers and employers",
         "active": True
     }
     createRolesResult1 = addRow(BASE, createRolesData1)
