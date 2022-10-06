@@ -7,7 +7,7 @@
                 <h1 class="modal-title fs-5" id="submitModalLabel">
                     {{this.header}}
                 </h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="onClickButton()"></button>
             </div>
             <div class="modal-body">
                 <div>
@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="onClickButton">Close</button>
             </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
         return {
             header: "",
             icon: "",
-            message: ""
+            message: "",
         }
     },
     methods: {
@@ -48,6 +48,10 @@
                 this.icon = "bi bi-emoji-frown-fill icon-red"
                 this.message = this.type + " is unsuccessfully created. Please fix the errors."
             }
+        },
+        onClickButton(event) {
+            // console.log("clicked modal close button");
+            this.$emit('clicked', false);
         }
     }
     };

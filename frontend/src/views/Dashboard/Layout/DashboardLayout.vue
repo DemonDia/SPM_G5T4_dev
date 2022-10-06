@@ -1,7 +1,5 @@
 <template>
-  
   <div>
-    
     <!-- Menu for HR -->
     <nav class="navbar navbar-expand-lg bg-white">
     <div class="container-fluid">
