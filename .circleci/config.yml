@@ -101,9 +101,7 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          command: |
-              cd ~/project/Frontend/frontend
-              npm install
+          command: npm install ~/project/Frontend/frontend
           name: Import Frontend Dependencies
       - run:
           command: npm run build ~/project/Frontend/frontend
