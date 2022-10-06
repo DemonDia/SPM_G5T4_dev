@@ -34,14 +34,8 @@ jobs:
           name: Checking of backend folders
           command: ls ./Backend -a
       - run:
-          name: Install dependencies
+          name: Install backend dependencies
           command: pip3 install -r ./Backend/requirements.txt
-
-      # - run: cd ./Backend/
-    
-      # - run:
-      #     name: Go back to backend
-      #     command: cd Backend
 
       - run:
           name: Database Setup
@@ -59,6 +53,12 @@ jobs:
       # - run:
       #     name: Run the API
       #     command: uvicorn Backend.main:app --reload  
+
+      - run:
+        name: Install frontend dependencies
+        command: |
+            cd /home/circleci/project/Backend/frontend/
+            npm install && npm run build
 
       - run:
           name: Add backend to Zipfile
