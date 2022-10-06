@@ -1,5 +1,5 @@
 <template>
-<div class="row d-flex justify-content-center m-5 ms-0">
+  <div class="row d-flex justify-content-center m-5 ms-0">
     <div class="col-3 text-end pt-1">
         <label class="form-label" v-if="label">
           {{ label }}
@@ -14,42 +14,66 @@
           @input="$emit('update:modelValue', $event.target.value)"
           v-on:keyup="this.checkChar"
           class="form-control"
+          :class="[this.errors.length > 0 && this.isSubmitted ? 'is-invalid' : '']"
         >
       </div>
+
+      <!-- Character limit warning (before submission) -->
       <p v-if="this.overLimit" class="p-2 text-start text-danger">
-        {{this.error}}
+        {{this.warning}}
       </p>
+
+      <!-- Show errors -->
+      <div v-if="this.errors.length == 1 && this.isSubmitted" class="text-start text-danger">
+        <!-- <p class="text-start text-danger">
+          Please fix these errors:
+        </p> -->
+        <p class="ps-2 text-start text-danger">
+          {{ this.errors[0] }}
+        </p>
+      </div>
+      <div v-if="this.errors.length > 1 && this.isSubmitted" class="text-start text-danger">
+        <!-- <p class="text-start text-danger">
+          Please fix these errors:
+        </p> -->
+        <ul class="ps-4">
+          <li v-for="(error, index) in this.errors" v-bind:key="index">
+            {{ error }}
+          </li>
+        </ul>
+      </div>
     </div>
-</div>
-  </template>
+  </div>
+</template>
   
-  <script>
+<script>
   export default {
-    props: {
-      label: {
-        type: String,
-        default: ''
-      },
-      modelValue: {
-        type: [String, Number],
-        default: ''
-      },
-      limit: {
-        type: Number,
-        default: ''
-      }
-    },
+    // props: {
+    //   label: {
+    //     type: String,
+    //     default: ''
+    //   },
+    //   modelValue: {
+    //     type: [String, Number],
+    //     default: ''
+    //   },
+    //   limit: {
+    //     type: String,
+    //     default: ''
+    //   }
+    // },
     data() {
       return {
-        error: "",
+        warning: "",
         overLimit: true,
       }
     },
+    props: ['label', 'modelValue', 'limit', 'errors', 'isSubmitted'],
     methods: {
       checkChar(){
-        if (this.modelValue.length > this.limit) {
-          var excess = this.modelValue.length - this.limit
-          this.error = "You are " + excess + " character(s) over the limit!"
+        if (this.modelValue.length > Number(this.limit)) {
+          var excess = this.modelValue.length - Number(this.limit)
+          this.warning = "You are " + excess + " character(s) over the limit!"
           this.overLimit = true
         }
         else {
@@ -60,9 +84,8 @@
       }
     }
   }
-  </script>
-  <style scoped>
-  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+</script>
+<style scoped>
   
   * {
     margin: 0;
@@ -71,5 +94,4 @@
     font-family: "Poppins", sans-serif;
   }
  
-  </style>
-  
+</style>
