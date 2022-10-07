@@ -136,6 +136,7 @@ workflows:
             branches:
               only:
                 - "circleci-testing"
+                - "refactoring-test-case"
                 - "main"
           context:
             - Database
