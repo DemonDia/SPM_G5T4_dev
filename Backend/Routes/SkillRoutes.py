@@ -52,12 +52,12 @@ def CreateSkills(skill: SkillModel, session: Session = Depends(get_session)):
 
         # check for empty skill name
         if len(skill.skill_name) == 0:
-            errors.append("Skill name cannot be empty! Please try again")
+            errors.append("Skill Name cannot be empty! Please try again")
 
         # check if skill name exceeds 30 characters
         if len(skill.skill_name) > 30:
             errors.append(
-                "Skill name exceeds character limit of 30! Please try again")
+                "Skill Name exceeds character limit of 30! Please try again")
 
         # check for empty skill description
         if len(skill.skill_description) == 0:
