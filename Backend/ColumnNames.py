@@ -32,9 +32,9 @@ dataColumns = {
         ("active","bool")
     ],
     "skill":[
-        ("SkillId","int"),
-        ("SkillName","str"),
-        ("SkillDescription","str"),
+        ("id","int"),
+        ("skill_name","str"),
+        ("skill_description","str"),
         ("Active","bool")
 
     ]

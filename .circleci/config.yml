@@ -4,6 +4,8 @@ orbs:
   python: circleci/python@2.1.1
   jira: circleci/jira@1.3.1
   aws-cli: circleci/aws-cli@1.2.1
+  node: circleci/node@5.0.3
+
 
 jobs:
   build-and-test:
@@ -66,11 +68,11 @@ jobs:
               cd /home/circleci/project/Backend/Backend/
               zip -g ./function.zip -r .
 
+
       - persist_to_workspace:
           root: ./Backend
           paths:
             - function.zip
-# testing12345
 
   deploy-dev:
     executor: aws-cli/default
@@ -87,6 +89,46 @@ jobs:
       - run:        
           name: Deploy new Lambda        
           command: aws lambda update-function-code --function-name spm_fastapi --s3-bucket spm-bigbucket --s3-key function.zip
+      
+
+  frontend_build_and_test: # this can be any name you choose
+    executor: node/default # use the default executor defined within the orb
+    working_directory: ~/project/Frontend/frontend
+    steps:
+      - checkout:
+          path: ~/project/Frontend
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          command: npm install 
+          name: Import Frontend Dependencies
+      - run:
+          command: npm run build
+          name: Build Frontend into Production
+      # - run:
+      #     name: Add frontend to Zipfile
+      #     command: |
+      #         cd /home/circleci/project/Frontend/frontend/dist/
+      #         zip -g ../frontend.zip -r .
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - .
+
+#redeploy
+
+  deploy-frontend:
+    executor: aws-cli/default
+    steps:
+      - attach_workspace:
+          at: ./
+      - aws-cli/setup:
+          aws-region: AWS_DEFAULT_REGION
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      - run:
+          name: Deploy on S3 
+          command: aws s3 sync ./dist s3://spm-smallbucket
       
 
 workflows:
@@ -113,4 +155,25 @@ workflows:
               only:
                 - "circleci-testing"
                 - "main"
-
+      - frontend_build_and_test:
+          context:
+            - Deployment
+          requires:
+            - build-and-test
+            - deploy-dev  
+          filters:        
+            branches:
+              only:
+                - "circleci-testing"
+      - deploy-frontend:
+          context:
+            - Deployment
+          requires:
+            - build-and-test
+            - deploy-dev  
+            - frontend_build_and_test
+          filters:        
+            branches:
+              only:
+                - "circleci-testing"
+                
