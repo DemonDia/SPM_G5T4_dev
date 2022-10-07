@@ -17,7 +17,7 @@
         </div>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
           <div v-for="(value, key) in skills" v-bind:key="key">
-            <card-component :title="value.SkillName" :desc="value.SkillDescription" :active="value.active" />
+            <card-component :title="value.skill_name" :desc="value.skill_description" :active="value.active" />
           </div>
         </div>
       </div>
