@@ -7,4 +7,4 @@ class SkillModel(SQLModel,table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     skill_name: str
     skill_description: str
-    Active: bool
+    active: bool

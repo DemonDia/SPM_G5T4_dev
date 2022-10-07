@@ -35,7 +35,7 @@ dataColumns = {
         ("id","int"),
         ("skill_name","str"),
         ("skill_description","str"),
-        ("Active","bool")
+        ("active","bool")
 
     ]
 
