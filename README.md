@@ -5,15 +5,14 @@
 ```bash 
 
 ```
-### Running backend (for testing):
-To run the frontend API, type the following in your terminal:
+### Running frontend (for testing):
+To run the frontend UI, type the following in your terminal:
 ```
 npm i 
 npm run serve
 ```
 Note: 
 - Make sure you are in the Frontend folder before you do any of the above in the CLI
-- Before you run your test file inside the 'Tests' folder, ensure your main.py is running
 - npm i installs all the required dependencies 
 
 ## Backend
