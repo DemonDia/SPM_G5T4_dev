@@ -1,4 +1,4 @@
-from HelperFunctionsTest import *
+from Tests.HelperFunctionForTest import *
 BASE = "http://127.0.0.1:8000/tracks/"
 
 # ======================Test cases======================
