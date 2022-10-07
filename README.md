@@ -3,9 +3,19 @@
 
 #### Folder structure
 ```bash 
-Frontend
 
 ```
+### Running backend (for testing):
+To run the frontend API, type the following in your terminal:
+```
+npm i 
+npm run serve
+```
+Note: 
+- Make sure you are in the Frontend folder before you do any of the above in the CLI
+- Before you run your test file inside the 'Tests' folder, ensure your main.py is running
+- npm i installs all the required dependencies 
+
 ## Backend
 ### IMPORTANT: 
 1. For entity column names, use underscore case (eg: column_name) 
@@ -72,7 +82,7 @@ NOTE:
 - pip install pipreqs installs the 'pipreqs' library, which allows you to get the dependencies from ONLY this project.
 - this downloads the dependencies stated in the requirements.txt
 
-### Running the project (for testing):
+### Running backend (for testing):
 To run the main API, type the following in your terminal:
 ```
 uvicorn main:app --reload    
@@ -84,6 +94,7 @@ cd Tests
 python MainTest.py
 ```
 Note: 
+- Make sure you are inside the Backend folder before running the backend API and its test scripts
 - cd Tests: you go to the path of the Tests folder
-- NOTE: before you run your test file inside the 'Tests' folder, ensure your main.py is running__
+- IMPORTANT: before you run your test file inside the 'Tests' folder, ensure your main.py is running
 
