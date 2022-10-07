@@ -1,23 +1,33 @@
-# fastapi_python_test
- 
-# Flask Test 
+# Learning Journey Portal
+## Frontend
 
-### Folder structure
+#### Folder structure
+```bash 
+Frontend
+
+```
+## Backend
+### IMPORTANT: 
+1. For entity column names, use underscore case (eg: column_name) 
+2. For variable names, use camel case (eg: variableName)
+3. For primary keys of entities with ONLY 1 primary key, that column should be 'id'
+
+#### Folder structure
 
 ```bash 
-Project
+Backend
 ├── Routes (the various routes are stored; relevant functions from ApiFunctions are imported)
 |   ├── <api_name>Routes.py
-|
-├── ApiFunctions (functions called in the various routes; data model of relevant entity is imported)
-|   ├── <api_name>Functions.py
 |
 ├── Models (Entity models are found here; this is solely for table creation for SQL)
 |   ├── <model_name>.py
 |
 ├── Tests (This is where you test the individual APIs)
-|   ├── <api_name>Test.py
-|   ├── HelperFunctionsTest.py (these are helper functions that are reusable for various test cases)
+|   ├── TestScripts (this is where the test cases of each entity is at)
+|   |   ├── <api_name>Test.py
+|   |
+|   ├── HelperFunctionForTest.py (they provide helper functions for the test cases)
+|   ├── MainTest.py (they run all the unit tests together)
 |
 ├── Schema (This is to facilitate CRUD operations in FastAPI especially for SQL)
 |   ├── <api_name>Schema.py
@@ -25,6 +35,8 @@ Project
 ├── HelperFunctions.py (For helper functions that are usable for the API)
 |
 ├── .gitignore (this lists the type of files that will NOT be tracked by GitHub)
+|
+├── TableInfo.py (this stores the information of the columns of each entity)
 |
 ├── config.py (all the setup will happen there; SQLAlchemy and App initialisation)
 |
@@ -51,12 +63,13 @@ Eg: If your model name is 'Entity', your naming convention should be like:
 2. Open the project in VSC 
 3. In your terminal, type this in CLI: 
 ```
-pip freeze > requirements.txt
+pip install pipreqs
+pipreqs Backend
 pip install -r requirements.txt
 ```
 
 NOTE: 
-- pip freeze > requirements.txt creates a 'requirement.txt' file and then adds dependencies of the project inside 'requirements.txt'
+- pip install pipreqs installs the 'pipreqs' library, which allows you to get the dependencies from ONLY this project.
 - this downloads the dependencies stated in the requirements.txt
 
 ### Running the project (for testing):
@@ -68,11 +81,9 @@ uvicorn main:app --reload
 To run the test cases, type the following in your terminal:
 ```
 cd Tests
-python <api_name>Test.py
+python MainTest.py
 ```
 Note: 
 - cd Tests: you go to the path of the Tests folder
-- python <api_name>Test.py: you run the test script of a given entity (api_name), depending on what you want to test
-- this does NOT apply to HelperFunction.py
-__NOTE: before you run your test file inside the 'Tests' folder, ensure your main.py is running__
+- NOTE: before you run your test file inside the 'Tests' folder, ensure your main.py is running__
 
