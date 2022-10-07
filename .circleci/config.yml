@@ -8,7 +8,7 @@ orbs:
 
 
 jobs:
-  build-and-test:
+  backend-build-and-test:
     executor:
       name: python/default
       tag: '3.9'
@@ -74,7 +74,7 @@ jobs:
           paths:
             - function.zip
 
-  deploy-dev:
+  backend-deploy-dev:
     executor: aws-cli/default
     steps:
       - attach_workspace:
@@ -115,9 +115,7 @@ jobs:
           paths:
             - .
 
-#redeploy
-
-  deploy-frontend:
+  frontend-deploy-dev:
     executor: aws-cli/default
     steps:
       - attach_workspace:
@@ -134,7 +132,7 @@ jobs:
 workflows:
   build-test-and-deploy:
     jobs:
-      - build-and-test:
+      - backend-build-and-test:
           filters:
             branches:
               only:
@@ -145,11 +143,11 @@ workflows:
             - Deployment
           post-steps:
             - jira/notify
-      - deploy-dev:
+      - backend-deploy-dev:
           context:
             - Deployment
           requires:
-            - build-and-test    
+            - backend-build-and-test    
           filters:        
             branches:
               only:
@@ -159,21 +157,23 @@ workflows:
           context:
             - Deployment
           requires:
-            - build-and-test
-            - deploy-dev  
+            - backend-build-and-test
+            - backend-deploy-dev  
           filters:        
             branches:
               only:
                 - "circleci-testing"
-      - deploy-frontend:
+                - "main"
+      - frontend-deploy-dev:
           context:
             - Deployment
           requires:
-            - build-and-test
-            - deploy-dev  
             - frontend_build_and_test
+            - backend-build-and-test
+            - backend-deploy-dev
           filters:        
             branches:
               only:
                 - "circleci-testing"
+                - "main"
                 
