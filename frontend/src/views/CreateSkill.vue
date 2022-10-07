@@ -10,19 +10,19 @@
   
         <form @submit.prevent="createSkill" method="POST">
           <FormComponent
-            v-model="SkillName.SkillName"
-            :label="SkillName.label"
+            v-model="skill_name.skill_name"
+            :label="skill_name.label"
             type="text"
-            :limit="SkillName.limit"
-            :errors="SkillName.errors"
+            :limit="skill_name.limit"
+            :errors="skill_name.errors"
             :isSubmitted="isSubmitted"
           /> 
           <FormComponent
-            v-model="SkillDescription.SkillDescription"
-            :label="SkillDescription.label"
+            v-model="skill_description.skill_description"
+            :label="skill_description.label"
             type="text"
-            :limit="SkillDescription.limit"
-            :errors="SkillDescription.errors"
+            :limit="skill_description.limit"
+            :errors="skill_description.errors"
             :isSubmitted="isSubmitted"
           />
           <button class="btn btn-secondary m-3" @click="resetForm" type="reset">
@@ -51,14 +51,14 @@
       },
       data() {
         return {
-          SkillName: {
-            SkillName: "",
+          skill_name: {
+            skill_name: "",
             label: "Skill Name",
             limit: "30",
             errors: [],
           },
-          SkillDescription: {
-            SkillDescription: "",
+          skill_description: {
+            skill_description: "",
             label: "Skill Description",
             limit: "170",
             errors: [],
@@ -80,16 +80,16 @@
 
           axios
             .post(url, {
-              "SkillName": this.SkillName.SkillName,
-              "SkillDescription": this.SkillDescription.SkillDescription,
+              "skill_name": this.skill_name.skill_name,
+              "skill_description": this.skill_description.skill_description,
               "Active": true
             })
             .then((response) => {
 
             console.log(response);
               // reset fields
-              this.SkillName.errors = []
-              this.SkillDescription.errors = []
+              this.skill_name.errors = []
+              this.skill_description.errors = []
               this.isSubmitted = NaN
   
               // submitted form
@@ -107,10 +107,10 @@
                 for (let err in response.data.message) {
                   let msg = response.data.message[err]
                   if (this.RNerrors.includes(msg)) {
-                    this.SkillName.errors.push(msg)
+                    this.skill_name.errors.push(msg)
                   }
                   else {
-                    this.SkillDescription.errors.push(msg)
+                    this.skill_description.errors.push(msg)
                   }
                 }
               }
@@ -120,8 +120,8 @@
             this.resetForm()
         },
         resetForm() {
-          this.SkillName.SkillName = "";
-          this.SkillDescription.SkillDescription = "";
+          this.skill_name.skill_name = "";
+          this.skill_description.skill_description = "";
         },
         onClickModal(value) {
           // console.log("got value from Modal")
