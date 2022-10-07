@@ -4,7 +4,7 @@
         <h1>Create a skill</h1>
   
         <div v-show="checked">
-          <ModalComponent type="Role" :isSuccess="isSuccess" @clicked="onClickModal"/>
+          <ModalComponent type="Skill" :isSuccess="isSuccess" @clicked="onClickModal"/>
         </div>
   
   
