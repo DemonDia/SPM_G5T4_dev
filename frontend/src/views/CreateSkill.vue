@@ -3,9 +3,9 @@
       <div class="container-fluid p-5" id="createSkillMain">
         <h1>Create a skill</h1>
   
-        <!-- <div v-show="checked">
+        <div v-show="checked">
           <ModalComponent type="Skill" :isSuccess="isSuccess" @clicked="onClickModal"/>
-        </div> -->
+        </div>
   
         <form @submit.prevent="createSkill" method="POST">
           <FormComponent
@@ -38,7 +38,7 @@
   <script>
     import DashboardLayout from "./Dashboard/Layout/DashboardLayout.vue";
     import FormComponent from "../components/FormComponent.vue";
-    // import ModalComponent from "../components/ModalComponent.vue";
+    import ModalComponent from "../components/ModalComponent.vue";
     import axios from "axios";
   
     export default {
@@ -46,7 +46,7 @@
       components: {
         DashboardLayout,
         FormComponent,
-        // ModalComponent,
+        ModalComponent,
       },
       data() {
         return {
@@ -64,17 +64,21 @@
           },
           isSuccess: false,
           isSubmitted: false,
-          // checked: false,
-          // SNerrors: [
-          //   "Skill name cannot be empty! Please try again",
-          //   "Skill already exists! Please try again",
-          //   "Skill name exceeds character limit of 30! Please try again"
-          // ]
+          checked: false,
+          SNerrors: [
+            "Skill name cannot be empty! Please try again",
+            "Skill already exists! Please try again",
+            "Skill name exceeds character limit of 30! Please try again"
+          ]
         };
       },
       methods: {
         createSkill() {
-          console.log("submit button clicked!")
+          this.isSubmitted = true;
+          if (this.skill_name.errors.length == 0 && this.skill_description.errors.length==0) {
+            this.isSuccess = true; // shows error if there is Errors array in each field contains at least one message
+          }
+          this.checked = true;
           // === LINKING FRONT TO BACKEND ===
           // var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/"
 
