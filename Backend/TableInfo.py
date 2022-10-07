@@ -16,7 +16,7 @@ model_name:[
 ]
 '''
 #please refer to the model inside the Models folder
-dataColumns = {
+modelColumnInfo = {
     "track": [
         ("id", "int"),
         ("title", "str"),
