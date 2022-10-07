@@ -1,7 +1,7 @@
 <template>
   <div class="row d-flex justify-content-center m-5 ms-0">
     <div class="col-2 text-end pt-1">
-        <label class="form-label" v-if="label">
+        <label class="form-label pt-1" v-if="label">
           {{ label }}
         </label>
     </div>
