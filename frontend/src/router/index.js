@@ -6,8 +6,14 @@ import SkillView from '../views/SkillView.vue'
 import LJView from '../views/LJView.vue'
 import CreateRole from '../views/CreateRole.vue'
 import CreateSkill from '../views/CreateSkill.vue'
+import Login from '../views/Login.vue'
 
 const routes = [
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
   {
     path: '/',
     name: 'home',
