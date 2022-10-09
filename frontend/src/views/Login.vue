@@ -12,15 +12,15 @@
     <div class="main">
       <div class="col-md-6 col-sm-12">
         <div class="login-form">
-          <form prevent.default="">
+          <form @submit.prevent="signin" method="POST">
             <div class="form-group">
-              <label>User Name</label>
-              <input v-model="username" type="text" class="form-control" placeholder="User Name" />
+              <label>Email</label>
+              <input v-model="form.email" type="text" class="form-control" placeholder="User Name" />
             </div>
             <div class="form-group">
               <label>Password</label>
               <input
-                v-model="password"
+                v-model="form.password"
                 type="password"
                 class="form-control"
                 placeholder="Password"
@@ -41,18 +41,22 @@ export default {
   name: "Login",
   data() {
     return {
-      username: "",
-      password: "",
+      form: {
+        email: "",
+        password: ""
+      }
     };
   },
   methods: {
     ...mapActions({
       login: "auth/login",
     }),
-    login() {
+    signin() {
       this.login({
-        username: this.username,
-        password: this.password,
+        email: this.form.email,
+        password: this.form.password
+      }).then(() => {
+        this.$router.replace({ name: "home" }).catch(() => { console.log("error") });
       });
     },
   },
