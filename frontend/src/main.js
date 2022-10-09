@@ -11,6 +11,8 @@ import "bootstrap"
 
 require('./store/subscriber')
 
-store.dispatch('auth/attempt', localStorage.getItem('token'))
+store.dispatch('auth/attempt', localStorage.getItem('token')).then(() => {
+    createApp(App).use(store).use(Vuex).use(router).use(axios).mount('#app')
+})
 
-createApp(App).use(store).use(Vuex).use(router).use(axios).mount('#app')
+

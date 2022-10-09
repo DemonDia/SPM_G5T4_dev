@@ -92,7 +92,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters,mapActions } from "vuex";
 
 export default {
   components: {},
@@ -136,7 +136,17 @@ export default {
     },
   },
   data() {},
-  methods: {},
+  methods: {
+    ...mapActions({
+      logout: "auth/logout",
+    }),
+    signOut() {
+      this.logout().then(() => {
+        this.$router.replace({ name: "login" });
+      });
+    },
+
+  },
   computed: {
     ...mapGetters({
       user: "auth/user",

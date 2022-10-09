@@ -7,6 +7,7 @@ import LJView from '../views/LJView.vue'
 import CreateRole from '../views/CreateRole.vue'
 import CreateSkill from '../views/CreateSkill.vue'
 import Login from '../views/Login.vue'
+import store from '@/store'
 
 const routes = [
   {
@@ -17,37 +18,91 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: HomeView,
+    beforeEnter: (to, from, next) => {
+      console.log(store.getters['auth/user'])
+      if (!store.getters['auth/authenticated']) {
+        
+        return next({ name: 'login' })
+      }
+      next()
+    },
   },
   {
     path: '/create-role',
     name: 'create-role',
-    component: CreateRole
+    component: CreateRole,
+    beforeEnter: (to, from, next) => {
+      if (!store.getters['auth/authenticated']) {
+        return next({ name: 'login' })
+      }
+
+      if (store.getters['auth/user'].role !== 'admin') {
+        return next({ name: 'home' })
+      }
+
+      next()
+    },
   },
   {
     path: '/create-skill',
     name: 'create-skill',
-    component: CreateSkill
+    component: CreateSkill,
+    beforeEnter: (to, from, next) => {
+      if (!store.getters['auth/authenticated']) {
+        return next({ name: 'login' })
+      }
+
+      if (store.getters['auth/user'].role !== 'admin') {
+        return next({ name: 'home' })
+      }
+      
+      next()
+    },
   },
   {
     path: '/roles',
     name: 'roles',
-    component: RoleView
+    component: RoleView,
+    beforeEnter: (to, from, next) => {
+      if (!store.getters['auth/authenticated']) {
+        return next({ name: 'login' })
+      }
+      next()
+    },
   },
   {
     path: '/courses',
     name: 'courses',
-    component: CourseView
+    component: CourseView,
+    beforeEnter: (to, from, next) => {
+      if (!store.getters['auth/authenticated']) {
+        return next({ name: 'login' })
+      }
+      next()
+    },
   },
   {
     path: '/skills',
     name: 'skills',
-    component: SkillView
+    component: SkillView,
+    beforeEnter: (to, from, next) => {
+      if (!store.getters['auth/authenticated']) {
+        return next({ name: 'login' })
+      }
+      next()
+    },
   },
   {
     path: '/learningjourney',
     name: 'learningjourney',
-    component: LJView
+    component: LJView,
+    beforeEnter: (to, from, next) => {
+      if (!store.getters['auth/authenticated']) {
+        return next({ name: 'login' })
+      }
+      next()
+    },
   },
 
 ]

@@ -38,7 +38,7 @@ export default({
         return dispatch('attempt', token.manager)
       } else if(credentials.email === 'staff@ljms.com' && credentials.password === '123456') {
         // staff
-        return dispatch('attempt', token.manager)
+        return dispatch('attempt', token.staff)
       } else {
         // errors
         throw new Error('User not found')
@@ -68,6 +68,16 @@ export default({
       if (!state.user) {
         return
       }
+    },
+
+
+    signout({ commit }) {
+      return new Promise((resolve) => {
+        commit('SET_TOKEN', null)
+        commit('SET_USER', null)
+        localStorage.removeItem('token')
+        resolve()
+      })
     }
 
 
