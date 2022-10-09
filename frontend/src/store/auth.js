@@ -11,7 +11,7 @@ export default({
     },
     SET_TOKEN(state, token) {
       state.token = token
-      // localStorage.setItem('token', token)
+      localStorage.setItem('token', state.token)
     }
   },
   getters: {
@@ -26,34 +26,43 @@ export default({
     async login({ dispatch }, credentials) {
       // fake login here without backend api
       // break credentials into email, role, name into a single user object
-      
-      let user = {name: '', role: '', email: ''};
+      let token = {admin: '000010000', manager: '000020000', staff: '000030000'};
 
       if (credentials.email === '' || credentials.password === '') {
         throw new Error('Please provide valid credentials')
       } else if(credentials.email === 'admin@ljms.com' && credentials.password === '123456') {
         // admin
-        user = {name: 'Alan Walker', role: 'Admin', email: credentials.email, token: '000010000'}
+        return dispatch('attempt', token.admin)
       } else if(credentials.email === 'manager@ljms.com' && credentials.password === '123456') { 
-        //
-        user = {name: 'David Guetta', role: 'Manager', email: credentials.email, token: '000020000'}
+        // manager
+        return dispatch('attempt', token.manager)
       } else if(credentials.email === 'staff@ljms.com' && credentials.password === '123456') {
-        //
-        user = {name: 'Martin Garrix', role: 'Staff', email: credentials.email, token: '000030000'}
+        // staff
+        return dispatch('attempt', token.manager)
       } else {
-        //
+        // errors
         throw new Error('User not found')
       }
-
     
-      return dispatch('attempt', user)
 
     },
 
-    async attempt({ commit, state }, user) {
-      if (user) {
-        commit('SET_USER', user)
-        commit('SET_TOKEN', user.token)
+    async attempt({ commit, state }, token) {
+
+      // console.log(token)
+
+      if (token) {
+        commit('SET_TOKEN', token)
+        if (token === '000010000') {
+          commit('SET_USER', {name: 'Alan Walker', role: 'Admin', email: 'admin@ljms.com'})
+        } else if (token === '000020000') {
+          commit('SET_USER', {name: 'David Guetta', role: 'Manager', email: 'manager@ljms.com'})
+        } else if (token === '000030000') {
+          commit('SET_USER', {name: 'Martin Garrix', role: 'Staff', email: 'staff@ljms.com'})
+        } else {
+          commit('SET_USER', null)
+        }
+        
       }
 
       if (!state.user) {
