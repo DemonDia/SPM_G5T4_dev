@@ -16,7 +16,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
           <!-- HR Menu Links-->
-          <template v-if="authenticated && user.role == 'Admin'">
+          <template v-if="authenticated && user.role == 1">
             <ul
               class="navbar-nav mx-auto mb-2 mb-lg-0"
               v-for="(link, index) in HRMenuLinks"
@@ -32,25 +32,8 @@
             </ul>
           </template>
 
-          <!-- Manager Menu Links-->
-          <template v-if="authenticated && user.role == 'Manager'">
-            <ul
-              class="navbar-nav mx-auto mb-2 mb-lg-0"
-              v-for="(link, index) in ManagerMenuLinks"
-              :key="link.name + index"
-              :to="link.path"
-              :link="link"
-            >
-              <li class="nav-item">
-                <router-link class="nav-link" :to="link.path">{{
-                  link.name
-                }}</router-link>
-              </li>
-            </ul>
-          </template>
-
           <!-- Staff Menu Links-->
-          <template v-if="authenticated && user.role == 'Staff'">
+          <template v-if="authenticated && user.role == 2">
             <ul
               class="navbar-nav mx-auto mb-2 mb-lg-0"
               v-for="(link, index) in StaffMenuLinks"
@@ -66,11 +49,11 @@
             </ul>
           </template>
 
-          <!-- Default Menu Links-->
-          <template>
+          <!-- Manager Menu Links-->
+          <template v-if="authenticated && (user.role == 3 || user.role == 4)">
             <ul
               class="navbar-nav mx-auto mb-2 mb-lg-0"
-              v-for="(link, index) in DefaultMenuLinks"
+              v-for="(link, index) in ManagerMenuLinks"
               :key="link.name + index"
               :to="link.path"
               :link="link"
@@ -82,6 +65,8 @@
               </li>
             </ul>
           </template>
+
+          
         </div>
       </div>
     </nav>
@@ -129,10 +114,6 @@ export default {
         { name: "Courses", path: "/courses" },
         { name: "Learning Journey", path: "/learningjourney" },
       ],
-    },
-    DefaultMenuLinks: {
-      type: Array,
-      default: () => [{ name: "Login", path: "/login" }],
     },
   },
   data() {},

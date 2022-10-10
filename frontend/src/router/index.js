@@ -37,7 +37,7 @@ const routes = [
         return next({ name: 'login' })
       }
 
-      if (store.getters['auth/user'].role != 'Admin') {
+      if (store.getters['auth/user'].role != 1) {
         return next({ name: 'home' })
       }
 
@@ -53,7 +53,7 @@ const routes = [
         return next({ name: 'login' })
       }
 
-      if (store.getters['auth/user'].role != 'Admin') {
+      if (store.getters['auth/user'].role != 1) {
         return next({ name: 'home' })
       }
       
