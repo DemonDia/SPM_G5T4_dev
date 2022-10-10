@@ -52,7 +52,7 @@ export default({
 
     async attempt({ commit, state }, token) {
 
-      // console.log(token)
+      
       // Admin -> 1
       // User -> 2
       // Manager -> 3
@@ -61,13 +61,13 @@ export default({
       if (token) {
         commit('SET_TOKEN', token)
         if (token === '000010000') {
-          commit('SET_USER', {name: 'Alan Walker', role: 1, email: 'admin@ljms.com'})
+          commit('SET_USER', {Staff_FName: 'John',Staff_LName: 'Sim', Dept: 'Chairman', Role: 1, Email: 'admin@ljms.com'})
         } else if (token === '000020000') {
-          commit('SET_USER', {name: 'David Guetta', role: 2, email: 'user@ljms.com'})
+          commit('SET_USER', {Staff_FName: 'Janice',Staff_LName: 'Chan', Dept: 'Sales', Role: 2, Email: 'user@ljms.com'})
         } else if (token === '000030000') {
-          commit('SET_USER', {name: 'Martin Garrix', role: 3, email: 'manager@ljms.com'})
+          commit('SET_USER', {Staff_FName: 'Derek',Staff_LName: 'Tan', Dept: 'Sales', Role: 3, Email: 'manager@ljms.com'})
         } else if (token === '000040000') {
-          commit('SET_USER', {name: 'Hardwell', role: 4, email: 'trainer@ljms.com'})
+          commit('SET_USER', {Staff_FName: 'Aiden',Staff_LName: 'Tan', Dept: 'Ops', Role: 4, Email: 'trainer@ljms.com'})
         } else {
           commit('SET_USER', null)
         }
