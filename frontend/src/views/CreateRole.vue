@@ -87,9 +87,9 @@
         var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/"
         axios
           .post(url, {
-            "role_name": this.role_name.role_name,
-            "role_description": this.role_description.role_description,
-            "active": true
+            "Role_Name": this.role_name.role_name,
+            "Role_Description": this.role_description.role_description,
+            "Active": true
           })
           .then((response) => {
             // reset fields

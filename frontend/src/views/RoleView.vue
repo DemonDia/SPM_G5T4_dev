@@ -17,7 +17,7 @@
         </div>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
           <div v-for="(value, key) in roles" v-bind:key="key">
-            <card-component :title="value.role_name" :desc="value.role_description" :active="value.active" />
+            <card-component :title="value.Role_Name" :desc="value.Role_Description" :active="value.Active" />
           </div>
         </div>
       </div>
