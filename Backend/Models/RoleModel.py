@@ -5,7 +5,7 @@ from sqlmodel import Field, SQLModel
 
 class RoleModel(SQLModel,table=True):
     __tablename__: "rolemodel"
-    id: Optional[int] = Field(default=None, primary_key=True)
-    role_name:str
-    role_description:str
-    active:bool
+    Role_ID: Optional[int] = Field(default=None, primary_key=True)
+    Role_Name:str
+    Role_Description:str
+    Active:bool
