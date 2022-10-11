@@ -7,4 +7,4 @@ class SkillSchema(BaseModel):
     id: Optional[int] = None
     skill_name: str
     skill_description: str
-    active: bool
+    Active: bool
