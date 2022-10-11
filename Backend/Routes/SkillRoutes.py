@@ -42,7 +42,7 @@ def CreateSkills(skill: SkillModel, session: Session = Depends(get_session)):
     errors = []
     try:
         findDuplicateRoleStatement = select(SkillModel).where(
-            SkillModel.skill_name == skill.skill_name)
+            SkillModel.Skill_Name == skill.Skill_Name)
         results = session.exec(findDuplicateRoleStatement)
 
         # check for duplicate skill name
@@ -51,21 +51,21 @@ def CreateSkills(skill: SkillModel, session: Session = Depends(get_session)):
             break
 
         # check for empty skill name
-        if len(skill.skill_name) == 0:
+        if len(skill.Skill_Name) == 0:
             errors.append("Skill Name cannot be empty! Please try again")
 
         # check if skill name exceeds 30 characters
-        if len(skill.skill_name) > 30:
+        if len(skill.Skill_Name) > 30:
             errors.append(
                 "Skill Name exceeds character limit of 30! Please try again")
 
         # check for empty skill description
-        if len(skill.skill_description) == 0:
+        if len(skill.Skill_Description) == 0:
             errors.append(
                 "Skill Description cannot be empty! Please try again")
 
         # check if skill name exceeds 170 characters
-        if len(skill.skill_description) > 170:
+        if len(skill.Skill_Description) > 170:
             errors.append(
                 "Skill Description exceeds character limit of 170! Please try again")
 
