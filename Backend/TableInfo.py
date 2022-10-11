@@ -32,10 +32,10 @@ modelColumnInfo = {
         ("active","bool")
     ],
     "skill":[
-        ("id","int"),
-        ("skill_name","str"),
-        ("skill_description","str"),
-        ("active","bool")
+        ("Skill_ID","int"),
+        ("Skill_Name","str"),
+        ("Skill_Description","str"),
+        ("Active","bool")
 
     ]
 
