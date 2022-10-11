@@ -74,54 +74,49 @@
       },
       methods: {
         createSkill() {
-          this.isSubmitted = true;
-          if (this.skill_name.errors.length == 0 && this.skill_description.errors.length==0) {
-            this.isSuccess = true; // shows error if there is Errors array in each field contains at least one message
-          }
-          this.checked = true;
           // === LINKING FRONT TO BACKEND ===
-          // var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/"
+          var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/"
 
-          // axios
-          //   .post(url, {
-          //     "skill_name": this.skill_name.skill_name,
-          //     "skill_description": this.skill_description.skill_description,
-          //     // "active": true,
-          //     "Active": true
-          //   })
-          //   .then((response) => {
+          axios
+            .post(url, {
+              "skill_name": this.skill_name.skill_name,
+              "skill_description": this.skill_description.skill_description,
+              // "active": true,
+              "Active": true
+            })
+            .then((response) => {
 
-          //   console.log(response);
-          //     // reset fields
-          //     this.skill_name.errors = []
-          //     this.skill_description.errors = []
-          //     this.isSubmitted = NaN
+            console.log(response);
+              // reset fields
+              this.skill_name.errors = []
+              this.skill_description.errors = []
+              this.isSubmitted = NaN
   
-          //     // submitted form
-          //     this.isSubmitted = true;
+              // submitted form
+              this.isSubmitted = true;
   
-          //     // console.log(response.data);
-          //     if (response.data.success) {
-          //       // console.log("success")
-          //       // success case
-          //       this.isSuccess = true;
-          //     } 
-          //     else {
-          //       // console.log("failure")
-          //       this.isSuccess = false;
-          //       for (let err in response.data.message) {
-          //         let msg = response.data.message[err]
-          //         if (this.SNerrors.includes(msg)) {
-          //           this.skill_name.errors.push(msg)
-          //         }
-          //         else {
-          //           this.skill_description.errors.push(msg)
-          //         }
-          //       }
-          //     }
-          //     // show Modal
-          //     this.checked = true;
-          //   });
+              // console.log(response.data);
+              if (response.data.success) {
+                // console.log("success")
+                // success case
+                this.isSuccess = true;
+              } 
+              else {
+                // console.log("failure")
+                this.isSuccess = false;
+                for (let err in response.data.message) {
+                  let msg = response.data.message[err]
+                  if (this.SNerrors.includes(msg)) {
+                    this.skill_name.errors.push(msg)
+                  }
+                  else {
+                    this.skill_description.errors.push(msg)
+                  }
+                }
+              }
+              // show Modal
+              this.checked = true;
+            });
             this.resetForm()
         },
         resetForm() {

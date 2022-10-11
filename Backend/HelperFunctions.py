@@ -1,7 +1,7 @@
 import pathlib
 from sqlmodel import Session, select, delete
 from database import * # requires Backend.
-from ColumnNames import dataColumns # requires Backend.
+from TableInfo import modelColumnInfo # requires Backend.
 from datetime import datetime
 
 #each field for each column, returns column value
@@ -23,7 +23,7 @@ def createRecords(modelName,noOfRecords):
     # to return
     records = []
 
-    columns = dataColumns[modelName]
+    columns = modelColumnInfo[modelName]
     for i in range(1,noOfRecords+1):
         currentRecord = {}
         # each column
