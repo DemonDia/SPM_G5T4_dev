@@ -17,19 +17,11 @@ model_name:[
 '''
 #please refer to the model inside the Models folder
 modelColumnInfo = {
-    "track": [
-        ("id", "int"),
-        ("title", "str"),
-        ("artist", "str"),
-        ("duration", "float"),
-        ("last_play", "datetime")
-    ],
-
     "role": [
-        ("id", "int"),
-        ("role_name", "str"),
-        ("role_description","str"),
-        ("active","bool")
+        ("Role_ID", "int"),
+        ("Role_Name", "str"),
+        ("Role_Description","str"),
+        ("Active","bool")
     ],
     "skill":[
         ("id","int"),
