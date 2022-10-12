@@ -51,7 +51,7 @@
   import axios from "axios";
 
   export default {
-    name: "RoleView",
+    name: "CreateRole",
     components: {
       DashboardLayout,
       FormComponent,
