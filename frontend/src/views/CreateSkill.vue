@@ -55,20 +55,22 @@
             label: "Skill Name",
             limit: "30",
             errors: [],
+            formType: "input",
           },
           skill_description: {
             skill_description: "",
             label: "Skill Description",
             limit: "170",
             errors: [],
+            formType: "textarea",
           },
           isSuccess: false,
           isSubmitted: false,
           checked: false,
           SNerrors: [
-            "Skill name cannot be empty! Please try again",
+            "Skill Name cannot be empty! Please try again",
             "Skill already exists! Please try again",
-            "Skill name exceeds character limit of 30! Please try again"
+            "Skill Name exceeds character limit of 30! Please try again"
           ]
         };
       },
@@ -79,8 +81,8 @@
 
           axios
             .post(url, {
-              "skill_name": this.skill_name.skill_name,
-              "skill_description": this.skill_description.skill_description,
+              "Skill_Name": this.skill_name.skill_name,
+              "Skill_Description": this.skill_description.skill_description,
               // "active": true,
               "Active": true
             })
