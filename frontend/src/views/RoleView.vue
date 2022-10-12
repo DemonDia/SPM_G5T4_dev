@@ -2,7 +2,7 @@
   <DashboardLayout>
     <div class="container-fluid" id="roleMain">
       <!-- Spinner -->
-      <div v-if="roles.length < 1" id="rippleP">
+      <div v-if="roles.length < 1 && noRoleFound==false" id="rippleP">
         <div class="lds-ripple">
           <div></div>
           <div></div>
@@ -20,6 +20,10 @@
             <card-component :title="value.Role_Name" :desc="value.Role_Description" :active="value.Active" />
           </div>
         </div>
+      </div>
+      <!-- No Role Found -->
+      <div v-show="noRoleFound" class="fs-3 fw-bold text-center align-middle pt-5 my-5">
+        Sorry! No role found!
       </div>
     </div>
   </DashboardLayout>
@@ -41,6 +45,7 @@
         roles: [], // roles from database
         results: [], // temporary array
         numRoles: 0, // to populate based on length of array
+        noRoleFound: false,
       }
     },
     mounted() {
@@ -49,14 +54,15 @@
       axios.get(url).then((response) => {
         var result = response.data.data
         this.roles = result
-        console.log(this.roles)
-        console.log(result)
+        if (this.roles.length == 0) {
+          this.noRoleFound = true
+        }
       });
     },
   };
 </script>
 
-<style scoped>
+<style>
 
   #roleMain {
     min-height: 100vh;
@@ -65,7 +71,7 @@
   #rippleP {
     position: absolute;
     top: 45%;
-    left: 50%;
+    left: 48%;
   }
 
   .lds-ripple {

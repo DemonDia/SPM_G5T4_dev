@@ -24,6 +24,7 @@
           :limit="role_name.limit"
           :errors="role_name.errors"
           :isSubmitted="isSubmitted"
+          :formType="role_name.formType"
         />
         <FormComponent
           v-model="role_description.role_description"
@@ -32,6 +33,7 @@
           :limit="role_description.limit"
           :errors="role_description.errors"
           :isSubmitted="isSubmitted"
+          :formType="role_description.formType"
         />
         <button class="btn btn-secondary m-3" @click="resetForm" type="reset">
           Reset
@@ -64,20 +66,22 @@
           label: "Role Name",
           limit: "30",
           errors: [],
+          formType: "input",
         },
         role_description: {
           role_description: "",
           label: "Role Description",
           limit: "170",
           errors: [],
+          formType: "textarea",
         },
         isSuccess: false,
         isSubmitted: false,
         checked: false,
         RNerrors: [
-          "Job name cannot be empty! Please try again",
-          "Job already exists! Please try again",
-          "Job name exceeds character limit of 30! Please try again"
+        "Role Name cannot be empty! Please try again",
+          "Role already exists! Please try again",
+          "Role Name exceeds character limit of 30! Please try again"
         ]
       };
     },

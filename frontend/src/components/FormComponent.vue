@@ -7,7 +7,8 @@
     </div>
     <div class="col-sm-4">
       <div>
-        <input
+        <!-- If input text box -->
+        <input v-if="this.formType=='input'"
           v-bind="$attrs"
           :value="modelValue"
           :placeholder="label"
@@ -16,6 +17,15 @@
           class="form-control"
           :class="[this.errors.length > 0 && this.isSubmitted ? 'is-invalid' : '']"
         >
+        <textarea v-else-if="this.formType=='textarea'"
+          v-bind="$attrs"
+          :value="modelValue"
+          :placeholder="label"
+          @input="$emit('update:modelValue', $event.target.value)"
+          v-on:keyup="this.checkChar"
+          class="form-control"
+          :class="[this.errors.length > 0 && this.isSubmitted ? 'is-invalid' : '']"
+        ></textarea>
       </div>
       <span class="text-start text-danger">
         <!-- Character limit warning (before submission) -->
@@ -71,7 +81,7 @@
         overLimit: true,
       }
     },
-    props: ['label', 'modelValue', 'limit', 'errors', 'isSubmitted'],
+    props: ['label', 'modelValue', 'limit', 'errors', 'isSubmitted', 'formType'],
     methods: {
       checkChar(){
         if (this.modelValue.length > Number(this.limit)) {
