@@ -4,7 +4,7 @@ from HelperFunctionForTest import *
 entityName = "roles"
 
 
-def addDataTest():
+def addRoleTest():
     print("User Story: Create Roles")
     triggerTestCase("Check if HR can create new role successfully", True, entityName,
                     {
@@ -50,5 +50,5 @@ def viewExistingRoleTest():
 
 
 def testAllRoleCases():
-    addDataTest()
+    addRoleTest()
     viewExistingRoleTest()
