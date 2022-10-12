@@ -75,9 +75,9 @@
         isSubmitted: false,
         checked: false,
         RNerrors: [
-          "Role name cannot be empty! Please try again",
+          "Role Name cannot be empty! Please try again",
           "Role already exists! Please try again",
-          "Role name exceeds character limit of 30! Please try again"
+          "Role Name exceeds character limit of 30! Please try again"
         ]
       };
     },

@@ -100,11 +100,11 @@ def createRoles(role: RoleModel, session: Session = Depends(get_session)):
             break
         # empty role name
         if len(role.Role_Name) == 0:
-            errors.append("Role name cannot be empty! Please try again")
+            errors.append("Role Name cannot be empty! Please try again")
 
         # role name longer than 30 characters
         if len(role.Role_Name) > 30:
-            errors.append("Role name exceeds character limit of 30! Please try again")
+            errors.append("Role Name exceeds character limit of 30! Please try again")
 
         # role description is empty
         if len(role.Role_Description) == 0:
