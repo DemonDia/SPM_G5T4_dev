@@ -4,7 +4,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 class SkillSchema(BaseModel):
-    id: Optional[int] = None
-    skill_name: str
-    skill_description: str
-    active: bool
+    Skill_ID: Optional[int] = None
+    Skill_Name: str
+    Skill_Description: str
+    Active: bool
