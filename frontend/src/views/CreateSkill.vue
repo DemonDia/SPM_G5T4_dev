@@ -79,8 +79,8 @@
 
           axios
             .post(url, {
-              "skill_name": this.skill_name.skill_name,
-              "skill_description": this.skill_description.skill_description,
+              "Skill_Name": this.skill_name.skill_name,
+              "Skill_Description": this.skill_description.skill_description,
               // "active": true,
               "Active": true
             })

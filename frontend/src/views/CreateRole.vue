@@ -24,6 +24,7 @@
           :limit="role_name.limit"
           :errors="role_name.errors"
           :isSubmitted="isSubmitted"
+          :formType="role_name.formType"
         />
         <FormComponent
           v-model="role_description.role_description"
@@ -32,6 +33,7 @@
           :limit="role_description.limit"
           :errors="role_description.errors"
           :isSubmitted="isSubmitted"
+          :formType="role_description.formType"
         />
         <button class="btn btn-secondary m-3" @click="resetForm" type="reset">
           Reset
@@ -64,12 +66,14 @@
           label: "Role Name",
           limit: "30",
           errors: [],
+          formType: "input",
         },
         role_description: {
           role_description: "",
           label: "Role Description",
           limit: "170",
           errors: [],
+          formType: "textarea",
         },
         isSuccess: false,
         isSubmitted: false,
@@ -87,9 +91,9 @@
         var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/"
         axios
           .post(url, {
-            "role_name": this.role_name.role_name,
-            "role_description": this.role_description.role_description,
-            "active": true
+            "Role_Name": this.role_name.role_name,
+            "Role_Description": this.role_description.role_description,
+            "Active": true
           })
           .then((response) => {
             // reset fields
