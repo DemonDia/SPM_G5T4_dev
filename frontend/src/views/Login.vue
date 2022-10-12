@@ -12,6 +12,7 @@
     <div class="main">
       <div class="col-md-6 col-sm-12">
         <div class="login-form">
+          <div class="alert alert-danger" role="alert" v-if="error.length > 0"> {{ this.error }} </div>
           <form @submit.prevent="signin" method="POST">
             <div class="form-group">
               <label>Email</label>
@@ -42,9 +43,10 @@ export default {
   data() {
     return {
       form: {
-        email: "staff@ljms.com",
+        email: "admin@ljms.com",
         password: "123456"
-      }
+      }, 
+      error: ""
     };
   },
   methods: {
@@ -57,7 +59,7 @@ export default {
         password: this.form.password
       }).then(() => {
         this.$router.replace({ name: "home" }).catch(() => { console.log("error") });
-      });
+      }).catch(() => { this.error = "Invalid email or password" });
     },
   },
 };
