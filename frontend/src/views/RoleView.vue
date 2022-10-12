@@ -12,12 +12,12 @@
       <div v-else class="">
         <div class="row mt-3 mx-auto">
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <router-link to="/create-role" tag="button" class="btn btn-dark btn-lg">Create Role</router-link>
+            <router-link to="/create-role" tag="button" class="btn btn-dark btn-lg" v-if=" user.Role == 1">Create Role</router-link>
           </div>
         </div>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
           <div v-for="(value, key) in roles" v-bind:key="key">
-            <card-component :title="value.role_name" :desc="value.role_description" :active="value.active" />
+            <card-component :title="value.Role_Name" :desc="value.Role_Description" :active="value.Active" />
           </div>
         </div>
       </div>
@@ -29,6 +29,7 @@
   import DashboardLayout from "./Dashboard/Layout/DashboardLayout.vue";
   import CardComponent from "../components/CardComponent.vue";
   import axios from "axios";
+  import { mapGetters } from "vuex";
 
   export default {
     name: "RoleView",
@@ -49,10 +50,16 @@
       axios.get(url).then((response) => {
         var result = response.data.data
         this.roles = result
-        console.log(this.roles)
-        console.log(result)
+        // console.log(this.roles)
+        // console.log(result)
       });
     },
+    computed: {
+    ...mapGetters({
+      user: "auth/user",
+      authenticated: "auth/authenticated",
+    }),
+  },
   };
 </script>
 

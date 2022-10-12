@@ -12,12 +12,12 @@
       <div v-else class="">
         <div class="row mt-3 mx-auto">
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <router-link to="/create-skill" tag="button" class="btn btn-dark btn-lg">Create Skill</router-link>
+            <router-link to="/create-skill" tag="button" class="btn btn-dark btn-lg" v-if=" user.Role == 1">Create Skill</router-link>
           </div>
         </div>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
           <div v-for="(value, key) in skills" v-bind:key="key">
-            <card-component :title="value.skill_name" :desc="value.skill_description" :active="value.active" />
+            <card-component :title="value.Skill_Name" :desc="value.Skill_Description" :active="value.Active" />
           </div>
         </div>
       </div>
@@ -29,6 +29,7 @@
 import DashboardLayout from "./Dashboard/Layout/DashboardLayout.vue";
 import CardComponent from "../components/CardComponent.vue";
 import axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "SkillView",
@@ -51,6 +52,12 @@ export default {
         var result = response.data.data
         this.skills = result
       });
+  },
+  computed: {
+    ...mapGetters({
+      user: "auth/user",
+      authenticated: "auth/authenticated",
+    }),
   },
 };
 </script>
