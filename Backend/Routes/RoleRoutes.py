@@ -66,7 +66,7 @@ def role(Role_ID: int, session: Session = Depends(get_session)):
         role = session.get(RoleModel, Role_ID)
         # role not found
         if not role:
-            errors.append("Job not found")
+            errors.append("Role not found")
 
         if len(errors) > 0:
             return {
@@ -96,24 +96,24 @@ def createRoles(role: RoleModel, session: Session = Depends(get_session)):
             RoleModel.Role_Name == role.Role_Name)
         results = session.exec(findDuplicateRoleStatement)
         for duplicateRoles in results:
-            errors.append("Job already exists! Please try again")
+            errors.append("Role already exists! Please try again")
             break
         # empty role name
         if len(role.Role_Name) == 0:
-            errors.append("Job name cannot be empty! Please try again")
+            errors.append("Role name cannot be empty! Please try again")
 
         # role name longer than 30 characters
         if len(role.Role_Name) > 30:
-            errors.append("Job name exceeds character limit of 30! Please try again")
+            errors.append("Role name exceeds character limit of 30! Please try again")
 
         # role description is empty
         if len(role.Role_Description) == 0:
             errors.append(
-                "Job Description cannot be empty! Please try again")
+                "Role Description cannot be empty! Please try again")
 
         # role description longer than 170 characters
         if len(role.Role_Description) > 170:
-            errors.append("Job Description exceeds character limit of 170! Please try again")
+            errors.append("Role Description exceeds character limit of 170! Please try again")
 
         if len(errors)> 0:
             return {

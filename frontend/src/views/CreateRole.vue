@@ -75,9 +75,9 @@
         isSubmitted: false,
         checked: false,
         RNerrors: [
-          "Job name cannot be empty! Please try again",
-          "Job already exists! Please try again",
-          "Job name exceeds character limit of 30! Please try again"
+          "Role name cannot be empty! Please try again",
+          "Role already exists! Please try again",
+          "Role name exceeds character limit of 30! Please try again"
         ]
       };
     },
