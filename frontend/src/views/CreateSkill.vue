@@ -15,6 +15,7 @@
             :limit="skill_name.limit"
             :errors="skill_name.errors"
             :isSubmitted="isSubmitted"
+            :formType="skill_name.formType"
           /> 
           <FormComponent
             v-model="skill_description.skill_description"
@@ -23,6 +24,7 @@
             :limit="skill_description.limit"
             :errors="skill_description.errors"
             :isSubmitted="isSubmitted"
+            :formType="skill_description.formType"
           />
           <button class="btn btn-secondary m-3" @click="resetForm" type="reset">
             Reset
