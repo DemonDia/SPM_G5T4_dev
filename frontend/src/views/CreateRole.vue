@@ -53,7 +53,7 @@
   import axios from "axios";
 
   export default {
-    name: "RoleView",
+    name: "CreateRole",
     components: {
       DashboardLayout,
       FormComponent,
@@ -79,7 +79,7 @@
         isSubmitted: false,
         checked: false,
         RNerrors: [
-        "Role Name cannot be empty! Please try again",
+          "Role Name cannot be empty! Please try again",
           "Role already exists! Please try again",
           "Role Name exceeds character limit of 30! Please try again"
         ]

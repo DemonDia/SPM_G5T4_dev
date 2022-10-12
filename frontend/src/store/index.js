@@ -1,8 +1,18 @@
-import roles from "./modules/roles-module";
 import Vuex from 'vuex'
+import auth from './auth';
 
 export default new Vuex.Store({
+  state: {
+    //
+  },
+  mutations: {
+    //
+  },
+  actions: {
+    //
+  },
   modules: {
-    roles,
+   // 
+   auth
   }
 });

@@ -1,5 +1,6 @@
 from HelperFunctionForTest import cleanUp, seedAllData
 from TestScripts.RoleTest import testAllRoleCases
+from TestScripts.SkillTest import testAllSkillCases
 def mainTest():
     # Ensures ALL existing data is wiped out to prevent inconsistencies
     cleanUp()
@@ -9,6 +10,7 @@ def mainTest():
 
     # trigger test cases for each entity
     testAllRoleCases()
+    testAllSkillCases()
 
     # remove all the test data after testing is complete
     cleanUp()

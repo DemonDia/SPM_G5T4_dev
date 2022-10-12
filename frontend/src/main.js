@@ -9,4 +9,10 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 
 
-createApp(App).use(store).use(Vuex).use(router).use(axios).mount('#app')
+require('./store/subscriber')
+
+store.dispatch('auth/attempt', localStorage.getItem('token')).then(() => {
+    createApp(App).use(store).use(Vuex).use(router).use(axios).mount('#app')
+})
+
+
