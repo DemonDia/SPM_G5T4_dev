@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-expand-lg bg-white">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">{{ title }}</a>
+        <router-link to="/" class="navbar-brand">{{ title }}</router-link>
         <button
           class="navbar-toggler"
           type="button"
