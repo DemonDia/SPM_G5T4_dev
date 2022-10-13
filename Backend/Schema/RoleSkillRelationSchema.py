@@ -3,9 +3,6 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-class Role(BaseModel):
+class RoleSkillRelation(BaseModel):
     Role_ID: Optional[int] = None
-    Role_Name:str
-    Role_Description:str
-    Active:bool
-    # Skills:
+    Skill_ID: Optional[int] = None

@@ -2,7 +2,7 @@ from fastapi import Response, Depends
 from database import *
 from sqlmodel import Session, select, delete
 from config import app
-from Models.SkillModel import SkillModel
+from Models.IndependentModels import SkillModel
 from HelperFunctions import *
 
 
