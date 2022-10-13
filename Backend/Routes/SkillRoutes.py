@@ -1,5 +1,5 @@
 from fastapi import Response, Depends
-from Schema.SkillSchema import Skill
+from Schema.IndependentSchema import Skill
 from database import *
 from sqlmodel import Session, select, delete
 from config import app
@@ -97,11 +97,14 @@ def updateSkill(Skill_ID: int, updated_skill: SkillModel, session: Session = Dep
     statement = select(SkillModel).where(SkillModel.Skill_ID == Skill_ID)
     result = session.exec(statement)
     skill = result.one()
+
     if skill == None:
         return {
             "success": False,
             "message": "Skill not found"
         }
+
+
     if updated_skill.Skill_Name:
         skill.Skill_Name = updated_skill.Skill_Name
     if updated_skill.Skill_Description:

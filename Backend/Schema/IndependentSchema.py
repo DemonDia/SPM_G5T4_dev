@@ -13,7 +13,7 @@ class Role(BaseModel):
     # Skills:
 
 
-class SkillSchema(BaseModel):
+class Skill(BaseModel):
     Skill_ID: Optional[int] = None
     Skill_Name: str
     Skill_Description: str
