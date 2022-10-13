@@ -17,7 +17,7 @@
         </div>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
           <div v-for="(value, key) in roles" v-bind:key="key">
-            <card-component :title="value.Role_Name" :desc="value.Role_Description" :active="value.Active" />
+            <card-component :title="value.Role_Name" :desc="value.Role_Description" :active="value.Active" :skillList="tempSkillList" />
           </div>
         </div>
       </div>
@@ -47,6 +47,7 @@
         results: [], // temporary array
         numRoles: 0, // to populate based on length of array
         noRoleFound: false,
+        tempSkillList: ["SQL", "Python", "Javascript"] // temporary array for Role's skill list - change after link to backend
       }
     },
     mounted() {
@@ -54,7 +55,6 @@
       var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/available/";
       axios.get(url).then((response) => {
         var result = response.data.data
-        console.log(result)
         this.roles = result
         if (this.roles.length == 0) {
           this.noRoleFound = true

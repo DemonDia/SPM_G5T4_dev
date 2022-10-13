@@ -3,12 +3,12 @@
     <div class="row">
 
       <!-- Title -->
-      <div class="card-component-header m-1 ps-3 col">
+      <div class="card-component-header m-1 px-3 col-lg-8 col-9">
         <h5 class="card-component-title text-start">{{ title }}</h5>
       </div>
 
       <!-- Menu Button -->
-      <div class="menu-frame col">
+      <div class="menu-frame col-3 mt-0 pt-0">
         <button class="menu-dot" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -18,15 +18,15 @@
       </div>
 
       <!-- Description -->
-      <div class="card-component-body m-1 ps-3 ">
-        <p class="card-component-text text-start pe-3">
+      <div class="card-component-body m-1 px-3">
+        <p class="card-component-text text-start">
           {{ desc }}
         </p>
       </div>
 
       <!-- Pill Buttons -->
-      <div>
-
+      <div v-for="(value, key) in skillList" v-bind:key="key">
+        {{value}}
       </div>
 
     </div>
@@ -36,7 +36,7 @@
 <script>
 export default {
   name: "CardComponent",
-  props: ["title", "desc", "active"],
+  props: ["title", "desc", "active", "skillList"],
 };
 </script>
 
@@ -66,6 +66,14 @@ export default {
   align-items: center;
 }
 
+.card-component-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
 .card-component-body {
   font-size: 0.8em;
   max-height: 85px;
@@ -78,6 +86,7 @@ export default {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  word-wrap: break-word;
 }
 
 .menu-frame {
@@ -106,6 +115,21 @@ export default {
 
 .dropdown-toggle::after {
     display: none !important;
+}
+
+/* browser width is small */
+@media screen and (min-width: 768px) {
+  .card-component-text {
+    -webkit-line-clamp: 2;
+  }
+  
+}
+
+@media screen and (max-width: 516px) {
+  .card-component-text {
+    -webkit-line-clamp: 2;
+  }
+  
 }
 
 </style>
