@@ -62,8 +62,8 @@ def seedAllData():
 
 # delete ALL the testing data
 def cleanUp():
-    for entity in entities:
-        deleteAll(BASE+entity+"/")
+    for entity in range(len(entities)-1,-1,-1):
+        deleteAll(BASE+entities[entity]+"/")
 
 # check if test case pass
 def validateOutcome(actualResult, expectedResult):
