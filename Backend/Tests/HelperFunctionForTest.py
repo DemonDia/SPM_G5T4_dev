@@ -1,14 +1,14 @@
 import requests
 # =====================Universal variables=====================
 # name of entities 
-entities = ["roles","skills"] 
+entities = ["roles","skills","roleskillrelations"] 
 
 # name of operations (based on CRUD)
 # Names:
 # create --> create new entity
 # readAll --> read all existing rows
 # readById --> read by specific Id
-operationTypes = ["create","readAll","readById","updateById","softDelete"]
+operationTypes = ["create","readAll","readById","updateById","softDelete","addRelation"]
 
 # base URL
 BASE = "http://127.0.0.1:8000/"
@@ -39,6 +39,8 @@ def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,oper
             triggeredTestCase = updateRow(BASE+entityName,fieldValue,inputJson)
         if operationType == "softDelete":
             triggeredTestCase = softDeleteRow(BASE+entityName,fieldValue)
+        if operationType == "addRelation":
+            triggeredTestCase = addRelation(BASE+entityName,inputJson)
         print(triggeredTestCase)
         # print(getErrorMessage(triggeredTestCase))
         validateOutcome(triggeredTestCase, expectedResult)
@@ -60,8 +62,8 @@ def seedAllData():
 
 # delete ALL the testing data
 def cleanUp():
-    for entity in entities:
-        deleteAll(BASE+entity+"/")
+    for entity in range(len(entities)-1,-1,-1):
+        deleteAll(BASE+entities[entity]+"/")
 
 # check if test case pass
 def validateOutcome(actualResult, expectedResult):
@@ -115,6 +117,12 @@ def getAllRows(url):
 def addRow(url,jsonObject):
     addedRow = requests.post(url, json=jsonObject)
     return addedRow.json()
+
+# Add many to many relation
+def addRelation(url,jsonObject):
+    addedRelation = requests.post(url, json=jsonObject)
+    return addedRelation.json()
+
 # Update rows
 def updateRow(url, rowId,jsonObject):
     updatedRow = requests.put(url+"/{rowId}".format(rowId=rowId),json = jsonObject)

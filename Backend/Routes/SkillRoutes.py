@@ -2,7 +2,7 @@ from fastapi import Response, Depends
 from database import *
 from sqlmodel import Session, select, delete
 from config import app
-from Models.SkillModel import SkillModel
+from Models.IndependentModels import SkillModel
 from HelperFunctions import *
 
 
@@ -88,3 +88,39 @@ def CreateSkills(skill: SkillModel, session: Session = Depends(get_session)):
             "success": False,
             "message": errors
         }
+
+@app.get("/skills/{Skill_ID}/")
+def track(Skill_ID: int, session: Session = Depends(get_session)):
+    track = session.get(SkillModel, Skill_ID)
+    if not track:
+        return {
+            "success": False,
+            "message": "SKill not found"
+        }
+    # return track
+    return {
+        "success": True,
+        "data": track
+    }
+
+@app.put("/skills/{Skill_ID}/") 
+def updateSkill(Skill_ID: int, updated_skill: SkillModel, session: Session = Depends(get_session)): 
+    skill = session.get(SkillModel, Skill_ID) 
+    if skill == None: 
+        return { 
+            "success": False, 
+            "message": "Skill not found" 
+        } 
+    if updated_skill.Skill_Name: 
+        skill.Skill_Name = updated_skill.Skill_Name 
+    if updated_skill.Skill_Description: 
+        skill.Skill_Description = updated_skill.Skill_Description 
+ 
+    session.add(skill) 
+    session.commit() 
+    session.refresh(skill) 
+    session.close() 
+    return { 
+        "success": True, 
+        "message": "Successfully updated" 
+    }
