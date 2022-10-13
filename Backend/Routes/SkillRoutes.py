@@ -1,4 +1,5 @@
 from fastapi import Response, Depends
+from Schema.SkillSchema import Skill
 from database import *
 from sqlmodel import Session, select, delete
 from config import app
@@ -89,38 +90,52 @@ def CreateSkills(skill: SkillModel, session: Session = Depends(get_session)):
             "message": errors
         }
 
-@app.get("/skills/{Skill_ID}/")
-def track(Skill_ID: int, session: Session = Depends(get_session)):
-    track = session.get(SkillModel, Skill_ID)
-    if not track:
+#update skill
+@app.put("/skills/{Skill_ID}/")
+def updateSkill(Skill_ID: int, updated_skill: SkillModel, session: Session = Depends(get_session)):
+    #skill = session.get(SkillModel, Skill_ID)
+    statement = select(SkillModel).where(SkillModel.Skill_ID == Skill_ID)
+    result = session.exec(statement)
+    skill = result.one()
+    if skill == None:
         return {
             "success": False,
-            "message": "SKill not found"
+            "message": "Skill not found"
         }
-    # return track
+    if updated_skill.Skill_Name:
+        skill.Skill_Name = updated_skill.Skill_Name
+    if updated_skill.Skill_Description:
+        skill.Skill_Description = updated_skill.Skill_Description
+
+    session.add(skill)
+    session.commit()
+    session.refresh(skill)
+    session.close()
     return {
         "success": True,
-        "data": track
+        "message": "Successfully updated"
     }
+# soft delete
+@app.put("/skills/delete/{Skill_ID}/")
+def updateSkill(Skill_ID: int,session: Session = Depends(get_session)):
+    #skill = session.get(SkillModel).where(SkillModel.Skill_Name == Skill_Name)
+    statement = select(SkillModel).where(SkillModel.Skill_ID == Skill_ID)
+    result = session.exec(statement)
+    skill = result.one()
+    if skill == None:
+        return {
+            "success": False,
+            "message": "Skill not found "
+        }
+    if skill.Active:
+        skill.Active = False
 
-@app.put("/skills/{Skill_ID}/") 
-def updateSkill(Skill_ID: int, updated_skill: SkillModel, session: Session = Depends(get_session)): 
-    skill = session.get(SkillModel, Skill_ID) 
-    if skill == None: 
-        return { 
-            "success": False, 
-            "message": "Skill not found" 
-        } 
-    if updated_skill.Skill_Name: 
-        skill.Skill_Name = updated_skill.Skill_Name 
-    if updated_skill.Skill_Description: 
-        skill.Skill_Description = updated_skill.Skill_Description 
- 
-    session.add(skill) 
-    session.commit() 
-    session.refresh(skill) 
-    session.close() 
-    return { 
-        "success": True, 
-        "message": "Successfully updated" 
+
+    session.add(skill)
+    session.commit()
+    session.refresh(skill)
+    session.close()
+    return {
+        "success": True,
+        "message": "Skill deleted"
     }

@@ -89,7 +89,7 @@ def role(Role_ID: int, session: Session = Depends(get_session)):
 def createRoles(role: RoleModel, session: Session = Depends(get_session)):
     errors = []
     try:
-        
+
         # check for duplicate role name
         findDuplicateRoleStatement = select(RoleModel).where(
             RoleModel.Role_Name == role.Role_Name)
@@ -129,7 +129,7 @@ def createRoles(role: RoleModel, session: Session = Depends(get_session)):
             "success": True,
             "message": "Successfully added"
         }
-        
+
     except Exception as e:
         return {
             "success": False,
