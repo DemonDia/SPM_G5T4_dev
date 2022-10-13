@@ -4,7 +4,7 @@ from HelperFunctionForTest import *
 entityName = "roleskillrelations"
 
 
-def addRoleTest():
+def addRoleSkillRelationTest():
     print("User Story: Assign Skill To Role")
     triggerTestCase("Both role and skill exist", True, entityName,
                     {
@@ -27,3 +27,7 @@ def addRoleTest():
                         "Role_ID": -1,
                         "Skill_ID": -1,
                     }, "addRelation")
+
+
+def testAllRoleSkillRelationCases():
+    addRoleSkillRelationTest()

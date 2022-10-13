@@ -21,7 +21,6 @@ BASE = "http://127.0.0.1:8000/"
 # inputJson (dict) --> the input of the test case
 # operationType (str) --> CRUD; from 'operationTypes' list
 # fieldValue (any) --> value of given field; default is None
-# secondaryFieldValue (any) --> value of given field; default is None (this is mainly the ID)
 def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,operationType = "readAll",fieldValue = None):
     try:
         if entityName not in entities:
