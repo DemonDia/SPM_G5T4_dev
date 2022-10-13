@@ -39,7 +39,7 @@ def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,oper
             triggeredTestCase = updateRow(BASE+entityName,fieldValue,inputJson)
         if operationType == "softDelete":
             triggeredTestCase = softDeleteRow(BASE+entityName,fieldValue)
-        if operationType == "secondaryFieldValue":
+        if operationType == "addRelation":
             triggeredTestCase = addRelation(BASE+entityName,inputJson)
         print(triggeredTestCase)
         # print(getErrorMessage(triggeredTestCase))
