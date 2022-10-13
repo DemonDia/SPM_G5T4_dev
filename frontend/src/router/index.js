@@ -20,7 +20,6 @@ const routes = [
     name: 'home',
     component: HomeView,
     beforeEnter: (to, from, next) => {
-      console.log(store.getters['auth/user'])
       if (!store.getters['auth/authenticated']) {
         
         return next({ name: 'login' })
