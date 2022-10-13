@@ -1,14 +1,14 @@
 import requests
 # =====================Universal variables=====================
 # name of entities 
-entities = ["roles","skills"] 
+entities = ["roles","skills","roleskillrelations"] 
 
 # name of operations (based on CRUD)
 # Names:
 # create --> create new entity
 # readAll --> read all existing rows
 # readById --> read by specific Id
-operationTypes = ["create","readAll","readById","updateById","softDelete"]
+operationTypes = ["create","readAll","readById","updateById","softDelete","addRelation"]
 
 # base URL
 BASE = "http://127.0.0.1:8000/"
@@ -21,6 +21,7 @@ BASE = "http://127.0.0.1:8000/"
 # inputJson (dict) --> the input of the test case
 # operationType (str) --> CRUD; from 'operationTypes' list
 # fieldValue (any) --> value of given field; default is None
+# secondaryFieldValue (any) --> value of given field; default is None (this is mainly the ID)
 def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,operationType = "readAll",fieldValue = None):
     try:
         if entityName not in entities:
@@ -39,6 +40,8 @@ def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,oper
             triggeredTestCase = updateRow(BASE+entityName,fieldValue,inputJson)
         if operationType == "softDelete":
             triggeredTestCase = softDeleteRow(BASE+entityName,fieldValue)
+        if operationType == "secondaryFieldValue":
+            triggeredTestCase = addRelation(BASE+entityName,inputJson)
         print(triggeredTestCase)
         # print(getErrorMessage(triggeredTestCase))
         validateOutcome(triggeredTestCase, expectedResult)
@@ -115,6 +118,12 @@ def getAllRows(url):
 def addRow(url,jsonObject):
     addedRow = requests.post(url, json=jsonObject)
     return addedRow.json()
+
+# Add many to many relation
+def addRelation(url,jsonObject):
+    addedRelation = requests.post(url, json=jsonObject)
+    return addedRelation.json()
+
 # Update rows
 def updateRow(url, rowId,jsonObject):
     updatedRow = requests.put(url+"/{rowId}".format(rowId=rowId),json = jsonObject)
