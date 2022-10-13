@@ -8,7 +8,7 @@ entities = ["roles","skills"]
 # create --> create new entity
 # readAll --> read all existing rows
 # readById --> read by specific Id
-operationTypes = ["create","readAll","readById"]
+operationTypes = ["create","readAll","readById","updateById","softDelete"]
 
 # base URL
 BASE = "http://127.0.0.1:8000/"
@@ -34,9 +34,13 @@ def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,oper
         if operationType == "readAll":
             triggeredTestCase = getAllRows(BASE+entityName)
         if operationType == "readById":
-            triggeredTestCase = getSingleRow(BASE+entityName+"/", fieldValue)
+            triggeredTestCase = getSingleRow(BASE+entityName, fieldValue)
+        if operationType == "updateById":
+            triggeredTestCase = updateRow(BASE+entityName,fieldValue,inputJson)
+        if operationType == "softDelete":
+            triggeredTestCase = softDeleteRow(BASE+entityName,fieldValue)
         print(triggeredTestCase)
-        getErrorMessage(triggeredTestCase)
+        # print(getErrorMessage(triggeredTestCase))
         validateOutcome(triggeredTestCase, expectedResult)
         print("Complete")
     except Exception as e:
@@ -99,7 +103,7 @@ def resetDataToDefaults(url):
 # =====================CRUD functions=====================
 # Gets single row based on its ID
 def getSingleRow(url,rowId):
-    obtainedRow = requests.get(url+"{rowId}".format(rowId=rowId))
+    obtainedRow = requests.get(url+"/{rowId}".format(rowId=rowId))
     return obtainedRow.json()
 
 # Gets all rows
@@ -113,8 +117,13 @@ def addRow(url,jsonObject):
     return addedRow.json()
 # Update rows
 def updateRow(url, rowId,jsonObject):
-    updatedRow = requests.put(url+"{rowId}".format(rowId=rowId),json = jsonObject)
+    updatedRow = requests.put(url+"/{rowId}".format(rowId=rowId),json = jsonObject)
     return updatedRow.json()
+
+def softDeleteRow(url,rowId):
+    softDeleted = requests.put(url+"/delete/{rowId}".format(rowId=rowId))
+    return softDeleted.json()
+
 # Delete rows
 def deleteRow(url, rowId):
     deletedRow = requests.delete(url+"{rowId}".format(rowId=rowId))
