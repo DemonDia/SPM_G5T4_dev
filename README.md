@@ -3,6 +3,45 @@
 
 #### Folder structure
 ```bash 
+frontend
+|   
+├── public
+|   ├── index.html
+|   
+├── src
+|   ├── assets
+|   | 
+|   ├── components
+|   |   ├── <component_name>Component.vue
+|   | 
+|   ├── plugins
+|   | 
+|   ├── router
+|   |   ├── index.js
+|   | 
+|   ├── router
+|   |   ├── index.js
+|   |   ├── auth.js
+|   |   ├── subscriber.js
+|   | 
+|   ├── views
+|   |   ├── Dashboard
+|   |   |   ├── Layout
+|   |   |   |   ├── DashboardLayout.vue
+|   |   |   ├── Dashboard.vue
+|   |   ├── <feature_name>.vue
+|   |
+|   ├── App.vue
+|   |
+|   ├── main.js
+|
+├── .gitignore
+|
+├── babel.config.js
+|
+├── package-lock.json
+|
+├── App.vue
 
 ```
 ### Running frontend (for testing):
