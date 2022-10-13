@@ -22,3 +22,8 @@ def addRoleTest():
                         "Role_ID": 1,
                         "Skill_ID": -1,
                     }, "addRelation")
+    triggerTestCase("Both role and skill do not exist", False, entityName,
+                    {
+                        "Role_ID": -1,
+                        "Skill_ID": -1,
+                    }, "addRelation")
