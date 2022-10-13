@@ -15,8 +15,8 @@
           <div class="alert alert-danger" role="alert" v-if="error.length > 0"> {{ this.error }} </div>
           <form @submit.prevent="signin" method="POST">
             <div class="form-group">
-              <label>Email</label>
-              <input v-model="form.email" type="text" class="form-control" placeholder="Email" />
+              <label>Staff ID</label>
+              <input v-model="form.staffID" type="text" class="form-control" placeholder="Email" />
             </div>
             <div class="form-group">
               <label>Password</label>
@@ -43,7 +43,7 @@ export default {
   data() {
     return {
       form: {
-        email: "admin@ljms.com",
+        staffID: "130001",
         password: "123456"
       }, 
       error: ""
@@ -55,7 +55,7 @@ export default {
     }),
     signin() {
       this.login({
-        email: this.form.email,
+        staffID: this.form.staffID,
         password: this.form.password
       }).then(() => {
         this.$router.replace({ name: "home" }).catch(() => { console.log("error") });
