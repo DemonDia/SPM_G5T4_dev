@@ -12,11 +12,24 @@
     <div class="main">
       <div class="col-md-6 col-sm-12">
         <div class="login-form">
-          <div class="alert alert-danger" role="alert" v-if="error.length > 0"> {{ this.error }} </div>
+          <div class="alert alert-danger" role="alert" v-if="error.length > 0">
+            {{ this.error }}
+          </div>
           <form @submit.prevent="signin" method="POST">
+        
+
+            <select name="cars" id="cars" v-model="userType" @change="changeRole">
+            <option v-for="(value, key) in roles" v-bind:key="key">{{key}}</option>
+            </select>
+
             <div class="form-group">
               <label>Staff ID</label>
-              <input v-model="form.staffID" type="text" class="form-control" placeholder="Email" />
+              <input
+                v-model="form.staffID"
+                type="text"
+                class="form-control"
+                placeholder="Email"
+              />
             </div>
             <div class="form-group">
               <label>Password</label>
@@ -44,9 +57,28 @@ export default {
     return {
       form: {
         staffID: "130001",
-        password: "123456"
-      }, 
-      error: ""
+        password: "123456",
+      },
+      roles: {
+        Admin: {
+          staffID: "130001",
+          password: "123456",
+        },
+        User: {
+          staffID: "140003",
+          password: "123456",
+        },
+        Manager: {
+          staffID: "140001",
+          password: "123456",
+        },
+        Trainer: {
+          staffID: "150175",
+          password: "123456",
+        },
+      },
+      error: "",
+      userType: "Admin",
     };
   },
   methods: {
@@ -56,17 +88,26 @@ export default {
     signin() {
       this.login({
         staffID: this.form.staffID,
-        password: this.form.password
-      }).then(() => {
-        this.$router.replace({ name: "home" }).catch(() => { console.log("error") });
-      }).catch(() => { this.error = "Invalid email or password" });
+        password: this.form.password,
+      })
+        .then(() => {
+          this.$router.replace({ name: "home" }).catch(() => {
+            console.log("error");
+          });
+        })
+        .catch(() => {
+          this.error = "Invalid email or password";
+        });
+    },
+    changeRole() {
+      this.form.staffID = this.roles[this.userType].staffID;
+      this.form.password = this.roles[this.userType].password;
     },
   },
 };
 </script>
 
 <style scoped>
-
 .sidenav {
   height: 100%;
   background-color: #000;
