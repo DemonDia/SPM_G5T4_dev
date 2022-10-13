@@ -47,6 +47,7 @@ export default {
   cursor: pointer;
   transition: 0.2s;
   height: 160px;
+  box-shadow: 0 3px 3px 0 rgb(0 0 0 / 4%), 0 5px 15px 0 rgb(0 0 0 / 4%);
 }
 
 .card-component-header {
