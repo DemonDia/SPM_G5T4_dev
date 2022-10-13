@@ -1,10 +1,13 @@
 <template>
   <div class="card-component mt-3 mb-3 mx-auto">
     <div class="row">
+
+      <!-- Title -->
       <div class="card-component-header m-1 ps-3 col">
-        <h5 class="card-component-title">{{ title }}</h5>
+        <h5 class="card-component-title text-start">{{ title }}</h5>
       </div>
 
+      <!-- Menu Button -->
       <div class="menu-frame col">
         <button class="menu-dot" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
         </button>
@@ -14,10 +17,16 @@
         </ul>
       </div>
 
-      <div class="card-component-body p-2 ps-4">
-        <p class="card-component-text text-start">
+      <!-- Description -->
+      <div class="card-component-body m-1 ps-3 ">
+        <p class="card-component-text text-start pe-3">
           {{ desc }}
         </p>
+      </div>
+
+      <!-- Pill Buttons -->
+      <div>
+
       </div>
 
     </div>
@@ -61,9 +70,14 @@ export default {
   font-size: 0.8em;
   max-height: 85px;
   overflow: hidden;
+  display: block;
 }
 
 .card-component-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .menu-frame {

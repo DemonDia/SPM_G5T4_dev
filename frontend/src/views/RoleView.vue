@@ -54,6 +54,7 @@
       var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/available/";
       axios.get(url).then((response) => {
         var result = response.data.data
+        console.log(result)
         this.roles = result
         if (this.roles.length == 0) {
           this.noRoleFound = true
