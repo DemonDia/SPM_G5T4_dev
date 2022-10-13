@@ -2,7 +2,7 @@
   <DashboardLayout>
     <div class="container-fluid" id="skillMain">
       <!-- Spinner -->
-      <div v-if="skills.length < 1" id="rippleP">
+      <div v-if="skills.length < 1 && noSkillFound==false" id="rippleP">
         <div class="lds-ripple">
           <div></div>
           <div></div>
@@ -12,14 +12,18 @@
       <div v-else class="">
         <div class="row mt-3 mx-auto">
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <router-link to="/create-skill" tag="button" class="btn btn-dark btn-lg">Create Skill</router-link>
+            <router-link to="/create-skill" tag="button" class="btn btn-dark btn-lg" v-if=" user.Role == 1">Create Skill</router-link>
           </div>
         </div>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
           <div v-for="(value, key) in skills" v-bind:key="key">
-            <card-component :title="value.skill_name" :desc="value.skill_description" :active="value.active" />
+            <card-component :title="value.Skill_Name" :desc="value.Skill_Description" :active="value.Active" />
           </div>
         </div>
+      </div>
+      <!-- No Skill Found -->
+      <div v-show="noSkillFound" class="fs-3 fw-bold text-center align-middle pt-5 my-5">
+        Sorry! No skill found!
       </div>
     </div>
   </DashboardLayout>
@@ -29,6 +33,7 @@
 import DashboardLayout from "./Dashboard/Layout/DashboardLayout.vue";
 import CardComponent from "../components/CardComponent.vue";
 import axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "SkillView",
@@ -42,6 +47,7 @@ export default {
       [],
       results: [], // temporary array
       numSkills: 0, // to populate based on length of array
+      noSkillFound: false,
     }
   },
   mounted() {
@@ -50,7 +56,16 @@ export default {
       axios.get(url).then((response) => {
         var result = response.data.data
         this.skills = result
+        if (this.skills.length == 0) {
+          this.noSkillFound = true
+        }
       });
+  },
+  computed: {
+    ...mapGetters({
+      user: "auth/user",
+      authenticated: "auth/authenticated",
+    }),
   },
 };
 </script>
@@ -61,56 +76,4 @@ export default {
     min-height: 100vh;
   }
 
-  #rippleP {
-    position: absolute;
-    top: 45%;
-    left: 50%;
-  }
-
-  .lds-ripple {
-    display: inline-block;
-    position: relative;
-    width: 80px;
-    height: 80px;
-  }
-  .lds-ripple div {
-    position: absolute;
-    border: 4px solid rgb(0, 0, 0);
-    opacity: 1;
-    border-radius: 50%;
-    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-  }
-  .lds-ripple div:nth-child(2) {
-    animation-delay: -0.5s;
-  }
-  @keyframes lds-ripple {
-    0% {
-      top: 36px;
-      left: 36px;
-      width: 0;
-      height: 0;
-      opacity: 0;
-    }
-    4.9% {
-      top: 36px;
-      left: 36px;
-      width: 0;
-      height: 0;
-      opacity: 0;
-    }
-    5% {
-      top: 36px;
-      left: 36px;
-      width: 0;
-      height: 0;
-      opacity: 1;
-    }
-    100% {
-      top: 0px;
-      left: 0px;
-      width: 72px;
-      height: 72px;
-      opacity: 0;
-    }
-  }
 </style>
