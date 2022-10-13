@@ -1,6 +1,6 @@
 # Learning Journey Portal
 
-
+<a name="readme-top"></a>
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
@@ -27,7 +27,8 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
+LJP system to have a personal learning journey tracker that could guide them on the courses they could take either from the LMS or in physical classes to prepare them for the next position or in a different area within the organisation.
+The system would allow staff to set their learning goal by setting on a position that they are working towards. The system will then list out the skills required for those positions and the courses (internal/external) that correspond to those skills. They are then able to view the details of those courses. They are then able to register for those courses. Upon completion of the courses, HR would be able to update the skillset of the staff. The Learning Journey of the staff would also then reflect so.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -36,12 +37,7 @@
 
 ### Built With
 
-* [![Vue][Vue.js]][Vue-url]
-* [![FastAPI][FastAPI]][FastAPI-url]
-
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+[![Vue][Vue.js]][Vue-url] [![FastAPI][FastAPI]][FastAPI-url]
 
 
 ## Frontend
@@ -154,6 +150,7 @@ Eg: If your model name is 'Entity', your naming convention should be like:
 - Models: Entity.py
 - Tests: EntityTest.py
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Backend Prerequisites 
 Python 3.7+
