@@ -10,8 +10,8 @@ def mainTest():
     seedAllData()
 
     # trigger test cases for each entity
-    # testAllRoleCases()
-    # testAllSkillCases()
+    testAllRoleCases()
+    testAllSkillCases()
     testAllRoleSkillRelationCases()
 
     # remove all the test data after testing is complete
