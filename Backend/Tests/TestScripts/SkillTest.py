@@ -27,6 +27,17 @@ def addSkillTest():
 
 
 def viewExistingSkillTest():
+    print("User Story: Create Skills")
+    before = getSingleRow(BASE+entityName, 1)
+    print("before",before)
+    triggerTestCase("Update skill fields",
+                    True, entityName, {
+                        "Skill_Name": "Fluffing",
+                        "Skill_Description": "Thinking on the spot",
+                        "Active": True
+                    }, "updateById", 1)
+    after = getSingleRow(BASE+entityName, 1)
+    print("after",after)      
     return
 
 

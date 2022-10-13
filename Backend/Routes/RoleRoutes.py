@@ -1,10 +1,9 @@
 
 from fastapi import Response, Depends
-from Schema.RoleSchema import Role
 from database import *
 from sqlmodel import Session, select, delete
 from config import app
-from Models.RoleModel import RoleModel
+from Models.IndependentModels import RoleModel
 from HelperFunctions import *
 # ===========================test functions===========================
 
