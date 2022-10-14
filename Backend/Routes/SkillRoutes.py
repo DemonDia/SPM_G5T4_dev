@@ -37,6 +37,26 @@ def getSkills(session: Session = Depends(get_session)):
             "message": errors
         }
 
+@app.get('/skills/available/')
+def getRoles(session: Session = Depends(get_session)):
+    errors = []
+    try:
+        stmt = select(SkillModel).where(SkillModel.Active == 1)
+        result = session.exec(stmt).all()
+
+        # return result
+        return {
+            "success": True,
+            "data": result
+        }
+    except Exception as e:
+        errors.append(str(e))
+        return {
+            "success": False,
+            "message": errors
+        }
+
+
 
 @app.post('/skills/')
 def CreateSkills(skill: SkillModel, session: Session = Depends(get_session)):
