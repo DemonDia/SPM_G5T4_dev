@@ -1,23 +1,32 @@
 <template>
   <div class="card-component mt-3 mb-3 mx-auto">
     <div class="row">
-      <div class="card-component-header m-1 ps-3 col">
-        <h5 class="card-component-title">{{ title }}</h5>
+
+      <!-- Title -->
+      <div class="card-component-header m-1 px-3 col-lg-8 col-9">
+        <h5 class="card-component-title text-start">{{ title }}</h5>
       </div>
 
-      <div class="menu-frame col">
-        <button class="menu-dot" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+      <!-- Menu Button -->
+      <div class="menu-frame col-3 mt-0 pt-0">
+        <button class="ph-dots-three menu-dot" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           <li><a class="dropdown-item" href="#">Update</a></li>
-          <li><a class="dropdown-item" href="#">Delete</a></li>
+          <li><a class="dropdown-item" @click="deleteItem(id, ctype)">Delete</a></li>
         </ul>
       </div>
 
-      <div class="card-component-body p-2 ps-4">
+      <!-- Description -->
+      <div class="card-component-body m-1 px-3">
         <p class="card-component-text text-start">
           {{ desc }}
         </p>
+      </div>
+
+      <!-- Pill Buttons -->
+      <div v-for="(value, key) in skillList" v-bind:key="key">
+        {{value}}
       </div>
 
     </div>
@@ -25,9 +34,59 @@
 </template>
 
 <script>
+import axios from "axios";
+import { createToast } from 'mosha-vue-toastify';
+import router from "../router";
+
 export default {
   name: "CardComponent",
-  props: ["title", "desc", "active"],
+  props: ["title", "desc", "active", "skillList", "id", "ctype"],
+  methods: {
+    deleteItem(id, ctype) {
+      var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/delete/" +id;
+      if(ctype == "skill") {
+ 
+        axios.put(url, {
+          headers: {
+            'Content-Type': 'application/json'
+        }}).then((response) => {
+          var result = response.data.success
+          if (result) {
+            createToast('Skill deleted successfully!', {
+              type: 'success',
+              position: 'top-center',
+              timeout: 3000,
+              dismissible: true,
+              pauseOnFocusLoss: true,
+              pauseOnHover: true,
+              closeOnClick: true,
+              closeButton: true,
+              icon: true,
+              rtl: false,
+            });
+
+            this.$emit('reload');
+  
+          } else {
+            createToast('Skill deletion failed!', {
+              type: 'error',
+              position: 'top-center',
+              timeout: 3000,
+              dismissible: true,
+              pauseOnFocusLoss: true,
+              pauseOnHover: true,
+              closeOnClick: true,
+              closeButton: true,
+              icon: true,
+              rtl: false,
+            });
+          }
+        });
+      }
+    },
+
+  
+  },
 };
 </script>
 
@@ -57,13 +116,27 @@ export default {
   align-items: center;
 }
 
+.card-component-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
 .card-component-body {
   font-size: 0.8em;
   max-height: 85px;
   overflow: hidden;
+  display: block;
 }
 
 .card-component-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-wrap: break-word;
 }
 
 .menu-frame {
@@ -71,27 +144,39 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  height: 20px;
+  height: 30px;
   max-width: 60px;
   padding: 0 20px;
   margin-left: auto;
   margin-right: 8px;
   border-radius: 20px;
-  background-color: rgb(238, 238, 238);
+  background-color: rgb(251, 251, 251);
 }
 
 .menu-dot {
-  background-color: #9b9ba5;
-  box-shadow: -6px 0 0 0 #9b9ba5, 6px 0 0 0 #9b9ba5;
-  width: 4px;
-  height: 4px;
-  border: 0;
-  padding: 0;
-  border-radius: 50%;
+  font-size: 2.1rem;
+  background-color: transparent;
+  border: none;
+
 }
 
 .dropdown-toggle::after {
     display: none !important;
+}
+
+/* browser width is small */
+@media screen and (min-width: 768px) {
+  .card-component-text {
+    -webkit-line-clamp: 2;
+  }
+  
+}
+
+@media screen and (max-width: 516px) {
+  .card-component-text {
+    -webkit-line-clamp: 2;
+  }
+  
 }
 
 </style>
