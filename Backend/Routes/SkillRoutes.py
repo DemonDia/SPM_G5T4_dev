@@ -38,7 +38,7 @@ def getSkills(session: Session = Depends(get_session)):
         }
 
 @app.get('/skills/available/')
-def getRoles(session: Session = Depends(get_session)):
+def getAvailableSkills(session: Session = Depends(get_session)):
     errors = []
     try:
         stmt = select(SkillModel).where(SkillModel.Active == 1)
@@ -59,7 +59,7 @@ def getRoles(session: Session = Depends(get_session)):
 
 
 @app.post('/skills/')
-def CreateSkills(skill: SkillModel, session: Session = Depends(get_session)):
+def createSkills(skill: SkillModel, session: Session = Depends(get_session)):
     errors = []
     try:
         findDuplicateRoleStatement = select(SkillModel).where(
@@ -140,7 +140,7 @@ def updateSkill(Skill_ID: int, updated_skill: SkillModel, session: Session = Dep
     }
 # soft delete
 @app.put("/skills/delete/{Skill_ID}/")
-def updateSkill(Skill_ID: int,session: Session = Depends(get_session)):
+def softDeleteSkill(Skill_ID: int,session: Session = Depends(get_session)):
     #skill = session.get(SkillModel).where(SkillModel.Skill_Name == Skill_Name)
     statement = select(SkillModel).where(SkillModel.Skill_ID == Skill_ID)
     result = session.exec(statement)
