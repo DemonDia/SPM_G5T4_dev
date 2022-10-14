@@ -268,6 +268,7 @@ export default {
 
 .icon-button.icon-dropdown {
   background-color: #fff !important;
+  font-size: 0.875rem !important;
   text-decoration: none;
 }
 
@@ -296,7 +297,10 @@ export default {
 .profile-name {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   margin-left: 1rem;
+  font-size: 0.8rem;
 }
 
 @media (max-width: 1200px) {
