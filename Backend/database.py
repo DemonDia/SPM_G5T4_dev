@@ -1,9 +1,9 @@
 from sqlmodel import  SQLModel, create_engine, Session
 
-from config import database_route 
-from Models.RoleModel import RoleModel
-from Models.SkillModel import SkillModel
-
+from config import database_route
+from Models.IndependentModels import *
+from Models.RoleSkillRelationModel import RoleSkillRelationModel
+from Models.CourseSkillRelationModel import CourseSkillRelationModel
 engine = create_engine(database_route,echo=True)
 
 # to create a database table

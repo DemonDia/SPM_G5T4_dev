@@ -1,10 +1,9 @@
 
 from fastapi import Response, Depends
-from Schema.RoleSchema import Role
 from database import *
 from sqlmodel import Session, select, delete
 from config import app
-from Models.RoleModel import RoleModel
+from Models.IndependentModels import RoleModel
 from HelperFunctions import *
 # ===========================test functions===========================
 
@@ -90,7 +89,7 @@ def role(Role_ID: int, session: Session = Depends(get_session)):
 def createRoles(role: RoleModel, session: Session = Depends(get_session)):
     errors = []
     try:
-        
+
         # check for duplicate role name
         findDuplicateRoleStatement = select(RoleModel).where(
             RoleModel.Role_Name == role.Role_Name)
@@ -130,7 +129,7 @@ def createRoles(role: RoleModel, session: Session = Depends(get_session)):
             "success": True,
             "message": "Successfully added"
         }
-        
+
     except Exception as e:
         return {
             "success": False,

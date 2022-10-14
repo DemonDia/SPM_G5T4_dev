@@ -1,14 +1,14 @@
 import requests
 # =====================Universal variables=====================
-# name of entities 
-entities = ["roles","skills"] 
+# name of entities
+entities = ["roles","skills","roleskillrelations"]
 
 # name of operations (based on CRUD)
 # Names:
 # create --> create new entity
 # readAll --> read all existing rows
 # readById --> read by specific Id
-operationTypes = ["create","readAll","readById","updateById","softDelete"]
+operationTypes = ["create","readAll","readById","updateById","softDelete","addRelation"]
 
 # base URL
 BASE = "http://127.0.0.1:8000/"
@@ -39,6 +39,8 @@ def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,oper
             triggeredTestCase = updateRow(BASE+entityName,fieldValue,inputJson)
         if operationType == "softDelete":
             triggeredTestCase = softDeleteRow(BASE+entityName,fieldValue)
+        if operationType == "addRelation":
+            triggeredTestCase = addRelation(BASE+entityName,inputJson)
         print(triggeredTestCase)
         # print(getErrorMessage(triggeredTestCase))
         validateOutcome(triggeredTestCase, expectedResult)
@@ -60,8 +62,8 @@ def seedAllData():
 
 # delete ALL the testing data
 def cleanUp():
-    for entity in entities:
-        deleteAll(BASE+entity+"/")
+    for entity in range(len(entities)-1,-1,-1):
+        deleteAll(BASE+entities[entity]+"/")
 
 # check if test case pass
 def validateOutcome(actualResult, expectedResult):
@@ -87,7 +89,7 @@ def seedData(url):
 def resetDataToDefaults(url):
     deleteResults = deleteAll(url)
     seedResults = seedData(url)
-    
+
     returningResult = deleteResults["success"] == seedResults["success"]
     message = ""
     if(returningResult):
@@ -103,6 +105,7 @@ def resetDataToDefaults(url):
 # =====================CRUD functions=====================
 # Gets single row based on its ID
 def getSingleRow(url,rowId):
+
     obtainedRow = requests.get(url+"/{rowId}".format(rowId=rowId))
     return obtainedRow.json()
 
@@ -115,8 +118,15 @@ def getAllRows(url):
 def addRow(url,jsonObject):
     addedRow = requests.post(url, json=jsonObject)
     return addedRow.json()
+
+# Add many to many relation
+def addRelation(url,jsonObject):
+    addedRelation = requests.post(url, json=jsonObject)
+    return addedRelation.json()
+
 # Update rows
 def updateRow(url, rowId,jsonObject):
+    print(url+"/"+str(rowId))
     updatedRow = requests.put(url+"/{rowId}".format(rowId=rowId),json = jsonObject)
     return updatedRow.json()
 
