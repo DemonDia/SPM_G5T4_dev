@@ -15,7 +15,7 @@ def mainTest():
     testAllRoleSkillRelationCases()
 
     # remove all the test data after testing is complete
-    cleanUp()
+    #cleanUp()
     return
 
 if __name__ == "__main__":

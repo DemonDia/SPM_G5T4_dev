@@ -2,6 +2,7 @@
 from config import app
 from Routes.RoleRoutes import *
 from Routes.SkillRoutes import *
+from Routes.CourseRoutes import *
 from Routes.RoleSkillRelationRoutes import *
 from HelperFunctions import *
 from ErrorHandler import *

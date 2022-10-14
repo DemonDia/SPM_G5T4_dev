@@ -39,7 +39,7 @@ def getRoles(session: Session = Depends(get_session)):
 
 
 @app.get('/roles/available/')
-def getRoles(session: Session = Depends(get_session)):
+def getAvailableRoles(session: Session = Depends(get_session)):
     errors = []
     try:
         stmt = select(RoleModel).where(RoleModel.Active == 1)
@@ -59,7 +59,7 @@ def getRoles(session: Session = Depends(get_session)):
 
 
 @app.get("/roles/{Role_ID}/")
-def role(Role_ID: int, session: Session = Depends(get_session)):
+def getRole(Role_ID: int, session: Session = Depends(get_session)):
     errors = []
     try:
         role = session.get(RoleModel, Role_ID)
@@ -89,7 +89,7 @@ def role(Role_ID: int, session: Session = Depends(get_session)):
 def createRoles(role: RoleModel, session: Session = Depends(get_session)):
     errors = []
     try:
-        
+
         # check for duplicate role name
         findDuplicateRoleStatement = select(RoleModel).where(
             RoleModel.Role_Name == role.Role_Name)
@@ -129,7 +129,7 @@ def createRoles(role: RoleModel, session: Session = Depends(get_session)):
             "success": True,
             "message": "Successfully added"
         }
-        
+
     except Exception as e:
         return {
             "success": False,
