@@ -14,7 +14,7 @@ def deleteAll():
 
 @app.post("/course/seedall")
 def addSeedData():
-    return seedInitialData("course", CourseModel)
+    return seedInitialData("course", CourseModel,25,False,"courses")
 
 
 # ===========================actual CRUD functions===========================
