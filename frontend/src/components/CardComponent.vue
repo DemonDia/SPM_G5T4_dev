@@ -1,5 +1,5 @@
 <template>
-  <div class="card-component mt-3 mb-3 mx-auto">
+  <div class="card-component mt-3 mb-2 mx-auto">
     <div class="row">
 
       <!-- Title -->
@@ -25,8 +25,8 @@
       </div>
 
       <!-- Pill Buttons -->
-      <div v-for="(value, key) in skillList" v-bind:key="key">
-        {{value}}
+      <div class="m-1 px-3 d-flex">
+        <pill-component :pillList="skillList" />
       </div>
 
     </div>
@@ -34,9 +34,11 @@
 </template>
 
 <script>
+import PillComponent from "./PillComponent.vue";
 export default {
-  name: "CardComponent",
-  props: ["title", "desc", "active", "skillList"],
+    name: "CardComponent",
+    props: ["title", "desc", "active", "skillList"],
+    components: { PillComponent }
 };
 </script>
 
