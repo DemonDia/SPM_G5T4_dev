@@ -17,7 +17,7 @@
         </div>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
           <div v-for="(value, key) in skills" v-bind:key="key">
-            <card-component :title="value.Skill_Name" :desc="value.Skill_Description" :active="value.Active" />
+            <card-component :title="value.Skill_Name" :desc="value.Skill_Description" :active="value.Active" :id="value.Skill_ID" ctype="skill"/>
           </div>
         </div>
       </div>
@@ -34,6 +34,7 @@ import DashboardLayout from "./Dashboard/Layout/DashboardLayout.vue";
 import CardComponent from "../components/CardComponent.vue";
 import axios from "axios";
 import { mapGetters } from "vuex";
+
 
 export default {
   name: "SkillView",
