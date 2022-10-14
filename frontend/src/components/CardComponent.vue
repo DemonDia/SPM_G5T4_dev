@@ -36,6 +36,7 @@
 <script>
 import axios from "axios";
 import { createToast } from 'mosha-vue-toastify';
+import router from "../router";
 
 export default {
   name: "CardComponent",
@@ -63,6 +64,9 @@ export default {
               icon: true,
               rtl: false,
             });
+
+            this.$emit('reload');
+  
           } else {
             createToast('Skill deletion failed!', {
               type: 'error',

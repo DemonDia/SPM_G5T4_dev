@@ -17,7 +17,7 @@
         </div>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
           <div v-for="(value, key) in skills" v-bind:key="key">
-            <card-component :title="value.Skill_Name" :desc="value.Skill_Description" :active="value.Active" :id="value.Skill_ID" ctype="skill"/>
+            <card-component :title="value.Skill_Name" :desc="value.Skill_Description" :active="value.Active" :id="value.Skill_ID" ctype="skill" @reload="reload()"/>
           </div>
         </div>
       </div>
@@ -51,10 +51,22 @@ export default {
       noSkillFound: false,
     }
   },
-  mounted() {
-    document.title = "LJMS - Skills";
-    var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/";
+  methods: {
+    reload() {
+      var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/available";
       axios.get(url).then((response) => {
+        var result = response.data.data
+        this.skills = result
+        if (this.skills.length == 0) {
+          this.noSkillFound = true
+        }
+      });
+    }
+  },
+  async mounted() {
+    document.title = "LJMS - Skills";
+      var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/available";
+      await axios.get(url).then((response) => {
         var result = response.data.data
         this.skills = result
         if (this.skills.length == 0) {
