@@ -59,4 +59,50 @@ async def addRoleSkillRelation(request: Request, session: Session = Depends(get_
             "message": errors
         }
 
+# to get skills
+@app.get('/roleskillrelations/{Role_ID}')
+async def addRoleSkillRelation(Role_ID: int, session: Session = Depends(get_session)):
+    errors = []
+    skills = []
+    try:
+        role = session.get(RoleModel, Role_ID)
+        if role == None:
+            errors.append("Role does not exist!")
+            errors.append(str(e))
+            return {
+                "success": False,
+                "message": errors
+            }
+        getRelatedSkillStatement = select(RoleSkillRelationModel).where(
+            RoleSkillRelationModel.Role_ID == role.Role_ID)
+        relatedSkillStatementResult = session.exec(
+            getRelatedSkillStatement).all()
+
+        for skill in relatedSkillStatementResult:
+            getSkillStatement = select(SkillModel).where(
+                SkillModel.Skill_ID == skill.Skill_ID)
+            resultantSkill = session.exec(getSkillStatement).one()
+            if resultantSkill:
+                skillToAdd = {}
+                for columnName,columnValue in resultantSkill:
+                    skillToAdd[columnName] = columnValue
+                skills.append(skillToAdd)
+
+        if len(errors) > 0:
+            return {
+                "success": False,
+                "message": errors
+            }
+
+        return {
+            "success": True,
+            "data": skills
+        }
+
+    except Exception as e:
+        errors.append(str(e))
+        return {
+            "success": False,
+            "message": errors
+        }
 
