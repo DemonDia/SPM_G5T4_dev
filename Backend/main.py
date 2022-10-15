@@ -1,8 +1,14 @@
 
 from config import app
-from Routes.RoleRoutes import *
-from Routes.SkillRoutes import *
-from Routes.RoleSkillRelationRoutes import *
+# routes of independent entities
+from Routes.Independent.CourseRoutes import *
+from Routes.Independent.SkillRoutes import *
+from Routes.Independent.RoleRoutes import *
+
+# routes of dependent entities
+from Routes.Dependent.CourseSkillRelationRoutes import *
+from Routes.Dependent.RoleSkillRelationRoutes import *
+
 from HelperFunctions import *
 from ErrorHandler import *
 from mangum import Mangum
