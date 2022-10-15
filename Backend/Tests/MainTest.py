@@ -1,7 +1,8 @@
 from HelperFunctionForTest import cleanUp, seedAllData
-from TestScripts.RoleTest import testAllRoleCases
-from TestScripts.SkillTest import testAllSkillCases
-from TestScripts.RoleSkillRelationTest import testAllRoleSkillRelationCases
+from TestScripts.Dependent.RoleSkillRelationTest import testAllRoleSkillRelationCases
+from TestScripts.Independent.RoleTest import testAllRoleCases
+from TestScripts.Independent.SkillTest import testAllSkillCases
+
 def mainTest():
     # Ensures ALL existing data is wiped out to prevent inconsistencies
     cleanUp()

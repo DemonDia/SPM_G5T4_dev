@@ -1,5 +1,5 @@
 from fastapi import Response, Depends
-from Models.RoleSkillRelationModel import RoleSkillRelationModel
+from Models.DependentModels import RoleSkillRelationModel
 from database import *
 from sqlmodel import Session, select, delete
 from config import app
