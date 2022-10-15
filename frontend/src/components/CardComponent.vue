@@ -82,6 +82,44 @@ export default {
             });
           }
         });
+      } else if (ctype == 'role') {
+        url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/delete/" +id;
+        axios.put(url, {
+          headers: {
+            'Content-Type': 'application/json'
+        }}).then((response) => {
+          var result = response.data.success
+          if (result) {
+            createToast('Role deleted successfully!', {
+              type: 'success',
+              position: 'top-center',
+              timeout: 3000,
+              dismissible: true,
+              pauseOnFocusLoss: true,
+              pauseOnHover: true,
+              closeOnClick: true,
+              closeButton: true,
+              icon: true,
+              rtl: false,
+            });
+
+            this.$emit('reload');
+  
+          } else {
+            createToast('Role deletion failed!', {
+              type: 'error',
+              position: 'top-center',
+              timeout: 3000,
+              dismissible: true,
+              pauseOnFocusLoss: true,
+              pauseOnHover: true,
+              closeOnClick: true,
+              closeButton: true,
+              icon: true,
+              rtl: false,
+            });
+          }
+        });
       }
     },
 

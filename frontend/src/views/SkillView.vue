@@ -63,10 +63,10 @@ export default {
       });
     }
   },
-  async mounted() {
+   mounted() {
     document.title = "LJMS - Skills";
       var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/available";
-      await axios.get(url).then((response) => {
+       axios.get(url).then((response) => {
         var result = response.data.data
         this.skills = result
         if (this.skills.length == 0) {
