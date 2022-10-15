@@ -44,12 +44,12 @@ def CreateSkills(skill: SkillModel, session: Session = Depends(get_session)):
     try:
         findDuplicateRoleStatement = select(SkillModel).where(
             SkillModel.Skill_Name == skill.Skill_Name)
-        results = session.exec(findDuplicateRoleStatement)
+        results = session.exec(findDuplicateRoleStatement).one()
 
         # check for duplicate skill name
-        for duplicateRoles in results:
+        if results:
             errors.append("Skill already exists! Please try again")
-            break
+
 
         # check for empty skill name
         if len(skill.Skill_Name) == 0:
@@ -94,30 +94,69 @@ def CreateSkills(skill: SkillModel, session: Session = Depends(get_session)):
 @app.put("/skills/{Skill_ID}/")
 def updateSkill(Skill_ID: int, updated_skill: SkillModel, session: Session = Depends(get_session)):
     #skill = session.get(SkillModel, Skill_ID)
-    statement = select(SkillModel).where(SkillModel.Skill_ID == Skill_ID)
-    result = session.exec(statement)
-    skill = result.one()
+    errors = []
+    try:
+        statement = select(SkillModel).where(SkillModel.Skill_ID == Skill_ID)
+        result = session.exec(statement)
+        skill = result.one()
 
-    if skill == None:
+        if skill == None:
+            errors.append("Skill not found!")
+
+
+            findDuplicateRoleStatement = select(SkillModel).where(
+                SkillModel.Skill_Name == updated_skill.Skill_Name)
+            results = session.exec(findDuplicateRoleStatement).one()
+
+            # check for duplicate skill name
+            if results:
+                errors.append("Skill already exists! Please try again")
+
+
+            # check for empty skill name
+            if len(updated_skill.Skill_Name) == 0:
+                errors.append("Skill Name cannot be empty! Please try again")
+
+            # check if skill name exceeds 30 characters
+            if len(updated_skill.Skill_Name) > 30:
+                errors.append(
+                    "Skill Name exceeds character limit of 30! Please try again")
+
+            # check for empty skill description
+            if len(updated_skill.Skill_Description) == 0:
+                errors.append(
+                    "Skill Description cannot be empty! Please try again")
+
+            # check if skill name exceeds 170 characters
+            if len(updated_skill.Skill_Description) > 170:
+                errors.append(
+                    "Skill Description exceeds character limit of 170! Please try again")
+
+        if (len(errors) > 0):
+            return {
+                "success": False,
+                "message": errors
+            }
+
+        if updated_skill.Skill_Name:
+            skill.Skill_Name = updated_skill.Skill_Name
+        if updated_skill.Skill_Description:
+            skill.Skill_Description = updated_skill.Skill_Description
+
+        session.add(skill)
+        session.commit()
+        session.refresh(skill)
+        session.close()
         return {
-            "success": False,
-            "message": "Skill not found"
+            "success": True,
+            "message": "Successfully updated"
         }
-
-
-    if updated_skill.Skill_Name:
-        skill.Skill_Name = updated_skill.Skill_Name
-    if updated_skill.Skill_Description:
-        skill.Skill_Description = updated_skill.Skill_Description
-
-    session.add(skill)
-    session.commit()
-    session.refresh(skill)
-    session.close()
-    return {
-        "success": True,
-        "message": "Successfully updated"
-    }
+    except Exception as e:
+        errors.append(str(e))
+        return{
+        "success":False,
+        "message":errors
+        }
 # soft delete
 @app.put("/skills/delete/{Skill_ID}/")
 def updateSkill(Skill_ID: int,session: Session = Depends(get_session)):
