@@ -61,6 +61,7 @@
   
 <script>
   export default {
+    name: "FormComponent",
     // props: {
     //   label: {
     //     type: String,
