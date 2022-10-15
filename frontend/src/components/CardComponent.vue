@@ -1,9 +1,9 @@
 <template>
-  <div class="card-component mt-3 mb-2 mx-auto">
+  <div class="card-component mt-3 mb-2 mx-auto pt-3">
     <div class="row">
 
       <!-- Title -->
-      <div class="card-component-header m-1 px-3 col-lg-8 col-9">
+      <div class="card-component-header m-1 my-0 px-3 col-lg-8 col-9">
         <h5 class="card-component-title text-start">{{ title }}</h5>
       </div>
 
@@ -18,16 +18,14 @@
       </div>
 
       <!-- Description -->
-      <div class="card-component-body m-1 px-3">
+      <div class="card-component-body m-1 my-0 px-3">
         <p class="card-component-text text-start">
           {{ desc }}
         </p>
       </div>
 
       <!-- Pill Buttons -->
-      <div class="m-1 px-3 d-flex">
-        <pill-component :pillList="skillList" />
-      </div>
+      <pill-component :pillList="skillList" />
 
     </div>
   </div>
@@ -159,7 +157,6 @@ export default {
   font-size: 2.1rem;
   background-color: transparent;
   border: none;
-
 }
 
 .dropdown-toggle::after {

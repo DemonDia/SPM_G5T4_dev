@@ -47,7 +47,7 @@
         results: [], // temporary array
         numRoles: 0, // to populate based on length of array
         noRoleFound: false,
-        tempSkillList: ["SQL", "Python", "Javascript"] // temporary array for Role's skill list - change after link to backend
+        tempSkillList: ["SQL", "Python", "Javascript", "Cooking", "Binge watching", "Art", "Painting", "Texting", "Drinking", "Partying", "Dancing"] // temporary array for Role's skill list - change after link to backend
       }
     },
     mounted() {
