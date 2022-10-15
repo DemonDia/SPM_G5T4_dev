@@ -3,8 +3,10 @@ from fastapi import Response, Depends
 from database import *
 from sqlmodel import Session, select, delete
 from config import app
-from Models.IndependentModels import RoleModel
+from Models.IndependentModels import RoleModel, SkillModel
+from Models.DependentModels import RoleSkillRelationModel
 from HelperFunctions import *
+
 # ===========================test functions===========================
 
 
@@ -17,6 +19,32 @@ def deleteAll():
 def addSeedData():
     return seedInitialData("role", RoleModel)
 
+# ===========================helper functions===========================
+def getRelatedSkills(targetModelIdValue):
+    try:
+        session = Session(engine)
+        resultantRows = []
+        getEntityStatement = select(RoleSkillRelationModel).where(
+            RoleSkillRelationModel.Role_ID == targetModelIdValue)
+        entityStatementResult = session.exec(getEntityStatement).all()
+
+        for row in entityStatementResult:
+            getEntityStatement = select(SkillModel).where(
+                SkillModel.Skill_ID == row.Skill_ID)
+            entityStatementResult = session.exec(getEntityStatement).one()
+            
+            if (entityStatementResult):
+                resultantRows.append(entityStatementResult)
+        return {
+            "success": True,
+            "data": resultantRows
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "messaage": e,
+            "data":[]
+        }
 
 # ===========================actual CRUD functions===========================
 @app.get('/roles/')
@@ -25,12 +53,22 @@ def getRoles(session: Session = Depends(get_session)):
     try:
         stmt = select(RoleModel)
         result = session.exec(stmt).all()
+        allRoles = []
+        for role in result:
+            roleDict = {}
+            for columnName, columnValue in role:
+                roleDict[columnName] = columnValue
+            outcome = getRelatedSkills(role.Role_ID)
+            print("outcome",outcome)
+            roleDict["Skills"] = outcome["data"]
+            allRoles.append(roleDict)
         # return result
         return {
             "success": True,
-            "data": result
+            "data": allRoles,
         }
     except Exception as e:
+        print(e)
         errors.append(str(e))
         return {
             "success": False,
@@ -103,7 +141,8 @@ def createRoles(role: RoleModel, session: Session = Depends(get_session)):
 
         # role name longer than 30 characters
         if len(role.Role_Name) > 30:
-            errors.append("Role Name exceeds character limit of 30! Please try again")
+            errors.append(
+                "Role Name exceeds character limit of 30! Please try again")
 
         # role description is empty
         if len(role.Role_Description) == 0:
@@ -112,9 +151,10 @@ def createRoles(role: RoleModel, session: Session = Depends(get_session)):
 
         # role description longer than 170 characters
         if len(role.Role_Description) > 170:
-            errors.append("Role Description exceeds character limit of 170! Please try again")
+            errors.append(
+                "Role Description exceeds character limit of 170! Please try again")
 
-        if len(errors)> 0:
+        if len(errors) > 0:
             return {
                 "success": False,
                 "message": errors
