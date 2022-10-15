@@ -1,8 +1,7 @@
 from typing import List, Optional
 from datetime import datetime
 from sqlmodel import Field, SQLModel,Relationship
-from Models.RoleSkillRelationModel import RoleSkillRelationModel
-from Models.CourseSkillRelationModel import CourseSkillRelationModel
+from Models.DependentModels import *
 
 class CourseModel(SQLModel,table=True):
     __tablename__: "coursemodel"

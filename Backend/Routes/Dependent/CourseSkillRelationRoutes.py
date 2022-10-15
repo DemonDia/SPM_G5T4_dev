@@ -1,5 +1,5 @@
 from fastapi import Response, Depends
-from Models.CourseSkillRelationModel import CourseSkillRelationModel
+from Models.DependentModels import CourseSkillRelationModel
 from database import *
 from sqlmodel import Session, select, delete
 from config import app
