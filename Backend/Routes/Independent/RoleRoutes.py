@@ -62,7 +62,6 @@ def getRoles(session: Session = Depends(get_session)):
             print("outcome",outcome)
             roleDict["Skills"] = outcome["data"]
             allRoles.append(roleDict)
-        # return result
         return {
             "success": True,
             "data": allRoles,
@@ -82,11 +81,18 @@ def getAvailableRoles(session: Session = Depends(get_session)):
     try:
         stmt = select(RoleModel).where(RoleModel.Active == 1)
         result = session.exec(stmt).all()
-
-        # return result
+        allRoles = []
+        for role in result:
+            roleDict = {}
+            for columnName, columnValue in role:
+                roleDict[columnName] = columnValue
+            outcome = getRelatedSkills(role.Role_ID)
+            print("outcome",outcome)
+            roleDict["Skills"] = outcome["data"]
+            allRoles.append(roleDict)
         return {
             "success": True,
-            "data": result
+            "data": allRoles,
         }
     except Exception as e:
         errors.append(str(e))
@@ -110,10 +116,17 @@ def getRole(Role_ID: int, session: Session = Depends(get_session)):
                 "success": False,
                 "message": errors
             }
+
+        roleDict = {}
+        for columnName, columnValue in role:
+            roleDict[columnName] = columnValue
+        outcome = getRelatedSkills(role.Role_ID)
+        print("outcome",outcome)
+        roleDict["Skills"] = outcome["data"]
         # return role
         return {
             "success": True,
-            "data": role
+            "data": roleDict
         }
     except Exception as e:
         errors.append(str(e))
