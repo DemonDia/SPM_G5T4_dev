@@ -244,3 +244,28 @@ def updateRole(Role_ID: int, updated_role: RoleModel, session: Session = Depends
         "success":False, 
         "message":errors 
         } 
+
+# softDeleteRole 
+@app.put("/roles/delete/{Role_ID}/") 
+def softDeleteRole(Role_ID: int,session: Session = Depends(get_session)): 
+    #skill = session.get(SkillModel).where(SkillModel.Skill_Name == Skill_Name) 
+    statement = select(RoleModel).where(RoleModel.Role_ID == Role_ID) 
+    result = session.exec(statement) 
+    role = result.one() 
+    if role == None: 
+        return { 
+            "success": False, 
+            "message": "Role not found " 
+        } 
+    if role.Active: 
+        role.Active = False 
+ 
+ 
+    session.add(role) 
+    session.commit() 
+    session.refresh(role) 
+    session.close() 
+    return { 
+        "success": True, 
+        "message": "Role deleted" 
+    }
