@@ -1,47 +1,81 @@
 <template>
   <DashboardLayout>
     <div class="container-fluid p-5" id="createRoleMain">
-      <h1>Create a role</h1>
+      <div class="w-50 h-75 mx-auto p-5 text-start rounded rounded-4 shadow-lg p-3 mb-5 bg-body">
+        <h2>Create a role</h2>
+        <h4>efgegeg</h4>
 
-      <div v-show="checked">
-        <ModalComponent type="Role" :isSuccess="isSuccess" @clicked="onClickModal"/>
+        <div v-show="this.currFormPg==1" id="formPg1">
+          page1
+        </div>
+        <div v-show="this.currFormPg==2" id="formPg2">
+          page2
+        </div>
+        <div v-show="this.currFormPg==3" id="formPg3">
+          page3
+        </div>
+        
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item" :class="this.currFormPg == 1 ? 'disabled' : ''">
+              <a class="page-link" href="#" tabindex="-1" @click="goToPrevPg">
+                Previous
+              </a>
+            </li>
+            <li class="page-item" :class="this.currFormPg==1 ? 'active' : ''">
+              <a class="page-link" href="#formPg1" @click="goToPg(1)">
+                1
+              </a>
+            </li>
+            <li class="page-item" :class="this.currFormPg==2 ? 'active' : ''">
+              <a class="page-link" href="#formPg2" @click="goToPg(2)">
+                2
+              </a>
+            </li>
+            <li class="page-item" :class="this.currFormPg==3 ? 'active' : ''">
+              <a class="page-link" href="#formPg3" @click="goToPg(3)">
+                3
+              </a>
+            </li>
+            <li class="page-item" :class="this.currFormPg == 3 ? 'disabled' : ''">
+              <a class="page-link" href="#" @click="goToNextPg">
+                Next
+              </a>
+            </li>
+          </ul>
+        </nav>
+  
+        <!-- <div v-show="checked">
+          <ModalComponent type="Role" :isSuccess="isSuccess" @clicked="onClickModal"/>
+        </div>
+  
+        <form @submit.prevent="createRole" method="POST">
+          <FormComponent
+            v-model="role_name.role_name"
+            :label="role_name.label"
+            type="text"
+            :limit="role_name.limit"
+            :errors="role_name.errors"
+            :isSubmitted="isSubmitted"
+            :formType="role_name.formType"
+          />
+          <FormComponent
+            v-model="role_description.role_description"
+            :label="role_description.label"
+            type="text"
+            :limit="role_description.limit"
+            :errors="role_description.errors"
+            :isSubmitted="isSubmitted"
+            :formType="role_description.formType"
+          />
+          <button class="btn btn-secondary m-3" @click="resetForm" type="reset">
+            Reset
+          </button>
+          <button class="btn btn-primary" type="submit" data-bs-toggle="modal" data-bs-target="#submitModal">
+            Submit
+          </button>
+        </form> -->
       </div>
-
-      <!-- <div class="alert alert-danger" v-if="errors.length">
-        <b>Please correct the following error(s):</b>
-        <ul>
-          <li v-for="(error, index) in errors" v-bind:key="index">
-            {{ error }}
-          </li>
-        </ul>
-      </div> -->
-
-      <form @submit.prevent="createRole" method="POST">
-        <FormComponent
-          v-model="role_name.role_name"
-          :label="role_name.label"
-          type="text"
-          :limit="role_name.limit"
-          :errors="role_name.errors"
-          :isSubmitted="isSubmitted"
-          :formType="role_name.formType"
-        />
-        <FormComponent
-          v-model="role_description.role_description"
-          :label="role_description.label"
-          type="text"
-          :limit="role_description.limit"
-          :errors="role_description.errors"
-          :isSubmitted="isSubmitted"
-          :formType="role_description.formType"
-        />
-        <button class="btn btn-secondary m-3" @click="resetForm" type="reset">
-          Reset
-        </button>
-        <button class="btn btn-primary" type="submit" data-bs-toggle="modal" data-bs-target="#submitModal">
-          Submit
-        </button>
-      </form>
     </div>
   </DashboardLayout>
 </template>
@@ -82,7 +116,8 @@
           "Role Name cannot be empty! Please try again",
           "Role already exists! Please try again",
           "Role Name exceeds character limit of 30! Please try again"
-        ]
+        ],
+        currFormPg: 1,
       };
     },
     methods: {
@@ -138,6 +173,15 @@
 
         // reset checked value:
         this.checked = value;
+      },
+      goToPrevPg() {
+        this.currFormPg -= 1
+      },
+      goToNextPg() {
+        this.currFormPg += 1
+      },
+      goToPg(x) {
+        this.currFormPg = x
       }
     },
     mounted() {
@@ -149,7 +193,7 @@
 <style scoped>
 
   #createRoleMain {
-    min-height: 100vh;
+    height: 100vh;
   }
   
 </style>
