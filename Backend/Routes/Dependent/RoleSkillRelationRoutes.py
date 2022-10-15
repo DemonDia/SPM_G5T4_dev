@@ -2,7 +2,7 @@ from fastapi import Response, Depends
 from Schema.DependentSchema import RoleSkillRelation
 from Models.DependentModels import RoleSkillRelationModel
 from database import *
-from sqlmodel import Session, select, delete
+from sqlmodel import Session, select, delete, join
 from config import app
 from Models.IndependentModels import *
 from HelperFunctions import *
@@ -73,20 +73,8 @@ async def addRoleSkillRelation(Role_ID: int, session: Session = Depends(get_sess
                 "success": False,
                 "message": errors
             }
-        getRelatedSkillStatement = select(RoleSkillRelationModel).where(
-            RoleSkillRelationModel.Role_ID == role.Role_ID)
-        relatedSkillStatementResult = session.exec(
-            getRelatedSkillStatement).all()
-
-        for skill in relatedSkillStatementResult:
-            getSkillStatement = select(SkillModel).where(
-                SkillModel.Skill_ID == skill.Skill_ID)
-            resultantSkill = session.exec(getSkillStatement).one()
-            if resultantSkill:
-                skillToAdd = {}
-                for columnName,columnValue in resultantSkill:
-                    skillToAdd[columnName] = columnValue
-                skills.append(skillToAdd)
+        statement = select(SkillModel.Skill_Name).select_from(join(SkillModel,RoleSkillRelationModel)).where(RoleSkillRelationModel.Role_ID == Role_ID)
+        results = session.exec(statement).all()
 
         if len(errors) > 0:
             return {
@@ -96,7 +84,7 @@ async def addRoleSkillRelation(Role_ID: int, session: Session = Depends(get_sess
 
         return {
             "success": True,
-            "data": skills
+            "data": results
         }
 
     except Exception as e:

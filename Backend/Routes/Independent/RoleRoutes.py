@@ -1,7 +1,7 @@
 
 from fastapi import Response, Depends
 from database import *
-from sqlmodel import Session, select, delete
+from sqlmodel import Session, select, delete, join
 from config import app
 from Models.IndependentModels import RoleModel, SkillModel
 from Models.DependentModels import RoleSkillRelationModel
@@ -23,21 +23,11 @@ def addSeedData():
 def getRelatedSkills(targetModelIdValue):
     try:
         session = Session(engine)
-        resultantRows = []
-        getEntityStatement = select(RoleSkillRelationModel).where(
-            RoleSkillRelationModel.Role_ID == targetModelIdValue)
-        entityStatementResult = session.exec(getEntityStatement).all()
-
-        for row in entityStatementResult:
-            getEntityStatement = select(SkillModel).where(
-                SkillModel.Skill_ID == row.Skill_ID)
-            entityStatementResult = session.exec(getEntityStatement).one()
-            
-            if (entityStatementResult):
-                resultantRows.append(entityStatementResult)
+        statement = select(SkillModel.Skill_Name).select_from(join(SkillModel,RoleSkillRelationModel)).where(RoleSkillRelationModel.Role_ID == targetModelIdValue)
+        results = session.exec(statement).all()
         return {
             "success": True,
-            "data": resultantRows
+            "data": results
         }
     except Exception as e:
         return {
@@ -59,7 +49,6 @@ def getRoles(session: Session = Depends(get_session)):
             for columnName, columnValue in role:
                 roleDict[columnName] = columnValue
             outcome = getRelatedSkills(role.Role_ID)
-            print("outcome",outcome)
             roleDict["Skills"] = outcome["data"]
             allRoles.append(roleDict)
         return {
