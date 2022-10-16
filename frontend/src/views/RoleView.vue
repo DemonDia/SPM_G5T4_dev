@@ -54,9 +54,9 @@
         var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/available";
         axios.get(url).then((response) => {
           var result = response.data.data
-          this.skills = result
-          if (this.skills.length == 0) {
-            this.noSkillFound = true
+          this.roles = result
+          if (this.roles.length == 0) {
+            this.noRolesFound = true
           }
         });
       },

@@ -3,7 +3,7 @@
     <div class="container-fluid p-5" id="createRoleMain">
       <div class="col-sm-12 col-xl-8 mx-auto my-3 p-5 text-start rounded rounded-4 shadow-lg mb-5 bg-body">
         <h3>Create a Role</h3>
-        <h5>What role would you like to create today?</h5>
+        <h6 class="text-secondary mt-3 mb-3">What role would you like to create today?</h6>
         
         <!-- <div v-show="checked">
           <ModalComponent type="Role" :isSuccess="isSuccess" @clicked="onClickModal"/>
@@ -54,7 +54,7 @@
 
         </div>
         <div v-show="this.currFormPg==2" id="formPg2">
-          page2
+          <PillSearchComponent class="mt-3" ctype="skill"></PillSearchComponent>
         </div>
         <div v-show="this.currFormPg==3" id="formPg3">
           page3
@@ -105,13 +105,15 @@
   import FormComponent from "../components/FormComponent.vue";
   import ModalComponent from "../components/ModalComponent.vue";
   import axios from "axios";
+  import PillSearchComponent from "@/components/PillSearchComponent.vue";
 
   export default {
     name: "CreateRole",
     components: {
       DashboardLayout,
       FormComponent,
-      ModalComponent
+      ModalComponent,
+      PillSearchComponent
     },
     data() {
       return {
