@@ -17,7 +17,7 @@
         </div>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
           <div v-for="(value, key) in roles" v-bind:key="key">
-            <card-component :title="value.Role_Name" :desc="value.Role_Description" :active="value.Active" :skillList="tempSkillList" :id="value.Role_ID" ctype="role" @reload="reload()"/>
+            <card-component :title="value.Role_Name" :desc="value.Role_Description" :active="value.Active" :pillList="value.Skills" :id="value.Role_ID" ctype="role" @reload="reload()"/>
           </div>
         </div>
       </div>
@@ -49,7 +49,6 @@
         results: [], // temporary array
         numRoles: 0, // to populate based on length of array
         noRoleFound: false,
-        tempSkillList: ["SQL", "Python", "Javascript", "Cooking", "Binge watching", "Art", "Painting", "Texting", "Drinking", "Partying", "Dancing"] // temporary array for Role's skill list - change after link to backend
       }
     },
     methods: {
@@ -68,14 +67,7 @@
     },
     mounted() {
       document.title = "LJMS - Roles";
-      var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/available/";
-      axios.get(url).then((response) => {
-        var result = response.data.data
-        this.roles = result
-        if (this.roles.length == 0) {
-          this.noRoleFound = true
-        }
-      });
+      this.reload()
     },
     computed: {
     ...mapGetters({
@@ -91,11 +83,11 @@
   #roleMain {
     min-height:  100vh;
   }
-
+  
   #rippleP {
     position: absolute;
     top: 45%;
-    left: 48%;
+    left: 47%;
   }
 
   .lds-ripple {
