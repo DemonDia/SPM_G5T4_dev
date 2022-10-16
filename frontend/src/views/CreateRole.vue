@@ -1,7 +1,6 @@
 <template>
   <DashboardLayout>
     <div class="container-fluid p-5" id="createRoleMain">
-      <BoxComponent></BoxComponent>
       <h1>Create a role</h1>
 
       <div v-show="checked">
@@ -53,15 +52,13 @@
   import FormComponent from "../components/FormComponent.vue";
   import ModalComponent from "../components/ModalComponent.vue";
   import axios from "axios";
-  import BoxComponent from "../components/BoxComponent.vue";
 
   export default {
     name: "CreateRole",
     components: {
       DashboardLayout,
       FormComponent,
-      ModalComponent,
-      BoxComponent
+      ModalComponent
     },
     data() {
       return {
