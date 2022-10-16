@@ -17,7 +17,7 @@
         </div>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
           <div v-for="(value, key) in skills" v-bind:key="key">
-            <card-component :title="value.Skill_Name" :desc="value.Skill_Description" :active="value.Active" :id="value.Skill_ID" ctype="skill" @reload="reload()"/>
+            <card-component :title="value.Skill_Name" :desc="value.Skill_Description" :active="value.Active" :id="value.Skill_ID" :pillList="tempRoleList" ctype="skill" @reload="reload()"/>
           </div>
         </div>
       </div>
@@ -49,6 +49,7 @@ export default {
       results: [], // temporary array
       numSkills: 0, // to populate based on length of array
       noSkillFound: false,
+      tempRoleList: ["traffic police", "chef", "gordon ramsay's critique", "madagascar tour guide"],
     }
   },
   methods: {
@@ -65,14 +66,7 @@ export default {
   },
    mounted() {
     document.title = "LJMS - Skills";
-      var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/available";
-       axios.get(url).then((response) => {
-        var result = response.data.data
-        this.skills = result
-        if (this.skills.length == 0) {
-          this.noSkillFound = true
-        }
-      });
+    this.reload()
   },
   computed: {
     ...mapGetters({
