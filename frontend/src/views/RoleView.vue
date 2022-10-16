@@ -35,6 +35,8 @@
   import axios from "axios";
   import { mapGetters } from "vuex";
 
+  var localhostURL = 'http://localhost:8000/roles/available';
+
   export default {
     name: "RoleView",
     components: {
@@ -51,14 +53,16 @@
       }
     },
     methods: {
-    reload() {
+     async reload() {
       var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/available";
-      axios.get(url).then((response) => {
+      await axios.get(url).then((response) => {
         var result = response.data.data
-        this.skills = result
-        if (this.skills.length == 0) {
-          this.noSkillFound = true
+        this.roles = result
+        if (this.roles.length == 0) {
+          this.noRoleFound = true
         }
+      }).catch((error) => {
+        console.log(error)
       });
     }
     },
@@ -85,7 +89,7 @@
 <style>
 
   #roleMain {
-    min-height: 100vh;
+    min-height:  100vh;
   }
 
   #rippleP {
