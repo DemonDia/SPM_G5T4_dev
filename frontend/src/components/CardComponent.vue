@@ -80,6 +80,7 @@ export default {
               icon: true,
               rtl: false,
             });
+            this.$emit('reload');
           }
         });
       } else if (ctype == 'role') {
@@ -118,6 +119,7 @@ export default {
               icon: true,
               rtl: false,
             });
+            this.$emit('reload');
           }
         });
       }
