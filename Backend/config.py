@@ -8,6 +8,6 @@ load_dotenv()
 database_route = getenv("DATABASE_URL")
 # instantiate the FasAPI app
 app = FastAPI(
-    # root_path="/dev/"   # when making pushes nid this line
+    root_path="/dev/"   # when making pushes nid this line
 )
 # adding of middleware
