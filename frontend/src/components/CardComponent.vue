@@ -1,14 +1,14 @@
 <template>
-  <div class="card-component mt-3 mb-2 mx-auto pt-3">
+  <div class="card-component mt-3 mb-2 mx-auto p-3 ps-4">
     <div class="row">
 
       <!-- Title -->
-      <div class="card-component-header m-1 my-0 px-3 col-lg-8 col-9">
+      <div class="card-component-header m-1 my-0 col-lg-8 col-9">
         <h5 class="card-component-title text-start">{{ title }}</h5>
       </div>
 
       <!-- Menu Button -->
-      <div class="menu-frame col-3 mt-0 pt-0">
+      <div class="menu-frame col-3 mt-0 p-3 pt-0">
         <button class="ph-dots-three menu-dot" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -18,14 +18,14 @@
       </div>
 
       <!-- Description -->
-      <div class="card-component-body m-1 my-0 px-3">
+      <div class="card-component-body m-1 my-0 ">
         <p class="card-component-text text-start">
           {{ desc }}
         </p>
       </div>
 
       <!-- Pill Buttons -->
-      <pill-component :pillList="skillList" />
+      <pill-component :pillList="pillList" :ctype="ctype"/>
 
     </div>
   </div>
@@ -40,7 +40,7 @@ import router from "../router";
 export default {
   name: "CardComponent",
   components: { PillComponent },
-  props: ["title", "desc", "active", "skillList", "id", "ctype"],
+  props: ["title", "desc", "active", "pillList", "id", "ctype"],
   methods: {
     deleteItem(id, ctype) {
       var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/delete/" +id;

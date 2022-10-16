@@ -1,11 +1,17 @@
 <template>
-  <div class="m-1 mb-0 px-3">
-    <p class="text-start fw-bold pill-text mb-1">
-      Skills required:
+  <div class="m-1 mb-0">
+    <p class="text-start fw-bold pill-text mb-1" v-if="ctype=='role'">
+      Required Skills:
+    </p>
+    <p class="text-start fw-bold pill-text mb-1" v-if="ctype=='skill'">
+      Related Roles:
     </p>
     <div class="d-flex pills">
       <div v-for="(value, key) in pillList" v-bind:key="key" class="pill rounded-pill px-2 me-2">
         <p> {{ value }} </p>
+      </div>
+      <div v-if="pillList.length==0" class="pill rounded-pill px-2 me-2">
+        <p> None </p>
       </div>
     </div>
   </div>
@@ -18,7 +24,7 @@
       return {
       }
     },
-    props: ['pillList'],
+    props: ['pillList' ,'ctype'],
     methods: {
       
     },
