@@ -1,7 +1,7 @@
 import requests
 # =====================Universal variables=====================
 # name of entities
-entities = ["roles","skills","roleskillrelations"]
+entities = ["roles","skills","roleskillrelations","course"]
 
 # name of operations (based on CRUD)
 # Names:
