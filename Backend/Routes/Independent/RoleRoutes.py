@@ -137,7 +137,6 @@ def getRole(Role_ID: int, session: Session = Depends(get_session)):
         for columnName, columnValue in role:
             roleDict[columnName] = columnValue
         outcome = getRelatedSkills(role.Role_ID)
-        print("outcome",outcome)
         roleDict["Skills"] = outcome["data"]
         # return role
         return {
