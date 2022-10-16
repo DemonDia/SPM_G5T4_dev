@@ -23,7 +23,7 @@ def addSeedData():
 def getRelatedSkills(targetModelIdValue):
     try:
         session = Session(engine)
-        statement = select(SkillModel.Skill_Name).select_from(join(SkillModel,RoleSkillRelationModel)).where(RoleSkillRelationModel.Skill_ID == SkillModel.Skill_ID)
+        statement = select(SkillModel.Skill_Name).select_from(join(SkillModel,RoleSkillRelationModel)).where(RoleSkillRelationModel.Role_ID == targetModelIdValue)
         results = session.exec(statement).all()
         return {
             "success": True,
@@ -35,46 +35,21 @@ def getRelatedSkills(targetModelIdValue):
             "messaage": e,
             "data":[]
         }
-# returns json
-def getAllRelatedSkills():
-    try:
-        skillDict = {}
-        session = Session(engine)
-        statement = select(SkillModel.Skill_Name,RoleModel.Role_ID).select_from(join(RoleModel,join(SkillModel,RoleSkillRelationModel)))
-        results = session.exec(statement).all()
-        for result in results:
-            if(result.Role_ID not in skillDict.keys()):
-                skillDict[result.Role_ID] = [result.Skill_Name]
-            else:
-                skillDict[result.Role_ID].append(result.Skill_Name)
-        return{
-            "success":True,
-            "data":skillDict
-        }
-    except Exception as e:
-        return{
-            "success":False,
-            "message":e,
-            "data":[]
-        }
+
 # ===========================actual CRUD functions===========================
 @app.get('/roles/')
 def getRoles(session: Session = Depends(get_session)):
     errors = []
     try:
         stmt = select(RoleModel)
-        getAllRoles = session.exec(stmt).all()
-        allSkills = getAllRelatedSkills()["data"]
+        result = session.exec(stmt).all()
         allRoles = []
-        for role in getAllRoles:
+        for role in result:
             roleDict = {}
             for columnName, columnValue in role:
                 roleDict[columnName] = columnValue
-                if role.Role_ID in allSkills.keys():
-
-                    roleDict["Skills"] = allSkills[role.Role_ID]
-                else:
-                    roleDict["Skills"] = []
+            outcome = getRelatedSkills(role.Role_ID)
+            roleDict["Skills"] = outcome["data"]
             allRoles.append(roleDict)
         return {
             "success": True,
@@ -94,18 +69,15 @@ def getAvailableRoles(session: Session = Depends(get_session)):
     errors = []
     try:
         stmt = select(RoleModel).where(RoleModel.Active == 1)
-        availableRoles = session.exec(stmt).all()
-        allSkills = getAllRelatedSkills()["data"]
+        result = session.exec(stmt).all()
         allRoles = []
-        for role in availableRoles:
+        for role in result:
             roleDict = {}
             for columnName, columnValue in role:
                 roleDict[columnName] = columnValue
-                if role.Role_ID in allSkills.keys():
-
-                    roleDict["Skills"] = allSkills[role.Role_ID]
-                else:
-                    roleDict["Skills"] = []
+            outcome = getRelatedSkills(role.Role_ID)
+            print("outcome",outcome)
+            roleDict["Skills"] = outcome["data"]
             allRoles.append(roleDict)
         return {
             "success": True,
@@ -133,6 +105,7 @@ def getRole(Role_ID: int, session: Session = Depends(get_session)):
                 "success": False,
                 "message": errors
             }
+
         roleDict = {}
         for columnName, columnValue in role:
             roleDict[columnName] = columnValue
