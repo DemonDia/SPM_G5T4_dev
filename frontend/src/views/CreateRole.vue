@@ -96,6 +96,7 @@
         </form> -->
       </div>
     </div>
+  
   </DashboardLayout>
 </template>
 
@@ -104,6 +105,7 @@
   import FormComponent from "../components/FormComponent.vue";
   import ModalComponent from "../components/ModalComponent.vue";
   import axios from "axios";
+  import BoxComponent from "../components/BoxComponent.vue";
 
   export default {
     name: "CreateRole",
@@ -111,6 +113,7 @@
       DashboardLayout,
       FormComponent,
       ModalComponent,
+      BoxComponent
     },
     data() {
       return {
