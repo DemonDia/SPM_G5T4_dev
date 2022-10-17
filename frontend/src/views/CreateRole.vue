@@ -57,7 +57,12 @@
           <PillSearchComponent class="mt-3" ctype="skill" @pillItems="getPill"></PillSearchComponent>
         </div>
         <div v-show="this.currFormPg==3" id="formPg3">
-          page3
+          <p class="mt-3 mb-3 fw-bold">Role Name</p>
+          <p>{{role_name.role_name}}</p>
+          <p class="mt-3 mb-3 fw-bold">Role Description</p>
+          <p>{{role_description.role_description}}</p>
+          <p class="mt-3 mb-3 fw-bold">Skills</p>
+          <pill-component :pillList="pillValue" />
         </div>
         </form>
         
@@ -106,6 +111,7 @@
   import ModalComponent from "../components/ModalComponent.vue";
   import axios from "axios";
   import PillSearchComponent from "@/components/PillSearchComponent.vue";
+  import PillComponent from "@/components/PillComponent.vue";
 
   export default {
     name: "CreateRole",
@@ -113,7 +119,8 @@
       DashboardLayout,
       FormComponent,
       ModalComponent,
-      PillSearchComponent
+      PillSearchComponent,
+      PillComponent,
     },
     data() {
       return {
@@ -162,7 +169,8 @@
             'button1': 'Back to Step 2',
             'button2': 'Submit',
           },
-        ]
+        ],
+        pillItemsFromComponent: [],
       };
     },
     methods: {
@@ -220,9 +228,20 @@
       },goToPg(x) {
         this.currFormPg = x
       },getPill(item) {
-        console.log(item)
+        // emit content to be passed into the pillItemsFromComponent
+        this.pillItemsFromComponent = item
       }
 
+    },
+    computed: {
+      pillValue() {
+        const pillItems = []
+        this.pillItemsFromComponent.forEach(value => {
+          pillItems.push(value.Skill_Name)
+        })
+       
+        return pillItems
+      }
     },
     mounted() {
       document.title = "LJMS - Create Roles";
