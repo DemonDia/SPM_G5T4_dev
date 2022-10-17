@@ -1,10 +1,11 @@
 <template>
   <DashboardLayout>
-    <div class="container-fluid p-5" id="createRoleMain">
+    <div class="container-fluid p-sm-5" id="createRoleMain">
       <div class="col-sm-12 col-xl-8 mx-auto my-3 p-5 text-start rounded rounded-4 shadow-lg mb-5 bg-body">
         <h3>Create a Role</h3>
         <h6 class="text-secondary mt-3 mb-3">What role would you like to create today?</h6>
-        
+
+        <!-- Popup -->
         <div v-show="checked">
           <ModalComponent type="Role" :isSuccess="isSuccess" @clicked="onClickModal"/>
         </div>
@@ -29,8 +30,8 @@
           </div>
         </div>
 
-        <form @submit.prevent="createRole" method="POST">
         <!-- Content -->
+        <form @submit.prevent="createRole" method="POST">
         <!-- Page 1 -->
         <div v-show="this.currFormPg==1" id="formPg1">
           <FormComponent
@@ -51,7 +52,6 @@
             :isSubmitted="isSubmitted"
             :formType="role_description.formType"
           />
-
         </div>
         <!-- Page 2 -->
         <div v-show="this.currFormPg==2" id="formPg2">
@@ -60,24 +60,25 @@
         <!-- Page 3 -->
         <div v-show="this.currFormPg==3" id="formPg3">
           <p class="mt-3 mb-1 fw-bold">Role Name</p>
-          <p>{{role_name.role_name}}</p>
+          <p class="text-break">{{role_name.role_name}}</p>
           <p class="mt-3 mb-1 fw-bold">Role Description</p>
-          <p>{{role_description.role_description}}</p>
+          <p class="text-break">{{role_description.role_description}}</p>
           <p class="mt-3 mb-1 fw-bold">Skills</p>
           <pill-component :pillList="pillValue"/>
         </div>
         </form>
-        
-        <div class="row d-flex justify-content-around my-5 p-3">
+
+        <!-- Buttons -->
+        <div class="row d-flex justify-content-around my-sm-3 my-md-5 p-3">
           <button type="button" class="btn col-md-4 col-sm-6 m-2" 
-            :class="this.currFormPg == 1 ? 'btn-outline-secondary disabled' : 'btn-primary'" 
+            :class="[this.currFormPg == 1 ? 'btn-outline-secondary disabled' : 'btn-primary', this.isSubmitted && this.isSuccess ? 'disabled' : '']" 
             @click="goToPrevPg"
           >
             {{this.progress[currFormPg-1].button1}}
           </button>
   
           <button type="button" class="btn col-md-4 col-sm-5 m-2"  
-            :class="this.currFormPg == 3 ? 'btn-warning' : 'btn-primary'" 
+            :class="[this.currFormPg == 3 ? 'btn-warning' : 'btn-primary', this.isSubmitted && this.isSuccess ? 'disabled' : '']" 
             @click="goToNextPg"
             :data-bs-toggle="this.currFormPg == 3 ? 'modal' : ''" 
             :data-bs-target="this.currFormPg == 3 ? '#submitModal' : ''"
@@ -86,23 +87,9 @@
           </button>
         </div>
 
-        <!-- <div class="alert alert-danger" v-if="errors.length">
-          <b>Please correct the following error(s):</b>
-          <ul>
-            <li v-for="(error, index) in errors" v-bind:key="index">
-              {{ error }}
-            </li>
-          </ul>
-        </div> -->
-
-        <!-- 
-          <button class="btn btn-secondary m-3" @click="resetForm" type="reset">
-            Reset
-          </button>
-          <button class="btn btn-primary" type="submit" data-bs-toggle="modal" data-bs-target="#submitModal">
-            Submit
-          </button>
-        </form> -->
+        <!-- <button class="btn btn-secondary m-3" @click="resetForm" type="reset">
+          Reset
+        </button> -->
       </div>
     </div>
   
@@ -179,7 +166,6 @@
     },
     methods: {
       createRole() {
-        // === LINKING FRONT TO BACKEND ===
         var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/"
         axios
           .post(url, {
@@ -196,14 +182,13 @@
             // submitted form
             this.isSubmitted = true;
 
-            // console.log(response.data);
             if (response.data.success) {
-              // console.log("success")
               // success case
               this.isSuccess = true;
+              this.resetForm()
             } 
             else {
-              // console.log("failure")
+              // failure case
               this.isSuccess = false;
               for (let err in response.data.message) {
                 let msg = response.data.message[err]
@@ -214,45 +199,54 @@
                   this.role_description.errors.push(msg)
                 }
               }
+              // go back to form pg 1
+              this.currFormPg = 1
             }
             // show Modal
             this.checked = true;
           });
-          this.resetForm()
-      },assignSkills(){
+      },
+      
+      assignSkills(){
         console.log('assign skills...')
-      }, resetForm() {
+      }, 
+      
+      resetForm() {
         this.role_name.role_name = "";
         this.role_description.role_description = "";
-      },onClickModal(value) {
+      },
+      
+      onClickModal(value) {
+        // modal is closed
         // reset checked value:
         this.checked = value;
-      },goToPrevPg() {
+        if (this.isSubmitted && this.isSuccess) {
+          // go back to View All
+          this.$router.replace({'name': 'roles'})
+        }
+      },
+      
+      goToPrevPg() {
         this.currFormPg -= 1
-      },goToNextPg() {
+      },
+      
+      goToNextPg() {
         if (this.currFormPg == 3) {
           // submit form
-          this.createRole() // for linking to backend
-          if (this.isSubmitted == true) {
-            if (!this.isSuccess) {
-              // unsuccessful submission
-              this.currFormPg = 1;
-            }
-            else {
-              // successful submission
-              
-            }
-          }
-        }else{
+          this.createRole()
+        } else{
           this.currFormPg += 1;
         }
-      },goToPg(x) {
+      },
+      
+      goToPg(x) {
         this.currFormPg = x;
-      },getPill(item) {
+      },
+      
+      getPill(item) {
         // emit content to be passed into the pillItemsFromComponent
         this.pillItemsFromComponent = item;
-      }
-
+      },
     },
     computed: {
       pillValue() {
