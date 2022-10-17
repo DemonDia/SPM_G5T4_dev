@@ -232,12 +232,7 @@
       },goToNextPg() {
         if (this.currFormPg == 3) {
           // submit form
-          
-          // this.createRole() // for linking to backend
-          this.isSubmitted = true; // test
-          this.isSuccess = true; // test
-          this.checked = true; // test
-
+          this.createRole() // for linking to backend
           if (this.isSubmitted == true) {
             if (!this.isSuccess) {
               // unsuccessful submission
