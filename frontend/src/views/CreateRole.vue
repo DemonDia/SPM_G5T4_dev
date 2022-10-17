@@ -54,7 +54,7 @@
 
         </div>
         <div v-show="this.currFormPg==2" id="formPg2">
-          <PillSearchComponent class="mt-3" ctype="skill"></PillSearchComponent>
+          <PillSearchComponent class="mt-3" ctype="skill" @pillItems="getPill"></PillSearchComponent>
         </div>
         <div v-show="this.currFormPg==3" id="formPg3">
           page3
@@ -207,23 +207,22 @@
             this.checked = true;
           });
           this.resetForm()
-      },
-      resetForm() {
+      },resetForm() {
         this.role_name.role_name = "";
         this.role_description.role_description = "";
-      },
-      onClickModal(value) {
+      },onClickModal(value) {
         // reset checked value:
         this.checked = value;
-      },
-      goToPrevPg() {
+      },goToPrevPg() {
         this.currFormPg -= 1
-      },
-      goToNextPg() {
+      },goToNextPg() {
         this.currFormPg += 1
       },goToPg(x) {
         this.currFormPg = x
-      },
+      },getPill(item) {
+        console.log(item)
+      }
+
     },
     mounted() {
       document.title = "LJMS - Create Roles";
