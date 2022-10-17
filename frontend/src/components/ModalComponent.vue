@@ -9,7 +9,7 @@
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="onClickButton()"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body text-center">
                 <div>
                     <i :class="icon" style="font-size: 5rem" :style="{ 'color': isSuccess ? '#87C60A' : '#F19104'}"></i>
                 </div>

@@ -5,9 +5,9 @@
         <h3>Create a Role</h3>
         <h6 class="text-secondary mt-3 mb-3">What role would you like to create today?</h6>
         
-        <!-- <div v-show="checked">
+        <div v-show="checked">
           <ModalComponent type="Role" :isSuccess="isSuccess" @clicked="onClickModal"/>
-        </div> -->
+        </div>
 
         <!-- Progress Tracker -->
         <div class="row gx-4 progress p-0">
@@ -31,8 +31,8 @@
 
         <form @submit.prevent="createRole" method="POST">
         <!-- Content -->
+        <!-- Page 1 -->
         <div v-show="this.currFormPg==1" id="formPg1">
-          
           <FormComponent
             v-model="role_name.role_name"
             :label="role_name.label"
@@ -53,16 +53,18 @@
           />
 
         </div>
+        <!-- Page 2 -->
         <div v-show="this.currFormPg==2" id="formPg2">
           <PillSearchComponent class="mt-3" ctype="skill" @pillItems="getPill"></PillSearchComponent>
         </div>
+        <!-- Page 3 -->
         <div v-show="this.currFormPg==3" id="formPg3">
-          <p class="mt-3 mb-3 fw-bold">Role Name</p>
+          <p class="mt-3 mb-1 fw-bold">Role Name</p>
           <p>{{role_name.role_name}}</p>
-          <p class="mt-3 mb-3 fw-bold">Role Description</p>
+          <p class="mt-3 mb-1 fw-bold">Role Description</p>
           <p>{{role_description.role_description}}</p>
-          <p class="mt-3 mb-3 fw-bold">Skills</p>
-          <pill-component :pillList="pillValue" />
+          <p class="mt-3 mb-1 fw-bold">Skills</p>
+          <pill-component :pillList="pillValue"/>
         </div>
         </form>
         
@@ -77,6 +79,8 @@
           <button type="button" class="btn col-md-4 col-sm-5 m-2"  
             :class="this.currFormPg == 3 ? 'btn-warning' : 'btn-primary'" 
             @click="goToNextPg"
+            :data-bs-toggle="this.currFormPg == 3 ? 'modal' : ''" 
+            :data-bs-target="this.currFormPg == 3 ? '#submitModal' : ''"
           >
           {{this.progress[currFormPg-1].button2}}
           </button>
@@ -215,7 +219,9 @@
             this.checked = true;
           });
           this.resetForm()
-      },resetForm() {
+      },assignSkills(){
+        console.log('assign skills...')
+      }, resetForm() {
         this.role_name.role_name = "";
         this.role_description.role_description = "";
       },onClickModal(value) {
@@ -224,23 +230,42 @@
       },goToPrevPg() {
         this.currFormPg -= 1
       },goToNextPg() {
-        this.currFormPg += 1
+        if (this.currFormPg == 3) {
+          // submit form
+          
+          // this.createRole() // for linking to backend
+          this.isSubmitted = true; // test
+          this.isSuccess = true; // test
+          this.checked = true; // test
+
+          if (this.isSubmitted == true) {
+            if (!this.isSuccess) {
+              // unsuccessful submission
+              this.currFormPg = 1;
+            }
+            else {
+              // successful submission
+              
+            }
+          }
+        }else{
+          this.currFormPg += 1;
+        }
       },goToPg(x) {
-        this.currFormPg = x
+        this.currFormPg = x;
       },getPill(item) {
         // emit content to be passed into the pillItemsFromComponent
-        this.pillItemsFromComponent = item
+        this.pillItemsFromComponent = item;
       }
 
     },
     computed: {
       pillValue() {
-        const pillItems = []
+        const pillItems = [];
         this.pillItemsFromComponent.forEach(value => {
-          pillItems.push(value.Skill_Name)
+          pillItems.push(value.Skill_Name);
         })
-       
-        return pillItems
+        return pillItems;
       }
     },
     mounted() {
