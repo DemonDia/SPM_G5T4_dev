@@ -64,12 +64,13 @@ def createSkills(skill: SkillModel, session: Session = Depends(get_session)):
     try:
         findDuplicateRoleStatement = select(SkillModel).where(
             SkillModel.Skill_Name == skill.Skill_Name)
-        results = session.exec(findDuplicateRoleStatement).one()
-
+        results = session.exec(findDuplicateRoleStatement)
+        
         # check for duplicate skill name
-        if results:
-            errors.append("Skill already exists! Please try again")
 
+        for duplicate in results:
+            errors.append("Skill already exists! Please try again")
+            break
 
         # check for empty skill name
         if len(skill.Skill_Name) == 0:
