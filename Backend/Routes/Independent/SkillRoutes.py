@@ -192,6 +192,20 @@ def softDeleteSkill(Skill_ID: int,session: Session = Depends(get_session)):
         }
     if skill.Active:
         skill.Active = False
+        
+    allRelatedCourseRelationStatement = select(CourseSkillRelationModel).where(
+        CourseSkillRelationModel.Skill_ID == Skill_ID)
+    courseRelationResults = session.exec(allRelatedCourseRelationStatement)
+    allCourseRelations = courseRelationResults.all()
+    for courseRelation in allCourseRelations:
+        session.delete(courseRelation)
+
+    allRelatedRoleRelationStatement = select(RoleSkillRelationModel).where(
+        RoleSkillRelationModel.Skill_ID == Skill_ID)
+    roleRelationResults = session.exec(allRelatedRoleRelationStatement)
+    allRoleRelations = roleRelationResults.all()
+    for roleRelation in allRoleRelations:
+        session.delete(roleRelation)
 
 
     session.add(skill)
