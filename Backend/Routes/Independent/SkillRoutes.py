@@ -23,7 +23,7 @@ def getRelatedCourses(targetModelIdValue):
     try:
         session = Session(engine)
         statement = select(CourseModel.Course_Name).select_from(join(CourseModel, CourseSkillRelationModel)).where(
-            CourseSkillRelationModel.Course_ID == targetModelIdValue)
+            CourseSkillRelationModel.Skill_ID == targetModelIdValue)
         results = session.exec(statement).all()
         return {
             "success": True,
@@ -68,11 +68,23 @@ def getSkills(session: Session = Depends(get_session)):
     errors = []
     try:
         stmt = select(SkillModel)
-        result = session.exec(stmt).all()
+        getAllSkills = session.exec(stmt).all()
+        allCourses = getAllRelatedCourses()["data"]
+        allSkills = []
+        for skill in getAllSkills:
+            skillDict = {}
+            for columnName, columnValue in skill:
+                skillDict[columnName] = columnValue
+                if skill.Skill_ID in allCourses.keys():
+
+                    skillDict["Courses"] = allCourses[skill.Skill_ID]
+                else:
+                    skillDict["Courses"] = []
+            allSkills.append(skillDict)
         # return result
         return {
             "success": True,
-            "data": result
+            "data": allSkills
         }
     except Exception as e:
         errors.append(str(e))
@@ -100,7 +112,37 @@ def getAvailableSkills(session: Session = Depends(get_session)):
             "message": errors
         }
 
+@app.get("/skills/{Skill_ID}/")
+def getRole(Skill_ID: int, session: Session = Depends(get_session)):
+    errors = []
+    try:
+        skill = session.get(SkillModel, Skill_ID)
+        # role not found
+        if not skill:
+            errors.append("Skill not found")
 
+        if len(errors) > 0:
+            return {
+                "success": False,
+                "message": errors
+            }
+        skillDict = {}
+        for columnName, columnValue in skill:
+            skillDict[columnName] = columnValue
+        outcome = getRelatedCourses(Skill_ID)
+        print(outcome)
+        skillDict["Courses"] = outcome["data"]
+        # return role
+        return {
+            "success": True,
+            "data": skillDict
+        }
+    except Exception as e:
+        errors.append(str(e))
+        return {
+            "success": False,
+            "message": errors
+        }
 
 @app.post('/skills/')
 def createSkills(skill: SkillModel, session: Session = Depends(get_session)):
