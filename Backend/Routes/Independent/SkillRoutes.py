@@ -108,12 +108,13 @@ def createSkills(skill: SkillModel, session: Session = Depends(get_session)):
     try:
         findDuplicateRoleStatement = select(SkillModel).where(
             SkillModel.Skill_Name == skill.Skill_Name)
-        results = session.exec(findDuplicateRoleStatement).one()
-
+        results = session.exec(findDuplicateRoleStatement)
+        
         # check for duplicate skill name
-        if results:
-            errors.append("Skill already exists! Please try again")
 
+        for duplicate in results:
+            errors.append("Skill already exists! Please try again")
+            break
 
         # check for empty skill name
         if len(skill.Skill_Name) == 0:
@@ -235,6 +236,20 @@ def softDeleteSkill(Skill_ID: int,session: Session = Depends(get_session)):
         }
     if skill.Active:
         skill.Active = False
+        
+    allRelatedCourseRelationStatement = select(CourseSkillRelationModel).where(
+        CourseSkillRelationModel.Skill_ID == Skill_ID)
+    courseRelationResults = session.exec(allRelatedCourseRelationStatement)
+    allCourseRelations = courseRelationResults.all()
+    for courseRelation in allCourseRelations:
+        session.delete(courseRelation)
+
+    allRelatedRoleRelationStatement = select(RoleSkillRelationModel).where(
+        RoleSkillRelationModel.Skill_ID == Skill_ID)
+    roleRelationResults = session.exec(allRelatedRoleRelationStatement)
+    allRoleRelations = roleRelationResults.all()
+    for roleRelation in allRoleRelations:
+        session.delete(roleRelation)
 
 
     session.add(skill)

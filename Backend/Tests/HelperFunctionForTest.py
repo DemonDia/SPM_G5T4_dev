@@ -30,7 +30,7 @@ def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,oper
         print(testCaseName)
         print("Input:",inputJson)
         if operationType == "create":
-            triggeredTestCase = addRow(BASE+entityName, inputJson)
+            triggeredTestCase = addRow(BASE+entityName+"/", inputJson)
         if operationType == "readAll":
             triggeredTestCase = getAllRows(BASE+entityName)
         if operationType == "readById":
@@ -127,7 +127,7 @@ def addRelation(url,jsonObject):
 # Update rows
 def updateRow(url, rowId,jsonObject):
     print(url+"/"+str(rowId))
-    updatedRow = requests.put(url+"/{rowId}".format(rowId=rowId),json = jsonObject)
+    updatedRow = requests.put(url+"/{rowId}/".format(rowId=rowId),json = jsonObject)
     return updatedRow.json()
 
 def softDeleteRow(url,rowId):

@@ -11,9 +11,9 @@ def mainTest():
     seedAllData()
 
     # trigger test cases for each entity
-    testAllRoleCases()
+    #testAllRoleCases()
     testAllSkillCases()
-    testAllRoleSkillRelationCases()
+    #testAllRoleSkillRelationCases()
 
     # remove all the test data after testing is complete
     # cleanUp()
