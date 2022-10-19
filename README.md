@@ -105,6 +105,19 @@ Note:
 2. For variable names, use camel case (eg: variableName)
 3. For primary keys of entities with ONLY 1 primary key, that column should be 'id'
 
+
+
+### To run the test cases, type the following in your terminal:
+```
+cd Tests
+python3 RunTest.py
+```
+Note: 
+- Make sure you are inside the Frontend folder and you've run "npm run serve" before the test scripts
+- cd Tests: you go to the path of the Tests folder
+- IMPORTANT: before you run your test file inside the 'Tests' folder
+
+
 #### Folder structure
 
 ```bash 
@@ -198,7 +211,7 @@ The command `uvicorn main:app` refers to:
 
 </details>
 
-To run the test cases, type the following in your terminal:
+### To run the test cases, type the following in your terminal:
 ```
 cd Tests
 python MainTest.py
