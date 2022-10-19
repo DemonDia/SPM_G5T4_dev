@@ -1,11 +1,12 @@
 from fastapi import Response, Depends
 from Schema.IndependentSchema import Skill
 from database import *
-from sqlmodel import Session, select, delete
+from sqlmodel import Session, select, delete, join
 from config import app
-from Models.IndependentModels import SkillModel
+from Models.IndependentModels import SkillModel, CourseModel
 from HelperFunctions import *
 
+# ===========================test functions===========================
 
 @app.delete("/skills/deleteall")
 def deleteAll():
@@ -16,6 +17,49 @@ def deleteAll():
 def addSeedData():
     return seedInitialData("skill", SkillModel)
 
+
+# ===========================helper functions===========================
+def getRelatedCourses(targetModelIdValue):
+    try:
+        session = Session(engine)
+        statement = select(CourseModel.Course_Name).select_from(join(CourseModel, CourseSkillRelationModel)).where(
+            CourseSkillRelationModel.Skill_ID == targetModelIdValue)
+        results = session.exec(statement).all()
+        return {
+            "success": True,
+            "data": results
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "messaage": e,
+            "data": []
+        }
+# returns json
+
+
+def getAllRelatedCourses():
+    try:
+        courseDict = {}
+        session = Session(engine)
+        statement = select(CourseModel.Course_Name, SkillModel.Skill_ID).select_from(
+            join(SkillModel, join(CourseModel, CourseSkillRelationModel)))
+        results = session.exec(statement).all()
+        for result in results:
+            if (result.Skill_ID not in courseDict.keys()):
+                courseDict[result.Skill_ID] = [result.Course_Name]
+            else:
+                courseDict[result.Skill_ID].append(result.Course_Name)
+        return {
+            "success": True,
+            "data": courseDict
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "message": e,
+            "data": []
+        }
 # ===========================actual CRUD functions===========================
 
 
@@ -24,11 +68,23 @@ def getSkills(session: Session = Depends(get_session)):
     errors = []
     try:
         stmt = select(SkillModel)
-        result = session.exec(stmt).all()
+        getAllSkills = session.exec(stmt).all()
+        allCourses = getAllRelatedCourses()["data"]
+        allSkills = []
+        for skill in getAllSkills:
+            skillDict = {}
+            for columnName, columnValue in skill:
+                skillDict[columnName] = columnValue
+                if skill.Skill_ID in allCourses.keys():
+
+                    skillDict["Courses"] = allCourses[skill.Skill_ID]
+                else:
+                    skillDict["Courses"] = []
+            allSkills.append(skillDict)
         # return result
         return {
             "success": True,
-            "data": result
+            "data": allSkills
         }
     except Exception as e:
         errors.append(str(e))
@@ -56,7 +112,37 @@ def getAvailableSkills(session: Session = Depends(get_session)):
             "message": errors
         }
 
+@app.get("/skills/{Skill_ID}/")
+def getRole(Skill_ID: int, session: Session = Depends(get_session)):
+    errors = []
+    try:
+        skill = session.get(SkillModel, Skill_ID)
+        # role not found
+        if not skill:
+            errors.append("Skill not found")
 
+        if len(errors) > 0:
+            return {
+                "success": False,
+                "message": errors
+            }
+        skillDict = {}
+        for columnName, columnValue in skill:
+            skillDict[columnName] = columnValue
+        outcome = getRelatedCourses(Skill_ID)
+        print(outcome)
+        skillDict["Courses"] = outcome["data"]
+        # return role
+        return {
+            "success": True,
+            "data": skillDict
+        }
+    except Exception as e:
+        errors.append(str(e))
+        return {
+            "success": False,
+            "message": errors
+        }
 
 @app.post('/skills/')
 def createSkills(skill: SkillModel, session: Session = Depends(get_session)):
@@ -64,12 +150,13 @@ def createSkills(skill: SkillModel, session: Session = Depends(get_session)):
     try:
         findDuplicateRoleStatement = select(SkillModel).where(
             SkillModel.Skill_Name == skill.Skill_Name)
-        results = session.exec(findDuplicateRoleStatement).one()
-
+        results = session.exec(findDuplicateRoleStatement)
+        
         # check for duplicate skill name
-        if results:
-            errors.append("Skill already exists! Please try again")
 
+        for duplicate in results:
+            errors.append("Skill already exists! Please try again")
+            break
 
         # check for empty skill name
         if len(skill.Skill_Name) == 0:
@@ -191,6 +278,20 @@ def softDeleteSkill(Skill_ID: int,session: Session = Depends(get_session)):
         }
     if skill.Active:
         skill.Active = False
+        
+    allRelatedCourseRelationStatement = select(CourseSkillRelationModel).where(
+        CourseSkillRelationModel.Skill_ID == Skill_ID)
+    courseRelationResults = session.exec(allRelatedCourseRelationStatement)
+    allCourseRelations = courseRelationResults.all()
+    for courseRelation in allCourseRelations:
+        session.delete(courseRelation)
+
+    allRelatedRoleRelationStatement = select(RoleSkillRelationModel).where(
+        RoleSkillRelationModel.Skill_ID == Skill_ID)
+    roleRelationResults = session.exec(allRelatedRoleRelationStatement)
+    allRoleRelations = roleRelationResults.all()
+    for roleRelation in allRoleRelations:
+        session.delete(roleRelation)
 
 
     session.add(skill)
