@@ -50,15 +50,15 @@
   }
 
   .vl {
-  border-left: 1px solid rgb(215, 215, 215);
-  height: 2em;
-  margin: 0 1em;
-  
- }
+    border-left: 1px solid rgb(215, 215, 215);
+    height: 2em;
+    margin: 0 1em;
+    
+  }
 
  .side-search {
     width: 50% !important;
- }
+  }
 
  .search-button {
     background: #fff;
