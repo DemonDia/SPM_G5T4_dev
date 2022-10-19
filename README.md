@@ -75,6 +75,18 @@ frontend
 |   ├── App.vue
 |   |
 |   ├── main.js
+|   
+├── tests
+|   ├── driverutil
+|   |   ├── __init__.py
+|   |   ├── Browser.py
+|   
+|   ├── pageobjects
+|   |   ├── __init__.py
+|   |   ├── <TestFunctionsName>.py
+|   
+|   ├── tests
+|   |   ├── RunTest.py
 |
 ├── .gitignore
 |
