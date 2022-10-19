@@ -31,8 +31,8 @@ def viewExistingSkillTest():
     #before = getSingleRow(BASE+entityName+"/available/", 1)
     #print("before",before)
     triggerTestCase("View Existing Skills",
-                    True, entityName+"/available/", {
-                    }, "readAll", None)
+                    True, entityName, {
+                    }, "readAllAvailable", None)
     #after = getSingleRow(BASE+entityName, 1)
     #print("after",after)
     return
