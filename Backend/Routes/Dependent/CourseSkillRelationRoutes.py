@@ -28,7 +28,7 @@ async def addcourseSkillRelation(request: Request, session: Session = Depends(ge
                 "success": False,
                 "message": errors
             }
-        for Skill_ID in requestData["skills"]:
+        for Skill_ID in requestData["Skills"]:
             newRoleSkillRelation = CourseSkillRelationModel()
             newRoleSkillRelation.Course_ID = requestData["Course_ID"]
             newRoleSkillRelation.Skill_ID = Skill_ID
