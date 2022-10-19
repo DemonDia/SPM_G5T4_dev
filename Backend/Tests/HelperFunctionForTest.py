@@ -1,14 +1,14 @@
 import requests
 # =====================Universal variables=====================
 # name of entities
-entities = ["roles","skills","roleskillrelations","course"]
+entities = ["roles","skills","course","roleskillrelations","courseskillrelations"]
 
 # name of operations (based on CRUD)
 # Names:
 # create --> create new entity
 # readAll --> read all existing rows
 # readById --> read by specific Id
-operationTypes = ["create","readAll","readById","updateById","softDelete","addRelation"]
+operationTypes = ["create","readAll","readAllAvailable","readById","updateById","softDelete","addRelation"]
 
 # base URL
 BASE = "http://127.0.0.1:8000/"
@@ -33,6 +33,8 @@ def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,oper
             triggeredTestCase = addRow(BASE+entityName+"/", inputJson)
         if operationType == "readAll":
             triggeredTestCase = getAllRows(BASE+entityName)
+        if operationType == "readAllAvailable":
+            triggeredTestCase = getAllRows(BASE+entityName+"/available")
         if operationType == "readById":
             triggeredTestCase = getSingleRow(BASE+entityName, fieldValue)
         if operationType == "updateById":
