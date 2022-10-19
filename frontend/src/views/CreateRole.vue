@@ -166,9 +166,9 @@
     },
     methods: {
       createRole() {
-        var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/"
+        var createRoleUrl = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/"
         axios
-          .post(url, {
+          .post(createRoleUrl, {
             "Role_Name": this.role_name.role_name,
             "Role_Description": this.role_description.role_description,
             "Active": true
@@ -208,7 +208,15 @@
       },
       
       assignSkills(){
-        console.log('assign skills...')
+        var assignSkillsUrl = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/"
+        axios
+          .post(assignSkillsUrl, {
+            "Role_ID": null,
+            "skills": this.pillSkill_IDArray
+          })
+          .then((response) => {
+            
+          });
       }, 
       
       resetForm() {
@@ -249,13 +257,24 @@
       },
     },
     computed: {
+      // This computed function will enumerate the pillItemsFromComponent where the key/value items is stored
+      // And then it will return the value of the key "skill_name" to be displayed in the pill
       pillValue() {
         const pillItems = [];
         this.pillItemsFromComponent.forEach(value => {
           pillItems.push(value.Skill_Name);
         })
         return pillItems;
-      }
+      },
+      // This computed function will enumerate the pillItemsFromComponent where the key/value items is stored
+      // And then it will return the value of the key "skill_id" and return to the assign skill function.
+      pillSkill_IDArray() {
+        const pillItems = [];
+        this.pillItemsFromComponent.forEach(value => {
+          pillItems.push(value.Skill_ID);
+        })
+        return pillItems;
+      },
     },
     mounted() {
       document.title = "LJMS - Create Roles";
