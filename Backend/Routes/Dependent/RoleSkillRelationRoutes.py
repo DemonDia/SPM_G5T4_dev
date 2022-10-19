@@ -60,7 +60,6 @@ async def addRoleSkillRelation(request: Request, session: Session = Depends(get_
 @app.get('/roleskillrelations/{Role_ID}')
 async def addRoleSkillRelation(Role_ID: int, session: Session = Depends(get_session)):
     errors = []
-    skills = []
     try:
         role = session.get(RoleModel, Role_ID)
         if role == None:
