@@ -32,9 +32,7 @@ async def addRoleSkillRelation(request: Request, session: Session = Depends(get_
                 "success": False,
                 "message": errors
             }
-        for Skill_ID in requestData["skills"]:
-            print("Role_ID",requestData["Role_ID"])
-            print("Skill_ID",Skill_ID)
+        for Skill_ID in requestData["Skills"]:
             newRoleSkillRelation = RoleSkillRelationModel()
             newRoleSkillRelation.Role_ID = requestData["Role_ID"]
             newRoleSkillRelation.Skill_ID = Skill_ID
@@ -59,11 +57,9 @@ async def addRoleSkillRelation(request: Request, session: Session = Depends(get_
             "message": errors
         }
 
-# to get skills
 @app.get('/roleskillrelations/{Role_ID}')
 async def addRoleSkillRelation(Role_ID: int, session: Session = Depends(get_session)):
     errors = []
-    skills = []
     try:
         role = session.get(RoleModel, Role_ID)
         if role == None:
