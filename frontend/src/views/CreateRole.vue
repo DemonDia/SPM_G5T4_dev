@@ -216,9 +216,10 @@ export default {
       this.createRole().then((res) => {
         var roleStatus = res.data;
         this.assignSkills(roleStatus.data).then((result) => {
+          var assignSkillStatus = result.data;
           
           this.resetErrors();
-          if (roleStatus.success || result.data.success) {
+          if (roleStatus.success || assignSkillStatus.success) {
             this.resetForm(); // throw error message if role is duplicated
             this.isSuccess = true;
           } else {
