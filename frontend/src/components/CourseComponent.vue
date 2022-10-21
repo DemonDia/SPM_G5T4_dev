@@ -1,5 +1,5 @@
 <template>
-  <div class="card-component mt-3 mb-2 mx-auto p-3 ps-4">
+  <div class="card-component container-fluid p-3 m-4 mx-auto">
     <div class="row">
       <!-- Image -->
       <img src="https://picsum.photos/600" alt="" />
@@ -15,7 +15,7 @@
         <div class="card-bottom">
           <div class="options">
             <!-- Pills Component -->
-            <p class="fw-bold">Skills</p>
+            <!-- <p class="fw-bold">Skills</p> -->
             <pill-component class="mt-3" :pillList="pillList" :ctype="ctype"/>
           </div>
         </div>
