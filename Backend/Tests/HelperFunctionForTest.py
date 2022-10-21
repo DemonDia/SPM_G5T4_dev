@@ -22,40 +22,28 @@ BASE = "http://127.0.0.1:8000/"
 # operationType (str) --> CRUD; from 'operationTypes' list
 # fieldValue (any) --> value of given field; default is None
 def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,operationType = "readAll",fieldValue = None):
-    try:
-        if entityName not in entities:
-             print(entityName+" not found. Unable to test")
-             print("Interrupted")
-        print("============================================")
-        print(testCaseName)
-        print("Input:",inputJson)
-        if operationType == "create":
-            triggeredTestCase = addRow(BASE+entityName+"/", inputJson)
-        if operationType == "readAll":
-            triggeredTestCase = getAllRows(BASE+entityName)
-        if operationType == "readAllAvailable":
-            triggeredTestCase = getAllRows(BASE+entityName+"/available")
-        if operationType == "readById":
-            triggeredTestCase = getSingleRow(BASE+entityName, fieldValue)
-        if operationType == "updateById":
-            triggeredTestCase = updateRow(BASE+entityName,fieldValue,inputJson)
-        if operationType == "softDelete":
-            triggeredTestCase = softDeleteRow(BASE+entityName,fieldValue)
-        if operationType == "addRelation":
-            triggeredTestCase = addRelation(BASE+entityName,inputJson)
-        print(triggeredTestCase)
-        # print(getErrorMessage(triggeredTestCase))
-        validateOutcome(triggeredTestCase, expectedResult)
-        print("Complete")
-    except Exception as e:
-        print("Issue: ",str(e))
-        print("Interrupted")
+    assert entityName in entities,"Entity name '"+ entityName+"' not found. Unable to test"
+    assert operationType in operationTypes, "Operation type '"+operationType+"' not found. Unable to test"
+    print("============================================")
+    print(testCaseName)
+    print("Input:",inputJson)
+    if operationType == "create":
+        triggeredTestCase = addRow(BASE+entityName+"/", inputJson)
+    if operationType == "readAll":
+        triggeredTestCase = getAllRows(BASE+entityName)
+    if operationType == "readAllAvailable":
+        triggeredTestCase = getAllRows(BASE+entityName+"/available")
+    if operationType == "readById":
+        triggeredTestCase = getSingleRow(BASE+entityName, fieldValue)
+    if operationType == "updateById":
+        triggeredTestCase = updateRow(BASE+entityName,fieldValue,inputJson)
+    if operationType == "softDelete":
+        triggeredTestCase = softDeleteRow(BASE+entityName,fieldValue)
+    if operationType == "addRelation":
+        triggeredTestCase = addRelation(BASE+entityName,inputJson)
+    validateOutcome(triggeredTestCase, expectedResult,testCaseName)
+    print("Complete")
 
-# to get error msg
-def getErrorMessage(testCaseResult):
-    if testCaseResult["success"] == True:
-        return "N/A"
-    return testCaseResult["message"]
 
 # setup data
 def seedAllData():
@@ -68,14 +56,11 @@ def cleanUp():
         deleteAll(BASE+entities[entity]+"/")
 
 # check if test case pass
-def validateOutcome(actualResult, expectedResult):
-    try:
-        if actualResult["success"] == expectedResult:
-            print("Test case passed")
-        else:
-            print("Test case failed")
-    except:
-        print("Test case failed")
+def validateOutcome(actualResult, expectedResult,testCaseName):
+    if(actualResult["success"] != expectedResult):
+        print(actualResult["message"])
+    assert actualResult["success"] == expectedResult, "Test case '"+testCaseName+"' failed"
+
 # delete all data
 def deleteAll(url):
     results = requests.delete(url+"deleteall")
