@@ -8,6 +8,7 @@ import CreateRole from '../views/CreateRole.vue'
 import CreateSkill from '../views/CreateSkill.vue'
 import Login from '../views/Login.vue'
 import store from '@/store'
+import UpdateRole from '../views/UpdateRole.vue'
 
 const routes = [
   {
@@ -31,6 +32,22 @@ const routes = [
     path: '/create-role',
     name: 'create-role',
     component: CreateRole,
+    beforeEnter: (to, from, next) => {
+      if (!store.getters['auth/authenticated']) {
+        return next({ name: 'login' })
+      }
+
+      if (store.getters['auth/user'].Role != 1) {
+        return next({ name: 'home' })
+      }
+
+      next()
+    },
+  },
+  {
+    path: '/update-role',
+    name: 'update-role',
+    component: UpdateRole,
     beforeEnter: (to, from, next) => {
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
