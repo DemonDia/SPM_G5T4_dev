@@ -12,7 +12,7 @@
         <button class="ph-dots-three menu-dot" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="#">Update</a></li>
+          <li><a class="dropdown-item" @click="updateItem(id, ctype)">Update</a></li>
           <li><a class="dropdown-item" @click="deleteItem(id, ctype)">Delete</a></li>
         </ul>
       </div>
@@ -124,8 +124,13 @@ export default {
         });
       }
     },
-
-  
+    updateItem(id, ctype) {
+      if(ctype == "skill") {
+        router.push({ name: 'UpdateSkill', params: { role_id: id } });
+      } else if (ctype == 'role') {
+        router.push({ name: 'update-role', params: { role_id: id } });
+      }
+    }
   },
 };
 </script>
