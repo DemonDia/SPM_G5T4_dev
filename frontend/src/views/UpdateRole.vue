@@ -2,13 +2,13 @@
   <DashboardLayout>
     <div class="container-fluid p-sm-5" id="updateRoleMain">
       <!-- Spinner -->
-      <div v-if="role_name.length < 1 && noRoleFound == false" id="rippleP">
+      <div v-if="!noRoleFound" id="rippleP">
         <div class="lds-ripple">
           <div></div>
           <div></div>
         </div>
       </div>
-      <div
+      <div v-else
         class="col-sm-12 col-xl-8 mx-auto my-3 p-5 text-start rounded rounded-4 shadow-lg mb-5 bg-body"
       >
         <h3>Update a Role</h3>
@@ -50,7 +50,7 @@
           <PillSearchComponent
             class="mt-3"
             ctype="skill"
-            skill_array="skill_array"
+            :role_id="this.$route.params.role_id"
             @pillItems="getPill"
           ></PillSearchComponent>
         </form>
@@ -112,6 +112,7 @@ export default {
       ],
       pillItemsFromComponent: [],
       noRoleFound: false,
+      skills_array: [],
     };
   },
   methods: {
@@ -127,7 +128,7 @@ export default {
     // The user will be redirected to the View Role page
 
     handleSubmit() {
-      this.createRole().then((res) => {
+      this.updateRole().then((res) => {
         var roleStatus = res.data;
         this.assignSkills(roleStatus.data).then((result) => {
           var assignSkillStatus = result.data;
@@ -207,7 +208,7 @@ export default {
         axios
           .get(getRoleSkillUrl)
           .then((response) => {
-            resolve(response);
+            resolve(response.data.data);
           })
           .catch((err) => reject(err));
       });
@@ -260,25 +261,23 @@ export default {
     },
   },
   async mounted() {
-    document.title = "LJMS - Create Roles";
+    document.title = "LJMS - Update Role";
     // get role information from backend
     var role_id = this.$route.params.role_id;
-
     var roleInfo = await this.getRoleInfo(role_id);
+    roleInfo ? (this.noRoleFound = true) : (this.noRoleFound = false);
     this.role_name.role_name = roleInfo.data.data.Role_Name;
-    this.role_description.role_description =
-      roleInfo.data.data.Role_Description;
+    this.role_description.role_description = roleInfo.data.data.Role_Description;
   },
 };
 </script>
 
 <style scoped>
-#updateRoleMain {
-  min-height: 100vh;
-}
+  #updateRoleMain {
+    min-height: 100vh;
+  }
 
-  
-#rippleP {
+  #rippleP {
     position: absolute;
     top: 45%;
     left: 47%;
@@ -289,6 +288,7 @@ export default {
     position: relative;
     width: 80px;
     height: 80px;
+    z-index: 100;
   }
   .lds-ripple div {
     position: absolute;

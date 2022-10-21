@@ -58,7 +58,7 @@ export default {
       },
     };
   },
-  props: ["ctype", "skill_array"],
+  props: ["ctype", "role_id"],
   methods: {
     searchItem() {
         // only search if the search bar is not empty
@@ -80,14 +80,33 @@ export default {
       this.pillItems = this.pillItems.filter((value) => value.Skill_ID != item); // remove item from pillItems array
       this.$emit('pillItems', this.pillItems);  // emit the pillItems array to the parent component
     },
+    getRoleSkill(role_id) {
+      var getRoleSkillUrl =
+        "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/" +
+        role_id;
+      return new Promise((resolve, reject) => {
+        axios
+          .get(getRoleSkillUrl)
+          .then((response) => {
+            resolve(response.data.data);
+          })
+          .catch((err) => reject(err));
+      });
+    },
   },
   computed: {},
-  mounted() {
+  async mounted() {
     var url = this.url[this.ctype];
     axios.get(url).then((response) => {
       var result = response.data.data;
       this.items = result;
     });
+
+    // This is for update role page, to get the skills that are already assigned to the role
+    if (this.role_id) {
+      this.pillItems = await this.getRoleSkill(this.role_id);
+    }
+
   },
 };
 </script>
