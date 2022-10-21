@@ -11,6 +11,7 @@
       <div v-else
         class="col-sm-12 col-xl-8 mx-auto my-3 p-5 text-start rounded rounded-4 shadow-lg mb-5 bg-body"
       >
+      <button @click="goBack" class="ph-arrow-left back-btn mb-3">Back</button>
         <h3>Update a Role</h3>
         <h6 class="text-secondary mt-3 mb-3">
           Change the existing values in the input box
@@ -57,9 +58,6 @@
 
         <!-- Buttons -->
         <div class="row d-flex justify-content-around my-sm-3 my-md-5 p-3">
-          <button @click="goBack" type="button" class="btn col-md-4 col-sm-5 m-2 btn-secondary">
-            Back
-          </button>
           <button type="button" class="btn col-md-4 col-sm-5 m-2 btn-primary">
             Update Role
           </button>
@@ -276,6 +274,20 @@ export default {
 </script>
 
 <style scoped>
+  .back-btn {
+    border: none;
+    background: none;
+    line-height: 1;
+    font-weight: 500;
+    color: #113f7c;
+    font-size: 18px;
+  }
+
+  .back-btn:hover {
+    color: #1a73e8;
+    transition: 0.3s ease-in-out;
+  }
+
   #updateRoleMain {
     min-height: 100vh;
   }
