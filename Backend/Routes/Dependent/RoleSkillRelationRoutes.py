@@ -24,7 +24,15 @@ async def addRoleSkillRelation(request: Request, session: Session = Depends(get_
     errors = []
     try:
         requestData = await request.json()
-        role = session.get(RoleModel, requestData["Role_ID"])
+        statement = select(RoleModel).where(RoleModel.Role_ID == requestData["Role_ID"])
+        result = session.exec(statement)
+        #role = result.one()
+    
+        chosenRoleResult = result.all()
+        if len(chosenRoleResult) == 0:
+           return #yes this returns the success = false json
+        else:
+           role = chosenRoleResult[0]
         if role == None:
             errors.append("Role does not exist!")
             errors.append(str(e))
@@ -32,9 +40,7 @@ async def addRoleSkillRelation(request: Request, session: Session = Depends(get_
                 "success": False,
                 "message": errors
             }
-        for Skill_ID in requestData["skills"]:
-            print("Role_ID",requestData["Role_ID"])
-            print("Skill_ID",Skill_ID)
+        for Skill_ID in requestData["Skills"]:
             newRoleSkillRelation = RoleSkillRelationModel()
             newRoleSkillRelation.Role_ID = requestData["Role_ID"]
             newRoleSkillRelation.Skill_ID = Skill_ID
@@ -59,11 +65,9 @@ async def addRoleSkillRelation(request: Request, session: Session = Depends(get_
             "message": errors
         }
 
-# to get skills
 @app.get('/roleskillrelations/{Role_ID}')
 async def addRoleSkillRelation(Role_ID: int, session: Session = Depends(get_session)):
     errors = []
-    skills = []
     try:
         role = session.get(RoleModel, Role_ID)
         if role == None:
@@ -73,7 +77,8 @@ async def addRoleSkillRelation(Role_ID: int, session: Session = Depends(get_sess
                 "success": False,
                 "message": errors
             }
-        statement = select(SkillModel.Skill_Name).select_from(join(SkillModel,RoleSkillRelationModel)).where(RoleSkillRelationModel.Role_ID == Role_ID)
+        statement = select(SkillModel.Skill_Name, SkillModel.Skill_ID).select_from(
+            join(RoleModel, join(SkillModel, RoleSkillRelationModel))).where(RoleModel.Role_ID == Role_ID)
         results = session.exec(statement).all()
 
         if len(errors) > 0:

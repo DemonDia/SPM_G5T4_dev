@@ -7,7 +7,7 @@ CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR))
 
 from driverutil.Browser import Browser
-from pageobjects.LoginLJMS import LoginLJMS
+from pageobjects.LoginPage import LoginLJMS
 
 
 class RunTest(unittest.TestCase):
