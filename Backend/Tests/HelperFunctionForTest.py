@@ -123,7 +123,7 @@ def addRow(url,jsonObject):
 
 # Add many to many relation
 def addRelation(url,jsonObject):
-    addedRelation = requests.post(url, json=jsonObject)
+    addedRelation = requests.post(url+"/", json=jsonObject)
     return addedRelation.json()
 
 # Update rows

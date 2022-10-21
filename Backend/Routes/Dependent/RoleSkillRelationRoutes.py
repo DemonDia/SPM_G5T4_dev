@@ -26,8 +26,13 @@ async def addRoleSkillRelation(request: Request, session: Session = Depends(get_
         requestData = await request.json()
         statement = select(RoleModel).where(RoleModel.Role_ID == requestData["Role_ID"])
         result = session.exec(statement)
-        role = result.one()
-        #role = session.get(RoleModel, requestData["Role_ID"])
+        #role = result.one()
+    
+        chosenRoleResult = result.all()
+        if len(chosenRoleResult) == 0:
+           return #yes this returns the success = false json
+        else:
+           role = chosenRoleResult[0]
         if role == None:
             errors.append("Role does not exist!")
             errors.append(str(e))
