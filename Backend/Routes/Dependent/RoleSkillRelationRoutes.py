@@ -77,7 +77,8 @@ async def addRoleSkillRelation(Role_ID: int, session: Session = Depends(get_sess
                 "success": False,
                 "message": errors
             }
-        statement = select(SkillModel.Skill_Name).select_from(join(SkillModel,RoleSkillRelationModel)).where(RoleSkillRelationModel.Role_ID == Role_ID)
+        statement = select(SkillModel.Skill_Name, SkillModel.Skill_ID).select_from(
+            join(RoleModel, join(SkillModel, RoleSkillRelationModel))).where(RoleModel.Role_ID == Role_ID)
         results = session.exec(statement).all()
 
         if len(errors) > 0:
@@ -97,3 +98,4 @@ async def addRoleSkillRelation(Role_ID: int, session: Session = Depends(get_sess
             "success": False,
             "message": errors
         }
+

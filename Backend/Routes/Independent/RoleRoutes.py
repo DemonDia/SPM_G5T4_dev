@@ -25,7 +25,7 @@ def addSeedData():
 def getRelatedSkills(targetModelIdValue):
     try:
         session = Session(engine)
-        statement = select(SkillModel.Skill_Name).select_from(join(SkillModel, RoleSkillRelationModel)).where(
+        statement = select(SkillModel.Skill_ID,SkillModel.Skill_Name).select_from(join(SkillModel, RoleSkillRelationModel)).where(
             RoleSkillRelationModel.Role_ID == targetModelIdValue)
         results = session.exec(statement).all()
         return {
