@@ -28,13 +28,13 @@ def addSkillTest():
 
 def viewExistingSkillTest():
     print("User Story: View Existing Skills")
-    #before = getSingleRow(BASE+entityName+"/available/", 1)
-    #print("before",before)
+    before = getSingleRow(BASE+entityName+"/available/", 1)
+    print("before",before)
     triggerTestCase("View Existing Skills",
-                    True, entityName+"/available/", {
-                    }, "readAll", None)
-    #after = getSingleRow(BASE+entityName, 1)
-    #print("after",after)
+                    True, entityName, {
+                    }, "readAllAvailable", None)
+    after = getSingleRow(BASE+entityName, 1)
+    print("after",after)
     return
 
 def updatingSkillTest():

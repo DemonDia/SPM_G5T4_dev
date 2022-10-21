@@ -14,7 +14,7 @@
        <div v-else class="">
       
           <div v-for="(value, key) in courses" v-bind:key="key">
-             <CourseComponent :title="value.Course_Name" :desc="value.Course_Desc" :active="value.Course_Status" :pillList="value.Skills" :id="value.Course_ID"></CourseComponent>
+             <CourseComponent :title="value.Course_Name" :desc="value.Course_Desc" :active="value.Course_Status" :pillList="value.Skills" :id="value.Course_ID" ctype="role"></CourseComponent>
         </div>
       </div>
       <!-- No Role Found -->

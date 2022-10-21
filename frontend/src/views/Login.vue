@@ -28,7 +28,8 @@
                 v-model="form.staffID"
                 type="text"
                 class="form-control"
-                placeholder="Email"
+                name="staffID"
+                placeholder="Email/Staff ID"
               />
             </div>
             <div class="form-group">
@@ -36,6 +37,7 @@
               <input
                 v-model="form.password"
                 type="password"
+                name="password"
                 class="form-control"
                 placeholder="Password"
               />
