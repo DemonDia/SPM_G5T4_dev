@@ -1,7 +1,7 @@
 from fastapi import Response, Depends, Request
 from Models.DependentModels import CourseSkillRelationModel
 from database import *
-from sqlmodel import Session, select, delete
+from sqlmodel import Session, select, delete,join
 from config import app
 from Models.IndependentModels import *
 from HelperFunctions import *
@@ -16,7 +16,7 @@ def deleteAll():
 # ===========================actual CRUD functions===========================
 # input should be an array
 # requests contains "CourseId" and a list "skills" which contains the Skill_ID of the skills to add
-@app.post('/courseSkillRelations/')
+@app.post('/courseskillrelations/')
 async def addcourseSkillRelation(request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -45,6 +45,40 @@ async def addcourseSkillRelation(request: Request, session: Session = Depends(ge
             "success": True,
             "message": "Skill(s) assigned to course"
         }
+    except Exception as e:
+        errors.append(str(e))
+        return {
+            "success": False,
+            "message": errors
+        }
+
+@app.get('/courseskillrelations/{Course_ID}')
+async def addRoleSkillRelation(Course_ID: str, session: Session = Depends(get_session)):
+    errors = []
+    try:
+        role = session.get(CourseModel, Course_ID)
+        if role == None:
+            errors.append("Role does not exist!")
+            errors.append(str(e))
+            return {
+                "success": False,
+                "message": errors
+            }
+        statement = select(SkillModel.Skill_Name, SkillModel.Skill_ID).select_from(
+            join(CourseModel, join(SkillModel, CourseSkillRelationModel))).where(CourseModel.Course_ID == Course_ID)
+        results = session.exec(statement).all()
+
+        if len(errors) > 0:
+            return {
+                "success": False,
+                "message": errors
+            }
+
+        return {
+            "success": True,
+            "data": results
+        }
+
     except Exception as e:
         errors.append(str(e))
         return {
