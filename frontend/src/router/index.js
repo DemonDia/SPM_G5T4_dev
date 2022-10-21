@@ -45,7 +45,7 @@ const routes = [
     },
   },
   {
-    path: '/update-role',
+    path: '/update-role/:role_id',
     name: 'update-role',
     component: UpdateRole,
     beforeEnter: (to, from, next) => {

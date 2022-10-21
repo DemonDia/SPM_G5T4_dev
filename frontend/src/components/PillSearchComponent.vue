@@ -58,7 +58,7 @@ export default {
       },
     };
   },
-  props: ["ctype"],
+  props: ["ctype", "skill_array"],
   methods: {
     searchItem() {
         // only search if the search bar is not empty
