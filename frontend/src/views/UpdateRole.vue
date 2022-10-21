@@ -57,7 +57,7 @@
 
         <!-- Buttons -->
         <div class="row d-flex justify-content-around my-sm-3 my-md-5 p-3">
-          <button type="button" class="btn col-md-4 col-sm-5 m-2 btn-secondary">
+          <button @click="goBack" type="button" class="btn col-md-4 col-sm-5 m-2 btn-secondary">
             Back
           </button>
           <button type="button" class="btn col-md-4 col-sm-5 m-2 btn-primary">
@@ -78,7 +78,7 @@ import PillSearchComponent from "@/components/PillSearchComponent.vue";
 import PillComponent from "@/components/PillComponent.vue";
 
 export default {
-  name: "CreateRole",
+  name: "UpdateRole",
   components: {
     DashboardLayout,
     FormComponent,
@@ -258,6 +258,9 @@ export default {
         pillItems.push(value.Skill_ID);
       });
       return pillItems;
+    },
+    goBack() {
+      this.$router.replace({ name: "roles" });
     },
   },
   async mounted() {
