@@ -14,6 +14,7 @@
           <ModalComponent
             type="Role"
             :isSuccess="isSuccess"
+            func="create"
             @clicked="onClickModal"
           />
         </div>
@@ -272,15 +273,17 @@ export default {
           .catch((err) => reject(err));
       });
     },
+
     resetForm() {
       this.role_name.role_name = "";
       this.role_description.role_description = "";
     },
+
     onClickModal(value) {
       // modal is closed
       // reset checked value:
       this.checked = value;
-      if (this.isSubmitted && this.isSuccess) {
+      if (this.isSuccess) {
         // go back to View All
         this.$router.replace({ name: "roles" });
       }
@@ -307,14 +310,15 @@ export default {
       // emit content to be passed into the pillItemsFromComponent
       this.pillItemsFromComponent = item;
     },
+
     resetErrors() {
       // reset fields
       this.role_name.errors = [];
       this.role_description.errors = [];
       this.isSubmitted = NaN;
-
-      // submitted form
-      this.isSubmitted = true;
+      this.isSuccess = NaN;
+      this.checked = NaN;
+      this.pillItemsFromComponent = []
     },
   },
   computed: {
@@ -327,6 +331,7 @@ export default {
       });
       return pillItems;
     },
+
     // This computed function will enumerate the pillItemsFromComponent where the key/value items is stored
     // And then it will return the value of the key "skill_id" and return to the assign skill function.
     pillSkill_IDArray() {
