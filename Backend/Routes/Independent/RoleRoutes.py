@@ -25,7 +25,7 @@ def addSeedData():
 def getRelatedSkills(targetModelIdValue):
     try:
         session = Session(engine)
-        statement = select(SkillModel.Skill_Name).select_from(join(SkillModel, RoleSkillRelationModel)).where(
+        statement = select(SkillModel.Skill_ID,SkillModel.Skill_Name).select_from(join(SkillModel, RoleSkillRelationModel)).where(
             RoleSkillRelationModel.Role_ID == targetModelIdValue)
         results = session.exec(statement).all()
         return {
@@ -203,7 +203,8 @@ def createRoles(role: RoleModel, session: Session = Depends(get_session)):
 
         return {
             "success": True,
-            "message": "Successfully added"
+            "message": "Successfully added",
+            "data":role.Role_ID
         }
 
     except Exception as e:

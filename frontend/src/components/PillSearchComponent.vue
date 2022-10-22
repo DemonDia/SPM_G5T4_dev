@@ -24,9 +24,9 @@
       </div>
     </div>
 
-    <div class="d-flex pills mt-3">
+    <div class="d-flex pills my-3">
       <div
-        class="pill rounded-pill px-2 me-2"
+        class="pill rounded-pill px-2 me-2 mb-3"
         v-for="(value, key) in this.pillItems"
         v-bind:key="key"
       >
@@ -184,18 +184,11 @@ export default {
 }
 
 .pill-text {
-  padding: 0.5em;
-  font-size: 14px;
+  padding: 0.3em;
+  font-size: 13px;
 }
 
 .pills {
-  overflow: scroll;
-  /* overflow: hidden; */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  scrollbar-width: none; /* Firefox */
-}
-
-.pills::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+  flex-wrap: wrap;
 }
 </style>

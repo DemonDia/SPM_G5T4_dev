@@ -98,12 +98,23 @@ def getAvailableSkills(session: Session = Depends(get_session)):
     errors = []
     try:
         stmt = select(SkillModel).where(SkillModel.Active == 1)
-        result = session.exec(stmt).all()
+        getAllSkills = session.exec(stmt).all()
+        allCourses = getAllRelatedCourses()["data"]
+        allSkills = []
+        for skill in getAllSkills:
+            skillDict = {}
+            for columnName, columnValue in skill:
+                skillDict[columnName] = columnValue
+                if skill.Skill_ID in allCourses.keys():
 
+                    skillDict["Courses"] = allCourses[skill.Skill_ID]
+                else:
+                    skillDict["Courses"] = []
+            allSkills.append(skillDict)
         # return result
         return {
             "success": True,
-            "data": result
+            "data": allSkills
         }
     except Exception as e:
         errors.append(str(e))
@@ -204,40 +215,39 @@ def updateSkill(Skill_ID: int, updated_skill: SkillModel, session: Session = Dep
     errors = []
     try:
         statement = select(SkillModel).where(SkillModel.Skill_ID == Skill_ID)
-        result = session.exec(statement)
-        skill = result.one()
+        result = session.exec(statement).all()
 
-        if skill == None:
+        if len(result) == 0:
             errors.append("Skill not found!")
+        print("result",result)
+        skill = result[0]
+        findDuplicateRoleStatement = select(SkillModel).where(
+            SkillModel.Skill_Name == updated_skill.Skill_Name)
+        results = session.exec(findDuplicateRoleStatement).all()
+
+        # check for duplicate skill name
+        if len(results) > 0:
+            errors.append("Skill already exists! Please try again")
 
 
-            findDuplicateRoleStatement = select(SkillModel).where(
-                SkillModel.Skill_Name == updated_skill.Skill_Name)
-            results = session.exec(findDuplicateRoleStatement).one()
+        # check for empty skill name
+        if len(updated_skill.Skill_Name) == 0:
+            errors.append("Skill Name cannot be empty! Please try again")
 
-            # check for duplicate skill name
-            if results:
-                errors.append("Skill already exists! Please try again")
+        # check if skill name exceeds 30 characters
+        if len(updated_skill.Skill_Name) > 30:
+            errors.append(
+                "Skill Name exceeds character limit of 30! Please try again")
 
+        # check for empty skill description
+        if len(updated_skill.Skill_Description) == 0:
+            errors.append(
+                "Skill Description cannot be empty! Please try again")
 
-            # check for empty skill name
-            if len(updated_skill.Skill_Name) == 0:
-                errors.append("Skill Name cannot be empty! Please try again")
-
-            # check if skill name exceeds 30 characters
-            if len(updated_skill.Skill_Name) > 30:
-                errors.append(
-                    "Skill Name exceeds character limit of 30! Please try again")
-
-            # check for empty skill description
-            if len(updated_skill.Skill_Description) == 0:
-                errors.append(
-                    "Skill Description cannot be empty! Please try again")
-
-            # check if skill name exceeds 170 characters
-            if len(updated_skill.Skill_Description) > 170:
-                errors.append(
-                    "Skill Description exceeds character limit of 170! Please try again")
+        # check if skill name exceeds 170 characters
+        if len(updated_skill.Skill_Description) > 170:
+            errors.append(
+                "Skill Description exceeds character limit of 170! Please try again")
 
         if (len(errors) > 0):
             return {
@@ -269,13 +279,13 @@ def updateSkill(Skill_ID: int, updated_skill: SkillModel, session: Session = Dep
 def softDeleteSkill(Skill_ID: int,session: Session = Depends(get_session)):
     #skill = session.get(SkillModel).where(SkillModel.Skill_Name == Skill_Name)
     statement = select(SkillModel).where(SkillModel.Skill_ID == Skill_ID)
-    result = session.exec(statement)
-    skill = result.one()
-    if skill == None:
+    result = session.exec(statement).all()
+    if len(result) == 0:
         return {
             "success": False,
             "message": "Skill not found "
         }
+    skill = result[0]
     if skill.Active:
         skill.Active = False
         

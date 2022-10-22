@@ -1,5 +1,5 @@
 <template>
-  <div class="row d-flex justify-content-center my-5 ms-0 pe-3">
+  <div class="row d-flex justify-content-center my-sm-2 my-md-5 ms-0 pe-3">
     <div class="col-sm-12 col-md-3 text-xs-start text-sm-center pt-1 px-0">
         <label class="form-label pt-1" v-if="label">
           {{ label }}
@@ -28,7 +28,7 @@
         ></textarea>
       </div>
       <div class="row">
-        <div class="text-start text-danger col-sm-12 col-lg-8">
+        <div class="text-start text-danger col-sm-12" :class="this.formType=='textarea' ? 'col-lg-8' : 'col-lg-10'">
           <!-- Character limit warning (before submission) -->
           <p v-if="this.overLimit" class="pt-2">
             {{ this.warning }}
@@ -36,18 +36,12 @@
   
           <!-- Show errors -->
           <div v-if="this.errors.length == 1 && this.isSubmitted">
-            <!-- <p class="text-start text-danger">
-              Please fix these errors:
-            </p> -->
-            <p class="ps-1">
+            <p class="">
               {{ this.errors[0] }}
             </p>
           </div>
           <div v-if="this.errors.length > 1 && this.isSubmitted">
-            <!-- <p class="text-start text-danger">
-              Please fix these errors:
-            </p> -->
-            <ul class="ps-4">
+            <ul class="">
               <li v-for="(error, index) in this.errors" v-bind:key="index">
                 {{ error }}
               </li>
