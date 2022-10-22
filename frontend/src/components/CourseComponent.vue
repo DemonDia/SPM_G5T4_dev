@@ -1,22 +1,29 @@
 <template>
-  <div class="card-component m-3 p-3">
+  <div v-if="this.status=='Active'" class="card-component m-4 p-3">
     <div class="row justify-content-between">
-      <div class="col-md-3 col-12 m-1 p-3 mx-auto">
-        <img :src="`https://picsum.photos/id/${this.indx}/200/200`" class="img-fluid" alt=""/>
+      <!-- Image -->
+      <div class="col-md-3 col-12 p-3 mx-auto">
+        <img :src="`https://picsum.photos/id/${this.indx}/200/200`" class="img-fluid" alt="Course Image Illustration"/>
       </div>
-
-      <div class="col-6 flex-grow-1 card-content p-2 px-4 pt-0">
-        <h5 class="card-title text-start m-1 pt-3 pb-0">{{ this.title }}</h5>
-        <div class="card-body m-1">
-          <p class="card-text text-start">
-            {{ this.desc }}
-          </p>
+      <!-- Card Content -->
+      <div class="col-6 flex-grow-1 card-content p-2 px-4 pt-0 pt-md-2">
+        <div class="tags text-start p-2 ps-0 mt-0 my-2">
+          <span class="badge text-dark me-2" id="typeBadge">
+            <p>{{ this.type }}</p>
+          </span>
+          <span class="badge text-dark me-2" id="catBadge">
+            <p>{{ this.category }}</p>
+          </span>
         </div>
-        <div class="card-bottom">
+        <h5 class="card-title text-start my-2">{{ this.title }}</h5>
+        <div class="card-body my-2">
+          <p class="card-text text-start">{{ this.desc }}</p>
+        </div>
+        <div class="card-bottom my-2">
           <pill-component :pillList="this.skills" ctype="role"/>
         </div>
       </div>
-
+      <!-- Menu Button -->
       <div class="col-1 menu-frame d-flex flex-wrap">
         <button
               class="ph-dots-three-vertical menu-dot"
@@ -122,5 +129,15 @@ export default {
     font-size: 2.1rem;
     background-color: transparent;
     border: none;
+  }
+
+  #typeBadge {
+    border: 2px solid #00b8ff;
+    color: #00b8ff;
+  }
+
+  #catBadge {
+    border: 2px solid #ff00c1;
+    color: #ff00c1;
   }
 </style>

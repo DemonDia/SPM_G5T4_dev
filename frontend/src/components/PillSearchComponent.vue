@@ -155,8 +155,8 @@ export default {
 .pill {
   display: inline-flex;
   background-color: transparent;
-  border: 1.5px solid #0065ff;
-  color: #0065ff;
+  /* border: 1.5px solid #434ce8; */
+  color: #434ce8;
   line-height: 25px;
   font-weight: 800;
   min-width: max-content;

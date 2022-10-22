@@ -18,7 +18,7 @@
       </div>
 
       <!-- Description -->
-      <div class="card-component-body m-1 my-0 ">
+      <div class="card-component-body m-1 ms-0 my-0 ">
         <p class="card-component-text text-start">
           {{ desc }}
         </p>
