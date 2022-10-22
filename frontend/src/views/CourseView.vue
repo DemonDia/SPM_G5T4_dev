@@ -10,6 +10,13 @@
       </div>
        <!-- Dashboard -->
        <div v-else class="">
+
+      
+          <PillSearchComponent ctype="skill" @pillItems="getPill"></PillSearchComponent>
+  
+
+        {{ this.pillItemsFromComponent}}
+
           <div v-for="(value, key) in courses" v-bind:key="key">
             <CourseComponent :course="value" :indx="key">
               {{addSkills(value.skills)}}
@@ -30,12 +37,14 @@ import DashboardLayout from "@/views/Dashboard/Layout/DashboardLayout.vue";
 import CourseComponent from "@/components/CourseComponent.vue";
 import axios from "axios";
 import { mapGetters } from "vuex";
+import PillSearchComponent from '@/components/PillSearchComponent.vue'
 
 export default {
   name: "CourseView",
   components: {
     DashboardLayout,
     CourseComponent,
+    PillSearchComponent
 },
   data() {
     return {
@@ -45,8 +54,17 @@ export default {
       noCourseFound: false,
       selectedList: [],
       availSkills: ['Select skills:'],
-      noSkillFound: false
+      noSkillFound: false,
+      pillItemsFromComponent: [],
     };
+  },
+  methods: {
+    getPill(item) {
+        // emit content to be passed into the pillItemsFromComponent
+        console.log(item)
+        this.pillItemsFromComponent = item;
+        console.log(this.pillItemsFromComponent)
+      },
   },
   mounted() {
     document.title = "LJMS - Courses";
@@ -56,7 +74,7 @@ export default {
       this.courses = result;
       this.courses.length == 0 ? (this.noCourseFound = true) : null;
     });
-    this.getSkills();
+    // this.getSkills();
   },
   computed: {
     ...mapGetters({

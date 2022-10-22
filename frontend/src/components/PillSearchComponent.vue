@@ -75,6 +75,7 @@ export default {
       this.search = "";
       this.autocompleteItems = [];
       this.$emit('pillItems', this.pillItems);  // emit the pillItems array to the parent component
+      console.log(this.pillItems)
     },
     unselectItem(item) {
       this.pillItems = this.pillItems.filter((value) => value.Skill_ID != item); // remove item from pillItems array
