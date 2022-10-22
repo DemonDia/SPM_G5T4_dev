@@ -8,10 +8,13 @@
           <div></div>
         </div>
       </div>
-      <div v-else
+      <div
+        v-else
         class="col-sm-12 col-xl-8 mx-auto my-3 p-5 text-start rounded rounded-4 shadow-lg mb-5 bg-body"
       >
-      <button @click="goBack" class="ph-arrow-left back-btn mb-3">Back</button>
+        <button @click="goBack" class="ph-arrow-left back-btn mb-3">
+          Back
+        </button>
         <h3>Update a Role</h3>
         <h6 class="text-secondary mt-3 mb-3">
           Change the existing values in the input box
@@ -51,14 +54,18 @@
           <PillSearchComponent
             class="mt-3"
             ctype="skill"
-            :role_id="this.$route.params.role_id"
+            :skills="skills_array"
             @pillItems="getPill"
           ></PillSearchComponent>
         </form>
 
         <!-- Buttons -->
         <div class="row d-flex justify-content-around my-sm-3 my-md-5 p-3">
-          <button type="button" class="btn col-md-4 col-sm-5 m-2 btn-primary">
+          <button
+            type="button"
+            class="btn col-md-4 col-sm-5 m-2 btn-primary"
+            @click="handleSubmit"
+          >
             Update Role
           </button>
         </div>
@@ -111,6 +118,7 @@ export default {
       pillItemsFromComponent: [],
       noRoleFound: false,
       skills_array: [],
+      currentRole_ID: this.$route.params.role_id,
     };
   },
   methods: {
@@ -126,38 +134,40 @@ export default {
     // The user will be redirected to the View Role page
 
     handleSubmit() {
-      this.updateRole().then((res) => {
+      this.updateRole(this.currentRole_ID).then((res) => {
         var roleStatus = res.data;
-        this.assignSkills(roleStatus.data).then((result) => {
-          var assignSkillStatus = result.data;
+        console.log(roleStatus);
 
-          this.resetErrors();
-          if (roleStatus.success || assignSkillStatus.success) {
-            this.resetForm(); // throw error message if role is duplicated
+        if (roleStatus.success) {
+          this.assignSkills(this.currentRole_ID).then((result) => {
+            this.resetErrors();
+            this.resetForm();
             this.isSuccess = true;
-          } else {
-            // failure case
-            this.isSuccess = false;
-            for (let err in roleStatus.message) {
-              let msg = roleStatus.message[err];
-              if (this.RNerrors.includes(msg)) {
-                this.role_name.errors.push(msg);
-              } else {
-                this.role_description.errors.push(msg);
-              }
+          });
+        } else {
+          this.isSuccess = false;
+          for (let err in roleStatus.message) {
+            let msg = roleStatus.message[err];
+            if (this.RNerrors.includes(msg)) {
+              this.role_name.errors.push(msg);
+            } else {
+              this.role_description.errors.push(msg);
             }
           }
-          // show Modal
-          this.checked = true;
-        });
+        }
+
+        // show Modal
+        this.checked = true;
+        console.log("checked:" + this.checked);
       });
     },
-    updateRole() {
-      var createRoleUrl =
-        "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/";
+    updateRole(role_id) {
+      var updateRoleUrl =
+        "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/" +
+        role_id;
       return new Promise((resolve, reject) => {
         axios
-          .post(createRoleUrl, {
+          .put(updateRoleUrl, {
             Role_Name: this.role_name.role_name,
             Role_Description: this.role_description.role_description,
             Active: true,
@@ -170,11 +180,11 @@ export default {
     },
     assignSkills(role_id) {
       var assignSkillsUrl =
-        "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/";
+        "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/" +
+        role_id;
       return new Promise((resolve, reject) => {
         axios
-          .post(assignSkillsUrl, {
-            Role_ID: role_id,
+          .put(assignSkillsUrl, {
             Skills: this.pillSkill_IDArray,
           })
           .then((response) => {
@@ -197,8 +207,6 @@ export default {
       });
     },
     getRoleSkill(role_id) {
-        // Not done -- waiting for Siang to finish the backend amendments
-
       var getRoleSkillUrl =
         "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/" +
         role_id;
@@ -264,85 +272,91 @@ export default {
   async mounted() {
     document.title = "LJMS - Update Role";
     // get role information from backend
-    var role_id = this.$route.params.role_id;
-    var roleInfo = await this.getRoleInfo(role_id);
-    roleInfo ? (this.noRoleFound = true) : (this.noRoleFound = false);
+    var roleInfo = await this.getRoleInfo(this.currentRole_ID);
+    var roleSkills = await this.getRoleSkill(this.currentRole_ID);
+    roleInfo && roleSkills
+      ? (this.noRoleFound = true)
+      : (this.noRoleFound = false);
+
+    // load data into the v-model and array
     this.role_name.role_name = roleInfo.data.data.Role_Name;
-    this.role_description.role_description = roleInfo.data.data.Role_Description;
+    this.role_description.role_description =
+      roleInfo.data.data.Role_Description;
+    this.skills_array = roleSkills;
   },
 };
 </script>
 
 <style scoped>
-  .back-btn {
-    border: none;
-    background: none;
-    line-height: 1;
-    font-weight: 500;
-    color: #113f7c;
-    font-size: 18px;
-  }
+.back-btn {
+  border: none;
+  background: none;
+  line-height: 1;
+  font-weight: 500;
+  color: #113f7c;
+  font-size: 18px;
+}
 
-  .back-btn:hover {
-    color: #1a73e8;
-    transition: 0.3s ease-in-out;
-  }
+.back-btn:hover {
+  color: #1a73e8;
+  transition: 0.3s ease-in-out;
+}
 
-  #updateRoleMain {
-    min-height: 100vh;
-  }
+#updateRoleMain {
+  min-height: 100vh;
+}
 
-  #rippleP {
-    position: absolute;
-    top: 45%;
-    left: 47%;
-  }
+#rippleP {
+  position: absolute;
+  top: 45%;
+  left: 47%;
+}
 
-  .lds-ripple {
-    display: inline-block;
-    position: relative;
-    width: 80px;
-    height: 80px;
-    z-index: 100;
+.lds-ripple {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  z-index: 100;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid rgb(0, 0, 0);
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
   }
-  .lds-ripple div {
-    position: absolute;
-    border: 4px solid rgb(0, 0, 0);
+  4.9% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  5% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
     opacity: 1;
-    border-radius: 50%;
-    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
   }
-  .lds-ripple div:nth-child(2) {
-    animation-delay: -0.5s;
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
   }
-  @keyframes lds-ripple {
-    0% {
-      top: 36px;
-      left: 36px;
-      width: 0;
-      height: 0;
-      opacity: 0;
-    }
-    4.9% {
-      top: 36px;
-      left: 36px;
-      width: 0;
-      height: 0;
-      opacity: 0;
-    }
-    5% {
-      top: 36px;
-      left: 36px;
-      width: 0;
-      height: 0;
-      opacity: 1;
-    }
-    100% {
-      top: 0px;
-      left: 0px;
-      width: 72px;
-      height: 72px;
-      opacity: 0;
-    }
-  }
+}
 </style>

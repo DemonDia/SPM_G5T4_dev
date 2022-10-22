@@ -58,7 +58,7 @@ export default {
       },
     };
   },
-  props: ["ctype", "role_id"],
+  props: ["ctype", "skills"],
   methods: {
     searchItem() {
         // only search if the search bar is not empty
@@ -103,8 +103,8 @@ export default {
     });
 
     // This is for update role page, to get the skills that are already assigned to the role
-    if (this.role_id) {
-      this.pillItems = await this.getRoleSkill(this.role_id);
+    if (this.skills.length > 0) {
+      this.pillItems = this.skills;
     }
 
   },
