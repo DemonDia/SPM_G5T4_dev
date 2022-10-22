@@ -24,15 +24,16 @@ async def addRoleSkillRelation(request: Request, session: Session = Depends(get_
     errors = []
     try:
         requestData = await request.json()
-        statement = select(RoleModel).where(RoleModel.Role_ID == requestData["Role_ID"])
+        statement = select(RoleModel).where(
+            RoleModel.Role_ID == requestData["Role_ID"])
         result = session.exec(statement)
         #role = result.one()
-    
+
         chosenRoleResult = result.all()
         if len(chosenRoleResult) == 0:
-           return #yes this returns the success = false json
+            return  # yes this returns the success = false json
         else:
-           role = chosenRoleResult[0]
+            role = chosenRoleResult[0]
         if role == None:
             errors.append("Role does not exist!")
             errors.append(str(e))
@@ -64,6 +65,7 @@ async def addRoleSkillRelation(request: Request, session: Session = Depends(get_
             "success": False,
             "message": errors
         }
+
 
 @app.get('/roleskillrelations/{Role_ID}')
 async def addRoleSkillRelation(Role_ID: int, session: Session = Depends(get_session)):
@@ -99,3 +101,61 @@ async def addRoleSkillRelation(Role_ID: int, session: Session = Depends(get_sess
             "message": errors
         }
 
+# request{skills; collect skillID}
+@app.put('/roleskillrelations/{Role_ID}')
+async def updateRoleSkillRelations(Role_ID: int, request: Request, session: Session = Depends(get_session)):
+    errors = []
+    try:
+        requestData = await request.json()
+        statement = select(RoleModel).where(
+            RoleModel.Role_ID == Role_ID)
+        result = session.exec(statement)
+
+        chosenRoleResult = result.all()
+        if len(chosenRoleResult) == 0:
+            return  # yes this returns the success = false json
+        else:
+            role = chosenRoleResult[0]
+        if role == None:
+            errors.append("Role does not exist!")
+            errors.append(str(e))
+            return {
+                "success": False,
+                "message": errors
+            }
+
+        # delete relations
+        existingRoleSkillStatement = select(
+            RoleSkillRelationModel).where(RoleSkillRelationModel.Role_ID == Role_ID)
+        allExistingRoleSkillRelations = session.exec(
+            existingRoleSkillStatement)
+        allRelations = allExistingRoleSkillRelations.all()
+        for relation in allRelations:
+            session.delete(relation)
+        session.commit()
+
+        # add again
+        for Skill_ID in requestData["Skills"]:
+            newRoleSkillRelation = RoleSkillRelationModel()
+            newRoleSkillRelation.Role_ID = Role_ID
+            newRoleSkillRelation.Skill_ID = Skill_ID
+            session.add(newRoleSkillRelation)
+
+        if len(errors) > 0:
+            return {
+                "success": False,
+                "message": errors
+            }
+        session.commit()
+        session.close()
+        return {
+            "success": True,
+            "message": "Related skills are updated!"
+        }
+
+    except Exception as e:
+        errors.append(str(e))
+        return {
+            "success": False,
+            "message": errors
+        }
