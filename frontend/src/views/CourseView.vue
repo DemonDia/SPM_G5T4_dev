@@ -8,13 +8,12 @@
           <div></div>
         </div>
       </div>
-      <!-- <CourseComponent :title="" :desc="" :active="" :pillList="" :id=""></CourseComponent> -->
 
        <!-- Dashboard -->
        <div v-else class="">
-      
           <div v-for="(value, key) in courses" v-bind:key="key">
-             <CourseComponent :title="value.Course_Name" :desc="value.Course_Desc" :active="value.Course_Status" :pillList="value.Skills" :id="value.Course_ID"></CourseComponent>
+            <CourseComponent :course="value" :indx="key">
+            </CourseComponent>
         </div>
       </div>
       <!-- No Role Found -->
@@ -48,8 +47,7 @@ export default {
   },
   mounted() {
     document.title = "LJMS - Courses";
-    var url =
-      "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/course/";
+    var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/course/";
     axios.get(url).then((response) => {
       var result = response.data.data;
       this.courses = result;

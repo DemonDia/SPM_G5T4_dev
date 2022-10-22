@@ -1,42 +1,43 @@
 <template>
-  <div class="card-component mt-3 mb-2 mx-auto p-3 ps-4">
-    <div class="row">
+  <div class="card-component container-fluid m-4 mx-auto py-4 ps-4">
+    <div class="justify-content-between d-flex flex-wrap">
       <!-- Image -->
-      <img src="https://picsum.photos/600" alt="" />
-
-      <!-- Title -->
-      <div class="card-content">
-        <h4 class="card-title">{{ title }}</h4>
-        
+      <div class="col-lg-4 col-sm-12 mx-auto my-2">
+        <img :src="`https://picsum.photos/id/${this.indx}/200/200`" class="img-fluid" alt=""/>
+      </div>
+      
+      <div class="col-lg-7 col-md-11 card-content my-2 py-3 pt-1 mt-0">
+        <!-- Title -->
+        <h4 class="card-title text-start text-break">{{ this.title }}</h4>
         <!-- Description -->
-        <p class="card-description">
-          {{ desc }}
+        <p class="card-description text-start text-break my-2">
+          {{ this.desc }}
         </p>
-        <div class="card-bottom">
-          <div class="options">
+        <!-- Skills -->
+        <div class="card-bottom flex-wrap">
+          <!-- <div class="options"> -->
             <!-- Pills Component -->
-            <p class="fw-bold">Skills</p>
-            <pill-component class="mt-3" :pillList="pillList" :ctype="ctype"/>
-          </div>
+            <!-- <p class="fw-bold">Skills</p> -->
+            <pill-component :pillList="this.skills" ctype="role"/>
+          <!-- </div> -->
         </div>
       </div>
-
-      <!-- Menu Button -->
-      <div class="menu-frame col-3 mt-0 p-3 pt-0">
-        <button
-          class="ph-dots-three-vertical menu-dot"
-          type="button"
-          id="dropdownMenuButton1"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        ></button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="#">Update</a></li>
-          <li><a class="dropdown-item" href="#">Delete</a></li>
-        </ul>
+      <div class="col-1 order-1">
+        <!-- Menu Button -->
+        <div class="menu-frame mt-0 p-3 pt-0">
+          <button
+            class="ph-dots-three-vertical menu-dot"
+            type="button"
+            id="dropdownMenuButton1"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          ></button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="#">Update</a></li>
+            <li><a class="dropdown-item" href="#">Delete</a></li>
+          </ul>
+        </div>
       </div>
-
-    
     </div>
   </div>
 </template>
@@ -49,8 +50,24 @@ export default {
   components: {
     PillComponent
   },
-  props: ["title", "desc", "active" ,"pillList", "ctype"],
-  methods: {},
+  props: ["course", "indx"],
+  data() {
+    return {
+      category: this.course.Course_Category,
+      desc: this.course.Course_Desc,
+      courseId: this.course.Course_ID,
+      title: this.course.Course_Name,
+      status: this.course.Course_Status,
+      type: this.course.Course_Type,
+      skills: this.course.Skills,
+    }
+  },
+  methods: {
+
+  },
+  mounted() {
+    console.log(this.course);
+  }
 };
 </script>
 
@@ -59,6 +76,7 @@ export default {
   margin: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
+  /* overflow: hidden; */
 }
 
 img {
@@ -66,13 +84,13 @@ img {
   display: block;
   object-fit: cover;
   margin: 0 auto;
-  max-width: 15%;
-  min-height: 100%;
+  /* max-width: 15; */
+  /* min-height: 100%; */
   transition: all 0.5s ease 0s;
 }
 
 .card-component {
-  padding: 20px 16px;
+  /* padding: 20px 16px; */
   background-color: white;
   border-radius: 15px;
   cursor: pointer;
@@ -121,31 +139,28 @@ img {
 .card-content {
   flex: 1 50%;
   -webkit-flex: 1 50%;
-  padding: 0.8rem;
 }
 .card-title {
-  text-align: left;
 	font-size: 1.2rem;
   font-weight: 700;
-  margin: 0;
 }
 
 .card-description {
-  text-align: left;
 	font-size: 0.8rem;
-  margin: 0;
-  margin-top: 1rem;
   color: #888;
-	overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  max-height: 2rem;
   line-height: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-wrap: break-word;
 }
+
 .card-bottom {
 	display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
 	align-content: center;
 	-webkit-box-pack: justify;
   -ms-flex-pack: justify;
@@ -158,24 +173,18 @@ img {
   text-align: left;
 	color: rgb(0, 0, 0);
 }
+
 .card__price {
   color: #E35354;
-  text-align: center;
   font-weight: 700;
   font-size: 1rem;
 }
 
 
 /* browser width is small */
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 991px) {
   .card-component-text {
-    -webkit-line-clamp: 2;
-  }
-}
-
-@media screen and (max-width: 516px) {
-  .card-component-text {
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
   }
 }
 </style>
