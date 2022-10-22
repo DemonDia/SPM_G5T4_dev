@@ -273,7 +273,7 @@ export default {
           .catch((err) => reject(err));
       });
     },
-    
+
     resetForm() {
       this.role_name.role_name = "";
       this.role_description.role_description = "";
@@ -283,8 +283,10 @@ export default {
       // modal is closed
       // reset checked value:
       this.checked = value;
-      // go back to View All
-      this.$router.replace({ name: "roles" });
+      if (this.isSuccess) {
+        // go back to View All
+        this.$router.replace({ name: "roles" });
+      }
     },
 
     goToPrevPg() {

@@ -30,18 +30,18 @@
       <div class="row">
         <div class="text-start text-danger col-sm-12" :class="this.formType=='textarea' ? 'col-lg-8' : 'col-lg-10'">
           <!-- Character limit warning (before submission) -->
-          <p v-if="this.overLimit" class="pt-2">
+          <p v-if="this.overLimit" class="pt-1">
             {{ this.warning }}
           </p>
           <!-- Show errors -->
           <div v-if="this.errors.length == 1">
-            <p>
+            <p class="pt-1">
               {{ this.errors[0] }}
             </p>
           </div>
           <div v-if="this.errors.length > 1">
             <ul>
-              <li v-for="(error, key) in this.errors" :key="key">
+              <li v-for="(error, key) in this.errors" :key="key" class="pt-1">
                 {{ error }}
               </li>
             </ul>

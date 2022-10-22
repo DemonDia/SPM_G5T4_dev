@@ -235,7 +235,10 @@
         // modal is closed
         // reset checked value:
         this.checked = value;
-        this.$router.replace({ name: "roles" });
+        if (this.isSuccess) {
+          // go back to View All
+          this.$router.replace({ name: "roles" });
+        }
       },
 
       getPill(item) {
