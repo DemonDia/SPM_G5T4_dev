@@ -15,7 +15,9 @@
             <p>{{ this.category }}</p>
           </span>
         </div>
-        <h5 class="card-title text-start my-2">{{ this.title }}</h5>
+        <h5 class="card-title text-start my-2">
+          {{ this.courseID + ": " + this.title }}
+        </h5>
         <div class="card-body my-2">
           <p class="card-text text-start">{{ this.desc }}</p>
         </div>
@@ -54,19 +56,13 @@ export default {
     return {
       category: this.course.Course_Category,
       desc: this.course.Course_Desc,
-      courseId: this.course.Course_ID,
+      courseID: this.course.Course_ID.toUpperCase(),
       title: this.course.Course_Name,
       status: this.course.Course_Status,
       type: this.course.Course_Type,
       skills: this.course.Skills,
     }
   },
-  methods: {
-
-  },
-  mounted() {
-    console.log(this.course);
-  }
 };
 </script>
 

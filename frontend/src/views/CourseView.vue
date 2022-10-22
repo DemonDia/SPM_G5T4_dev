@@ -1,6 +1,6 @@
 <template>
   <DashboardLayout>
-    <div class="container-fluid" id="courseMain">
+    <div class="container-fluid" id="courseMain" @reload="reload()">
       <!-- Spinner -->
       <div v-if="courses.length < 1 && noCourseFound == false" id="rippleP">
         <div class="lds-ripple">
@@ -8,11 +8,11 @@
           <div></div>
         </div>
       </div>
-
        <!-- Dashboard -->
        <div v-else class="">
           <div v-for="(value, key) in courses" v-bind:key="key">
             <CourseComponent :course="value" :indx="key">
+              {{addSkills(value.skills)}}
             </CourseComponent>
         </div>
       </div>
@@ -36,23 +36,27 @@ export default {
   components: {
     DashboardLayout,
     CourseComponent,
-  },
+},
   data() {
     return {
       courses: [], // courses from database
       results: [], // temporary array
       numCourses: 0, // to populate based on length of array
       noCourseFound: false,
+      selectedList: [],
+      availSkills: ['Select skills:'],
+      noSkillFound: false
     };
   },
   mounted() {
     document.title = "LJMS - Courses";
     var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/course/";
     axios.get(url).then((response) => {
-      var result = response.data.data;
+      let result = response.data.data;
       this.courses = result;
       this.courses.length == 0 ? (this.noCourseFound = true) : null;
     });
+    this.getSkills();
   },
   computed: {
     ...mapGetters({
@@ -60,6 +64,11 @@ export default {
       authenticated: "auth/authenticated",
     }),
   },
+  methods: {
+    reload() {
+      this.selectedList = []
+    },
+  }
 };
 </script>
 

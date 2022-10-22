@@ -144,219 +144,221 @@
 </template>
 
 <script>
-import DashboardLayout from "./Dashboard/Layout/DashboardLayout.vue";
-import FormComponent from "../components/FormComponent.vue";
-import ModalComponent from "../components/ModalComponent.vue";
-import axios from "axios";
-import PillSearchComponent from "@/components/PillSearchComponent.vue";
-import PillComponent from "@/components/PillComponent.vue";
+  import DashboardLayout from "./Dashboard/Layout/DashboardLayout.vue";
+  import FormComponent from "../components/FormComponent.vue";
+  import ModalComponent from "../components/ModalComponent.vue";
+  import axios from "axios";
+  import PillSearchComponent from "@/components/PillSearchComponent.vue";
+  import PillComponent from "@/components/PillComponent.vue";
 
-export default {
-  name: "CreateRole",
-  components: {
-    DashboardLayout,
-    FormComponent,
-    ModalComponent,
-    PillSearchComponent,
-    PillComponent,
-  },
-  data() {
-    return {
-      role_name: {
-        role_name: "",
-        label: "Role Name",
-        limit: "30",
-        errors: [],
-        formType: "input",
-      },
-      role_description: {
-        role_description: "",
-        label: "Role Description",
-        limit: "170",
-        errors: [],
-        formType: "textarea",
-      },
-      isSuccess: false,
-      isSubmitted: false,
-      checked: false,
-      RNerrors: [
-        "Role Name cannot be empty! Please try again",
-        "Role already exists! Please try again",
-        "Role Name exceeds character limit of 30! Please try again",
-      ],
-      currFormPg: 1,
-      progress: [
-        {
-          title: "STEP 1",
-          bg: "#56d1dc",
-          description: "Input Role details",
-          button1: "Back to Step 1",
-          button2: "Next: Assign Skills",
+  export default {
+    name: "CreateRole",
+    components: {
+      DashboardLayout,
+      FormComponent,
+      ModalComponent,
+      PillSearchComponent,
+      PillComponent,
+    },
+    data() {
+      return {
+        role_name: {
+          role_name: "",
+          label: "Role Name",
+          limit: "30",
+          errors: [],
+          formType: "input",
         },
-        {
-          title: "STEP 2",
-          bg: "#5d7bd5",
-          description: "Assign skills (optional)",
-          button1: "Back to Step 1",
-          button2: "Next: Confirm summary",
+        role_description: {
+          role_description: "",
+          label: "Role Description",
+          limit: "170",
+          errors: [],
+          formType: "textarea",
         },
-        {
-          title: "STEP 3",
-          bg: "#404089",
-          description: "Confirm summary",
-          button1: "Back to Step 2",
-          button2: "Submit",
-        },
-      ],
-      pillItemsFromComponent: [],
-    };
-  },
-  methods: {
-    handleSubmit() {
-      this.createRole().then((res) => {
-        var roleStatus = res.data;
-        this.assignSkills(roleStatus.data).then((result) => {
-          var assignSkillStatus = result.data;
-          
-          this.resetErrors();
-          if (roleStatus.success || assignSkillStatus.success) {
-            this.resetForm(); // throw error message if role is duplicated
-            this.isSuccess = true;
-          } else {
-            // failure case
-            this.isSuccess = false;
-            for (let err in roleStatus.message) {
-              let msg = roleStatus.message[err];
-              if (this.RNerrors.includes(msg)) {
-                this.role_name.errors.push(msg);
-              } else {
-                this.role_description.errors.push(msg);
+        isSuccess: false,
+        isSubmitted: false,
+        checked: false,
+        RNerrors: [
+          "Role Name cannot be empty! Please try again",
+          "Role already exists! Please try again",
+          "Role Name exceeds character limit of 30! Please try again",
+        ],
+        currFormPg: 1,
+        progress: [
+          {
+            title: "STEP 1",
+            bg: "#56d1dc",
+            description: "Input Role details",
+            button1: "Back to Step 1",
+            button2: "Next: Assign Skills",
+          },
+          {
+            title: "STEP 2",
+            bg: "#5d7bd5",
+            description: "Assign skills (optional)",
+            button1: "Back to Step 1",
+            button2: "Next: Confirm summary",
+          },
+          {
+            title: "STEP 3",
+            bg: "#404089",
+            description: "Confirm summary",
+            button1: "Back to Step 2",
+            button2: "Submit",
+          },
+        ],
+        pillItemsFromComponent: [],
+      };
+    },
+    methods: {
+      handleSubmit() {
+        this.createRole().then((res) => {
+          var roleStatus = res.data;
+          this.assignSkills(roleStatus.data).then((result) => {
+            var assignSkillStatus = result.data;
+            
+            this.resetErrors();
+            if (roleStatus.success || assignSkillStatus.success) {
+              this.resetForm(); // throw error message if role is duplicated
+              this.isSuccess = true;
+            } else {
+              // failure case
+              this.isSuccess = false;
+              for (let err in roleStatus.message) {
+                let msg = roleStatus.message[err];
+                if (this.RNerrors.includes(msg)) {
+                  this.role_name.errors.push(msg);
+                } else {
+                  this.role_description.errors.push(msg);
+                }
               }
+              // go back to form pg 1
+              this.currFormPg = 1;
             }
-            // go back to form pg 1
-            this.currFormPg = 1;
-          }
-          // show Modal
-          this.checked = true;
+            // show Modal
+            this.checked = true;
+          });
         });
-      });
-    },
-    createRole() {
-      var createRoleUrl =
-        "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/";
-      return new Promise((resolve, reject) => {
-        axios
-          .post(createRoleUrl, {
-            Role_Name: this.role_name.role_name,
-            Role_Description: this.role_description.role_description,
-            Active: true,
-          })
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((err) => reject(err));
-      });
-    },
-    assignSkills(role_id) {
-      var assignSkillsUrl =
-        "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/";
-      return new Promise((resolve, reject) => {
-        axios
-          .post(assignSkillsUrl, {
-            Role_ID: role_id,
-            Skills: this.pillSkill_IDArray,
-          })
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((err) => reject(err));
-      });
-    },
-    resetForm() {
-      this.role_name.role_name = "";
-      this.role_description.role_description = "";
-    },
-    onClickModal(value) {
-      // modal is closed
-      // reset checked value:
-      this.checked = value;
-      if (this.isSubmitted && this.isSuccess) {
-        // go back to View All
-        this.$router.replace({ name: "roles" });
-      }
-    },
+      },
+      createRole() {
+        var createRoleUrl =
+          "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/";
+        return new Promise((resolve, reject) => {
+          axios
+            .post(createRoleUrl, {
+              Role_Name: this.role_name.role_name,
+              Role_Description: this.role_description.role_description,
+              Active: true,
+            })
+            .then((response) => {
+              resolve(response);
+            })
+            .catch((err) => reject(err));
+        });
+      },
+      assignSkills(role_id) {
+        var assignSkillsUrl =
+          "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/";
+        return new Promise((resolve, reject) => {
+          axios
+            .post(assignSkillsUrl, {
+              Role_ID: role_id,
+              Skills: this.pillSkill_IDArray,
+            })
+            .then((response) => {
+              resolve(response);
+            })
+            .catch((err) => reject(err));
+        });
+      },
+      resetForm() {
+        this.role_name.role_name = "";
+        this.role_description.role_description = "";
+      },
+      onClickModal(value) {
+        // modal is closed
+        // reset checked value:
+        this.checked = value;
+        if (this.isSubmitted && this.isSuccess) {
+          // go back to View All
+          this.$router.replace({ name: "roles" });
+        }
+      },
 
-    goToPrevPg() {
-      this.currFormPg -= 1;
-    },
+      goToPrevPg() {
+        this.currFormPg -= 1;
+      },
 
-    goToNextPg() {
-      if (this.currFormPg == 3) {
-        // submit form
-        this.handleSubmit();
-      } else {
-        this.currFormPg += 1;
-      }
-    },
+      goToNextPg() {
+        if (this.currFormPg == 3) {
+          // submit form
+          this.handleSubmit();
+        } else {
+          this.currFormPg += 1;
+        }
+      },
 
-    goToPg(x) {
-      this.currFormPg = x;
-    },
+      goToPg(x) {
+        this.currFormPg = x;
+      },
 
-    getPill(item) {
-      // emit content to be passed into the pillItemsFromComponent
-      this.pillItemsFromComponent = item;
-    },
-    resetErrors() {
-      // reset fields
-      this.role_name.errors = [];
-      this.role_description.errors = [];
-      this.isSubmitted = NaN;
+      getPill(item) {
+        // emit content to be passed into the pillItemsFromComponent
+        this.pillItemsFromComponent = item;
+      },
 
-      // submitted form
-      this.isSubmitted = true;
+      resetErrors() {
+        // reset fields
+        this.role_name.errors = [];
+        this.role_description.errors = [];
+        this.isSubmitted = NaN;
+
+        // submitted form
+        this.isSubmitted = true;
+      },
     },
-  },
-  computed: {
-    // This computed function will enumerate the pillItemsFromComponent where the key/value items is stored
-    // And then it will return the value of the key "skill_name" to be displayed in the pill
-    pillValue() {
-      const pillItems = [];
-      this.pillItemsFromComponent.forEach((value) => {
-        pillItems.push(value.Skill_Name);
-      });
-      return pillItems;
+    computed: {
+      // This computed function will enumerate the pillItemsFromComponent where the key/value items is stored
+      // And then it will return the value of the key "skill_name" to be displayed in the pill
+      pillValue() {
+        const pillItems = [];
+        this.pillItemsFromComponent.forEach((value) => {
+          pillItems.push(value.Skill_Name);
+        });
+        return pillItems;
+      },
+
+      // This computed function will enumerate the pillItemsFromComponent where the key/value items is stored
+      // And then it will return the value of the key "skill_id" and return to the assign skill function.
+      pillSkill_IDArray() {
+        const pillItems = [];
+        this.pillItemsFromComponent.forEach((value) => {
+          pillItems.push(value.Skill_ID);
+        });
+        return pillItems;
+      },
     },
-    // This computed function will enumerate the pillItemsFromComponent where the key/value items is stored
-    // And then it will return the value of the key "skill_id" and return to the assign skill function.
-    pillSkill_IDArray() {
-      const pillItems = [];
-      this.pillItemsFromComponent.forEach((value) => {
-        pillItems.push(value.Skill_ID);
-      });
-      return pillItems;
+    mounted() {
+      document.title = "LJMS - Create Roles";
     },
-  },
-  mounted() {
-    document.title = "LJMS - Create Roles";
-  },
-};
+  };
 </script>
 
 <style scoped>
-#createRoleMain {
-  min-height: 100vh;
-}
+  #createRoleMain {
+    min-height: 100vh;
+  }
 
-.progress {
-  height: fit-content;
-  background-color: whitesmoke;
-  font-size: 15px;
-  margin: 5px 0;
-}
+  .progress {
+    height: fit-content;
+    background-color: whitesmoke;
+    font-size: 15px;
+    margin: 5px 0;
+  }
 
-.progressbar {
-  border-radius: 2px;
-  height: 8px;
-}
+  .progressbar {
+    border-radius: 2px;
+    height: 8px;
+  }
 </style>

@@ -131,82 +131,81 @@ export default {
 </script>
 
 <style scoped>
-
-* {
-  margin: 0;
-  /* padding: 0; */
-  box-sizing: border-box;
-  /* font-family: "Poppins", sans-serif; */
-}
-
-.card-component {
-  background-color: white;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: 0.2s;
-  height: 170px;
-  /* min-height: 160px; */
-  /* height: min-content; */
-  box-shadow: 0 3px 3px 0 rgb(0 0 0 / 4%), 0 5px 15px 0 rgb(0 0 0 / 4%);
-}
-
-.card-component-header {
-  display: flex;
-  justify-content: space-between;
-  background-color: transparent;
-  align-items: center;
-}
-
-.card-component-title {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  word-wrap: break-word;
-}
-
-.card-component-body {
-  font-size: 0.8em;
-  max-height: 85px;
-  overflow: hidden;
-  display: block;
-}
-
-.card-component-text {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  word-wrap: break-word;
-}
-
-.menu-frame {
-  height: 30px;
-  max-width: 60px;
-  border-radius: 20px;
-  background-color: rgb(251, 251, 251);
-}
-
-.menu-dot {
-  font-size: 2.1rem;
-  background-color: transparent;
-  border: none;
-}
-
-.dropdown-toggle::after {
-    display: none !important;
-}
-
-/* browser width is small */
-@media screen and (min-width: 768px) {
-  .card-component-text {
-    -webkit-line-clamp: 2;
+  * {
+    margin: 0;
+    /* padding: 0; */
+    box-sizing: border-box;
+    /* font-family: "Poppins", sans-serif; */
   }
-}
 
-@media screen and (max-width: 516px) {
-  .card-component-text {
-    -webkit-line-clamp: 2;
+  .card-component {
+    background-color: white;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+    height: 170px;
+    /* min-height: 160px; */
+    /* height: min-content; */
+    box-shadow: 0 3px 3px 0 rgb(0 0 0 / 4%), 0 5px 15px 0 rgb(0 0 0 / 4%);
   }
-}
+
+  .card-component-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: transparent;
+    align-items: center;
+  }
+
+  .card-component-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-wrap: break-word;
+  }
+
+  .card-component-body {
+    font-size: 0.8em;
+    max-height: 85px;
+    overflow: hidden;
+    display: block;
+  }
+
+  .card-component-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-wrap: break-word;
+  }
+
+  .menu-frame {
+    height: 30px;
+    max-width: 60px;
+    border-radius: 20px;
+    background-color: rgb(251, 251, 251);
+  }
+
+  .menu-dot {
+    font-size: 2.1rem;
+    background-color: transparent;
+    border: none;
+  }
+
+  .dropdown-toggle::after {
+      display: none !important;
+  }
+
+  /* browser width is small */
+  @media screen and (min-width: 768px) {
+    .card-component-text {
+      -webkit-line-clamp: 2;
+    }
+  }
+
+  @media screen and (max-width: 516px) {
+    .card-component-text {
+      -webkit-line-clamp: 2;
+    }
+  }
 </style>
