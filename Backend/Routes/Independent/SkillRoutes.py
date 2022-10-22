@@ -220,7 +220,7 @@ def updateSkill(Skill_ID: int, updated_skill: SkillModel, session: Session = Dep
             errors.append("Skill not found!")
         skill = result[0]
         findDuplicateRoleStatement = select(SkillModel).where(
-            SkillModel.Skill_Name == updated_skill.Skill_Name)
+            SkillModel.Skill_Name == updated_skill.Skill_Name and SkillModel.Skill_ID != Skill_ID)
         results = session.exec(findDuplicateRoleStatement).all()
 
         # check for duplicate skill name
