@@ -24,15 +24,15 @@
       </div>
     </div>
 
-    <div class="d-flex pills my-3">
+    <div class="d-flex pills my-2">
       <div
-        class="pill rounded-pill px-2 me-2 mb-3"
+        class="pill rounded-pill px-2 me-2 mt-2"
         v-for="(value, key) in this.pillItems"
         v-bind:key="key"
       >
         <div class="pill-content">
-          <span class="pill-text"> {{ value.Skill_Name }} </span>
-          <div class="pill-icon">
+          <span class="pill-text p-2 px-1"> {{ value.Skill_Name }} </span>
+          <div class="pill-icon p-2 px-1 me-1">
             <i class="ph-x" @click="unselectItem(value.Skill_ID)"></i>
           </div>
         </div>
@@ -75,7 +75,6 @@ export default {
       this.search = "";
       this.autocompleteItems = [];
       this.$emit('pillItems', this.pillItems);  // emit the pillItems array to the parent component
-      console.log(this.pillItems)
     },
     unselectItem(item) {
       this.pillItems = this.pillItems.filter((value) => value.Skill_ID != item); // remove item from pillItems array
@@ -156,9 +155,9 @@ export default {
   .pill {
     display: inline-flex;
     background-color: transparent;
-    /* border: 1.5px solid #434ce8; */
+    border: 1.5px solid #434ce8;
     color: #434ce8;
-    line-height: 25px;
+    line-height: 15px;
     font-weight: 800;
     min-width: max-content;
     text-align: center;
@@ -166,14 +165,14 @@ export default {
 
   .pill-content {
     display: flex;
-    font-size: 12px;
+    /* font-size: 12px; */
     align-items: center; /* now its vertically centered */
   }
 
   .pill-icon {
     /*flex: 1; not necessary since you're using max-width*/
     max-width: 18px;
-    padding: 12px 0 4px;
+    /* padding: 10px 0 4px; */
     text-align: center; /* for horizontal alignment */
   }
 
@@ -185,7 +184,6 @@ export default {
   }
 
   .pill-text {
-    padding: 0.3em;
     font-size: 13px;
   }
 

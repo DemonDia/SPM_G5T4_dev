@@ -10,20 +10,20 @@
       </div>
        <!-- Dashboard -->
        <div v-else class="">
-
-      
-          <PillSearchComponent ctype="skill" @pillItems="getPill"></PillSearchComponent>
-  
-
-        {{ this.pillItemsFromComponent}}
-
+          <!-- Search by Skills -->
+          <div class="container-sm my-5 mb-3 text-start">
+            <PillSearchComponent ctype="skill" @pillItems="getPill"></PillSearchComponent>
+          </div>
+          <!-- Course Card -->
           <div v-for="(value, key) in courses" v-bind:key="key">
-            <CourseComponent :course="value" :indx="key">
-              {{addSkills(value.skills)}}
+            <CourseComponent 
+              :course="value" 
+              :indx="key" 
+              v-if="this.pillItemsFromComponent.length == 0 || this.isFound(value.Skills)">
             </CourseComponent>
         </div>
       </div>
-      <!-- No Role Found -->
+      <!-- No Course Found -->
       <div v-show="noCourseFound" class="fs-3 fw-bold text-center align-middle pt-5 my-5">
         Sorry! No courses found!
       </div>
@@ -49,22 +49,45 @@ export default {
   data() {
     return {
       courses: [], // courses from database
-      results: [], // temporary array
-      numCourses: 0, // to populate based on length of array
+      numCoursesFound: 0, 
       noCourseFound: false,
-      selectedList: [],
       availSkills: ['Select skills:'],
       noSkillFound: false,
       pillItemsFromComponent: [],
+      selectedSkills: [],
     };
   },
   methods: {
     getPill(item) {
-        // emit content to be passed into the pillItemsFromComponent
-        console.log(item)
-        this.pillItemsFromComponent = item;
-        console.log(this.pillItemsFromComponent)
-      },
+      // emit content to be passed into the selectedList
+      this.pillItemsFromComponent = item;
+      this.selectedSkills = item.map(course => {
+        return course.Skill_Name
+      });
+      this.numCoursesFound = 0
+    },
+
+    reload() {
+      this.pillItemsFromComponent = [];
+    },
+
+    isFound(arr1) {
+      // show courses that include SOME of the skills selected
+      // return (this.selectedSkills.some( x => arr1.includes(x) ));
+
+      // show courses that include ALL of the skills selected
+      if (this.selectedSkills.every( x => arr1.includes(x) )) {
+        this.numCoursesFound += 1;
+        if (this.noCourseFound) {
+          this.noCourseFound = false;
+        }
+        return true;
+      }
+      if (this.numCoursesFound == 0) {
+        this.noCourseFound = true;
+      }
+      return false;
+    },
   },
   mounted() {
     document.title = "LJMS - Courses";
@@ -74,7 +97,6 @@ export default {
       this.courses = result;
       this.courses.length == 0 ? (this.noCourseFound = true) : null;
     });
-    // this.getSkills();
   },
   computed: {
     ...mapGetters({
@@ -82,11 +104,6 @@ export default {
       authenticated: "auth/authenticated",
     }),
   },
-  methods: {
-    reload() {
-      this.selectedList = []
-    },
-  }
 };
 </script>
 

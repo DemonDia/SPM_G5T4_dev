@@ -88,7 +88,7 @@
           <!-- Page 2 -->
           <div v-show="this.currFormPg == 2" id="formPg2">
             <PillSearchComponent
-              class="mt-3"
+              class="my-5"
               ctype="skill"
               @pillItems="getPill"
             ></PillSearchComponent>
