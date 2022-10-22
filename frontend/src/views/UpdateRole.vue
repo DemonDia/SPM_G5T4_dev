@@ -24,6 +24,7 @@
         <div v-show="checked">
           <ModalComponent
             type="Role"
+            func="update"
             :isSuccess="isSuccess"
             @clicked="onClickModal"
           />
@@ -65,6 +66,8 @@
             type="button"
             class="btn col-md-4 col-sm-5 m-2 btn-primary"
             @click="handleSubmit"
+            data-bs-toggle="modal"
+            data-bs-target="#submitModal"
           >
             Update Role
           </button>
@@ -136,17 +139,15 @@
       handleSubmit() {
         // submitted form
         this.isSubmitted = true;
-        // show Modal
-        this.checked = true;
         this.updateRole(this.currentRole_ID).then((res) => {
           var roleStatus = res.data;
-          console.log("hi")
           // check success
           if (roleStatus.success) {
             this.assignSkills(this.currentRole_ID).then((result) => {
               this.resetErrors();
               // this.resetForm();
               this.isSuccess = true;
+              this.checked = true; // show Modal
             });
           } else {
             this.isSuccess = false;
@@ -158,9 +159,11 @@
                 this.role_description.errors.push(msg);
               }
             }
+            this.checked = true; // show Modal
           }
         });
       },
+
       updateRole(role_id) {
         var updateRoleUrl =
           "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/" +
@@ -178,6 +181,7 @@
             .catch((err) => reject(err));
         });
       },
+
       assignSkills(role_id) {
         var assignSkillsUrl =
           "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/" +
@@ -193,6 +197,7 @@
             .catch((err) => reject(err));
         });
       },
+
       getRoleInfo(role_id) {
         var getRoleUrl =
           "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/" +
@@ -206,6 +211,7 @@
             .catch((err) => reject(err));
         });
       },
+
       getRoleSkill(role_id) {
         var getRoleSkillUrl =
           "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/" +
@@ -219,28 +225,31 @@
             .catch((err) => reject(err));
         });
       },
+
       // resetForm() {
       //   this.role_name.role_name = "";
       //   this.role_description.role_description = "";
       // },
+
       onClickModal(value) {
         // modal is closed
         // reset checked value:
         this.checked = value;
-        if (this.isSubmitted && this.isSuccess) {
-          // go back to View All
-          this.$router.replace({ name: "roles" });
-        }
+        this.$router.replace({ name: "roles" });
       },
+
       getPill(item) {
         // emit content to be passed into the pillItemsFromComponent
         this.pillItemsFromComponent = item;
       },
+
       resetErrors() {
         // reset fields
         this.role_name.errors = [];
         this.role_description.errors = [];
         this.isSubmitted = NaN;
+        this.checked = NaN;
+        this.isSuccess = NaN;
       },
     },
     computed: {

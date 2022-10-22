@@ -15,7 +15,7 @@
           @input="$emit('update:modelValue', $event.target.value)"
           v-on:keyup="this.checkChar"
           class="form-control"
-          :class="[this.errors.length > 0 && this.isSubmitted ? 'is-invalid' : '']"
+          :class="[this.errors.length > 0 ? 'is-invalid' : '']"
         >
         <textarea v-else-if="this.formType=='textarea'"
           v-bind="$attrs"
@@ -24,7 +24,7 @@
           @input="$emit('update:modelValue', $event.target.value)"
           v-on:keyup="this.checkChar"
           class="form-control"
-          :class="[this.errors.length > 0 && this.isSubmitted ? 'is-invalid' : '']"
+          :class="[this.errors.length > 0 ? 'is-invalid' : '']"
         ></textarea>
       </div>
       <div class="row">
@@ -33,16 +33,15 @@
           <p v-if="this.overLimit" class="pt-2">
             {{ this.warning }}
           </p>
-  
           <!-- Show errors -->
-          <div v-if="this.errors.length == 1 && this.isSubmitted">
-            <p class="">
+          <div v-if="this.errors.length == 1">
+            <p>
               {{ this.errors[0] }}
             </p>
           </div>
-          <div v-if="this.errors.length > 1 && this.isSubmitted">
-            <ul class="">
-              <li v-for="(error, index) in this.errors" v-bind:key="index">
+          <div v-if="this.errors.length > 1">
+            <ul>
+              <li v-for="(error, key) in this.errors" :key="key">
                 {{ error }}
               </li>
             </ul>
@@ -62,20 +61,6 @@
 <script>
   export default {
     name: "FormComponent",
-    // props: {
-    //   label: {
-    //     type: String,
-    //     default: ''
-    //   },
-    //   modelValue: {
-    //     type: [String, Number],
-    //     default: ''
-    //   },
-    //   limit: {
-    //     type: String,
-    //     default: ''
-    //   }
-    // },
     data() {
       return {
         warning: "",
@@ -100,11 +85,9 @@
   }
 </script>
 <style scoped>
-  
   * {
     margin: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
   }
- 
 </style>
