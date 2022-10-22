@@ -45,7 +45,6 @@ export default {
     deleteItem(id, ctype) {
       var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/delete/" +id;
       if(ctype == "skill") {
- 
         axios.put(url, {
           headers: {
             'Content-Type': 'application/json'
