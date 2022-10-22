@@ -12,7 +12,7 @@
         <button class="ph-dots-three menu-dot" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="#">Update</a></li>
+          <li><a class="dropdown-item" @click="updateItem(id, ctype)">Update</a></li>
           <li><a class="dropdown-item" @click="deleteItem(id, ctype)">Delete</a></li>
         </ul>
       </div>
@@ -45,7 +45,6 @@ export default {
     deleteItem(id, ctype) {
       var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/delete/" +id;
       if(ctype == "skill") {
- 
         axios.put(url, {
           headers: {
             'Content-Type': 'application/json'
@@ -124,8 +123,13 @@ export default {
         });
       }
     },
-
-  
+    updateItem(id, ctype) {
+      if(ctype == "skill") {
+        router.push({ name: 'UpdateSkill', params: { role_id: id } });
+      } else if (ctype == 'role') {
+        router.push({ name: 'update-role', params: { role_id: id } });
+      }
+    }
   },
 };
 </script>
@@ -134,7 +138,7 @@ export default {
 
 * {
   margin: 0;
-  padding: 0;
+  /* padding: 0; */
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }

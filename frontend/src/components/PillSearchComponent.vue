@@ -24,9 +24,9 @@
       </div>
     </div>
 
-    <div class="d-flex pills mt-3">
+    <div class="d-flex pills my-3">
       <div
-        class="pill rounded-pill px-2 me-2"
+        class="pill rounded-pill px-2 me-2 mb-3"
         v-for="(value, key) in this.pillItems"
         v-bind:key="key"
       >
@@ -58,7 +58,7 @@ export default {
       },
     };
   },
-  props: ["ctype"],
+  props: ["ctype", "skills"],
   methods: {
     searchItem() {
         // only search if the search bar is not empty
@@ -71,23 +71,45 @@ export default {
       }
     },
     selectItem(item) {
-      !this.pillItems.includes(item) ? this.pillItems.push(item) : null; // only push non duplicate items
+      if (this.pillItems.filter(currItem => currItem.Skill_ID === item.Skill_ID).length < 1)  {
+        !this.pillItems.includes(item) ? this.pillItems.push(item) : null; // only push non duplicate items
+      }
       this.search = "";
       this.autocompleteItems = [];
       this.$emit('pillItems', this.pillItems);  // emit the pillItems array to the parent component
     },
     unselectItem(item) {
       this.pillItems = this.pillItems.filter((value) => value.Skill_ID != item); // remove item from pillItems array
+      console.log(this.pillItems)
       this.$emit('pillItems', this.pillItems);  // emit the pillItems array to the parent component
+    },
+    getRoleSkill(role_id) {
+      var getRoleSkillUrl =
+        "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/" +
+        role_id;
+      return new Promise((resolve, reject) => {
+        axios
+          .get(getRoleSkillUrl)
+          .then((response) => {
+            resolve(response.data.data);
+          })
+          .catch((err) => reject(err));
+      });
     },
   },
   computed: {},
-  mounted() {
+  async mounted() {
     var url = this.url[this.ctype];
     axios.get(url).then((response) => {
       var result = response.data.data;
       this.items = result;
     });
+
+    // This is for update role page, to get the skills that are already assigned to the role
+    if (this.skills) {
+      this.pillItems = this.skills;
+    }
+
   },
 };
 </script>
@@ -184,18 +206,11 @@ export default {
 }
 
 .pill-text {
-  padding: 0.5em;
-  font-size: 14px;
+  padding: 0.3em;
+  font-size: 13px;
 }
 
 .pills {
-  overflow: scroll;
-  /* overflow: hidden; */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  scrollbar-width: none; /* Firefox */
-}
-
-.pills::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+  flex-wrap: wrap;
 }
 </style>
