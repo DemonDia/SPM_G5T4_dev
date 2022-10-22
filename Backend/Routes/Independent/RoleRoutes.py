@@ -221,17 +221,18 @@ def updateRole(Role_ID: int, updated_role: RoleModel, session: Session = Depends
     errors = []
     try:
         #skill = session.get(SkillModel, Skill_ID)
+        print("updated_role",updated_role)
         statement = select(RoleModel).where(RoleModel.Role_ID == Role_ID)
         result = session.exec(statement)
         role = result.one()
-
+        # role not found
         if role == None:
             errors.append("Role not found!")
-
+            
+        # cannot reuse existing name
         findDuplicateRoleStatement = select(RoleModel).where(
-            RoleModel.Role_Name == updated_role.Role_Name and RoleModel.Role_ID != Role_ID)
+            RoleModel.Role_Name == updated_role.Role_Name).where( RoleModel.Role_ID != Role_ID)
         results = session.exec(findDuplicateRoleStatement).all()
-        print("Results",results)
 
         # check for duplicate skill name
         if len(results)>0:
