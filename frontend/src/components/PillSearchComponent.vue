@@ -50,7 +50,7 @@ export default {
     return {
       items: [],
       autocompleteItems: [],
-      pillItems: this.skills,
+      pillItems: [],
       search: "",
       url: {
         skill: "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/available/",
@@ -106,7 +106,7 @@ export default {
     });
 
     // This is for update role page, to get the skills that are already assigned to the role
-    if (this.skills.length > 0) {
+    if (this.skills) {
       this.pillItems = this.skills;
     }
 

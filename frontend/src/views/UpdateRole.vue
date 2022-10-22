@@ -140,6 +140,7 @@
         this.checked = true;
         this.updateRole(this.currentRole_ID).then((res) => {
           var roleStatus = res.data;
+          console.log("hi")
           // check success
           if (roleStatus.success) {
             this.assignSkills(this.currentRole_ID).then((result) => {
