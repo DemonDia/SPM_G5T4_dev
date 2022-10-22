@@ -14,6 +14,7 @@
           <ModalComponent
             type="Role"
             :isSuccess="isSuccess"
+            func="create"
             @clicked="onClickModal"
           />
         </div>
@@ -241,6 +242,7 @@
           });
         });
       },
+      
       createRole() {
         var createRoleUrl =
           "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/";
@@ -257,6 +259,7 @@
             .catch((err) => reject(err));
         });
       },
+      
       assignSkills(role_id) {
         var assignSkillsUrl =
           "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/";
@@ -272,15 +275,65 @@
             .catch((err) => reject(err));
         });
       },
+      
       resetForm() {
         this.role_name.role_name = "";
         this.role_description.role_description = "";
       },
+      
       onClickModal(value) {
         // modal is closed
         // reset checked value:
         this.checked = value;
         if (this.isSubmitted && this.isSuccess) {
+          // go back to View All
+          this.$router.replace({ name: "roles" });
+        }
+      },
+      
+      createRole() {
+        var createRoleUrl =
+          "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/";
+        return new Promise((resolve, reject) => {
+          axios
+            .post(createRoleUrl, {
+              Role_Name: this.role_name.role_name,
+              Role_Description: this.role_description.role_description,
+              Active: true,
+            })
+            .then((response) => {
+              resolve(response);
+            })
+            .catch((err) => reject(err));
+        });
+      },
+      
+      assignSkills(role_id) {
+        var assignSkillsUrl =
+          "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/";
+        return new Promise((resolve, reject) => {
+          axios
+            .post(assignSkillsUrl, {
+              Role_ID: role_id,
+              Skills: this.pillSkill_IDArray,
+            })
+            .then((response) => {
+              resolve(response);
+            })
+            .catch((err) => reject(err));
+        });
+      },
+
+      resetForm() {
+        this.role_name.role_name = "";
+        this.role_description.role_description = "";
+      },
+
+      onClickModal(value) {
+        // modal is closed
+        // reset checked value:
+        this.checked = value;
+        if (this.isSuccess) {
           // go back to View All
           this.$router.replace({ name: "roles" });
         }
@@ -313,11 +366,12 @@
         this.role_name.errors = [];
         this.role_description.errors = [];
         this.isSubmitted = NaN;
-
-        // submitted form
-        this.isSubmitted = true;
+        this.isSuccess = NaN;
+        this.checked = NaN;
+        this.pillItemsFromComponent = []
       },
     },
+    
     computed: {
       // This computed function will enumerate the pillItemsFromComponent where the key/value items is stored
       // And then it will return the value of the key "skill_name" to be displayed in the pill
@@ -339,8 +393,9 @@
         return pillItems;
       },
     },
+    
     mounted() {
-      document.title = "LJMS - Create Roles";
+        document.title = "LJMS - Create Roles";
     },
   };
 </script>

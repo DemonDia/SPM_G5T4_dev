@@ -4,7 +4,12 @@
         <h1>Create a skill</h1>
   
         <div v-show="checked">
-          <ModalComponent type="Skill" :isSuccess="isSuccess" @clicked="onClickModal"/>
+          <ModalComponent 
+          type="Skill" 
+          :isSuccess="isSuccess" 
+          func="create"
+          @clicked="onClickModal"
+        />
         </div>
   
         <form @submit.prevent="createSkill" method="POST">

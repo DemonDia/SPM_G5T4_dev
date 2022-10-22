@@ -161,13 +161,12 @@ def createSkills(skill: SkillModel, session: Session = Depends(get_session)):
     try:
         findDuplicateRoleStatement = select(SkillModel).where(
             SkillModel.Skill_Name == skill.Skill_Name)
-        results = session.exec(findDuplicateRoleStatement)
+        results = session.exec(findDuplicateRoleStatement).all()
         
         # check for duplicate skill name
-
-        for duplicate in results:
+        if len(results) > 0:
             errors.append("Skill already exists! Please try again")
-            break
+            
 
         # check for empty skill name
         if len(skill.Skill_Name) == 0:
@@ -219,10 +218,9 @@ def updateSkill(Skill_ID: int, updated_skill: SkillModel, session: Session = Dep
 
         if len(result) == 0:
             errors.append("Skill not found!")
-        print("result",result)
         skill = result[0]
         findDuplicateRoleStatement = select(SkillModel).where(
-            SkillModel.Skill_Name == updated_skill.Skill_Name)
+            SkillModel.Skill_Name == updated_skill.Skill_Name).where(SkillModel.Skill_ID != Skill_ID)
         results = session.exec(findDuplicateRoleStatement).all()
 
         # check for duplicate skill name

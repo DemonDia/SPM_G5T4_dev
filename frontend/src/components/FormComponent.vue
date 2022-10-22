@@ -15,7 +15,7 @@
           @input="$emit('update:modelValue', $event.target.value)"
           v-on:keyup="this.checkChar"
           class="form-control"
-          :class="[this.errors.length > 0 && this.isSubmitted ? 'is-invalid' : '']"
+          :class="[this.errors.length > 0 ? 'is-invalid' : '']"
         >
         <textarea v-else-if="this.formType=='textarea'"
           v-bind="$attrs"
@@ -24,25 +24,24 @@
           @input="$emit('update:modelValue', $event.target.value)"
           v-on:keyup="this.checkChar"
           class="form-control"
-          :class="[this.errors.length > 0 && this.isSubmitted ? 'is-invalid' : '']"
+          :class="[this.errors.length > 0 ? 'is-invalid' : '']"
         ></textarea>
       </div>
       <div class="row">
         <div class="text-start text-danger col-sm-12" :class="this.formType=='textarea' ? 'col-lg-8' : 'col-lg-10'">
           <!-- Character limit warning (before submission) -->
-          <p v-if="this.overLimit" class="pt-2">
+          <p v-if="this.overLimit" class="pt-1">
             {{ this.warning }}
           </p>
-  
           <!-- Show errors -->
-          <div v-if="this.errors.length == 1 && this.isSubmitted">
-            <p class="">
+          <div v-if="this.errors.length == 1">
+            <p class="pt-1">
               {{ this.errors[0] }}
             </p>
           </div>
-          <div v-if="this.errors.length > 1 && this.isSubmitted">
-            <ul class="">
-              <li v-for="(error, index) in this.errors" v-bind:key="index">
+          <div v-if="this.errors.length > 1">
+            <ul>
+              <li v-for="(error, key) in this.errors" :key="key" class="pt-1">
                 {{ error }}
               </li>
             </ul>
@@ -62,20 +61,6 @@
 <script>
   export default {
     name: "FormComponent",
-    // props: {
-    //   label: {
-    //     type: String,
-    //     default: ''
-    //   },
-    //   modelValue: {
-    //     type: [String, Number],
-    //     default: ''
-    //   },
-    //   limit: {
-    //     type: String,
-    //     default: ''
-    //   }
-    // },
     data() {
       return {
         warning: "",
