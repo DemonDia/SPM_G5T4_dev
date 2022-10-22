@@ -50,7 +50,7 @@ export default {
     return {
       items: [],
       autocompleteItems: [],
-      pillItems: [],
+      pillItems: this.skills,
       search: "",
       url: {
         skill: "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/available/",
@@ -71,13 +71,16 @@ export default {
       }
     },
     selectItem(item) {
-      !this.pillItems.includes(item) ? this.pillItems.push(item) : null; // only push non duplicate items
+      if (this.pillItems.filter(currItem => currItem.Skill_ID === item.Skill_ID).length < 1)  {
+        !this.pillItems.includes(item) ? this.pillItems.push(item) : null; // only push non duplicate items
+      }
       this.search = "";
       this.autocompleteItems = [];
       this.$emit('pillItems', this.pillItems);  // emit the pillItems array to the parent component
     },
     unselectItem(item) {
       this.pillItems = this.pillItems.filter((value) => value.Skill_ID != item); // remove item from pillItems array
+      console.log(this.pillItems)
       this.$emit('pillItems', this.pillItems);  // emit the pillItems array to the parent component
     },
     getRoleSkill(role_id) {

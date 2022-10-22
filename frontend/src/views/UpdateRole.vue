@@ -281,8 +281,9 @@ export default {
     // load data into the v-model and array
     this.role_name.role_name = roleInfo.data.data.Role_Name;
     this.role_description.role_description =
-      roleInfo.data.data.Role_Description;
+    roleInfo.data.data.Role_Description;
     this.skills_array = roleSkills;
+    this.pillItemsFromComponent = roleSkills;
   },
 };
 </script>
