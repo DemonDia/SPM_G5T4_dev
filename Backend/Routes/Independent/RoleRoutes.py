@@ -228,32 +228,33 @@ def updateRole(Role_ID: int, updated_role: RoleModel, session: Session = Depends
         if role == None:
             errors.append("Role not found!")
 
-            findDuplicateRoleStatement = select(RoleModel).where(
-                RoleModel.Role_Name == updated_role.Role_Name)
-            results = session.exec(findDuplicateRoleStatement).one()
+        findDuplicateRoleStatement = select(RoleModel).where(
+            RoleModel.Role_Name == updated_role.Role_Name)
+        results = session.exec(findDuplicateRoleStatement).all()
+        print("Results",results)
 
-            # check for duplicate skill name
-            if results:
-                errors.append("Role already exists! Please try again")
+        # check for duplicate skill name
+        if len(results)>0:
+            errors.append("Role already exists! Please try again")
 
-            # check for empty skill name
-            if len(updated_role.Role_Name) == 0:
-                errors.append("Role Name cannot be empty! Please try again")
+        # check for empty skill name
+        if len(updated_role.Role_Name) == 0:
+            errors.append("Role Name cannot be empty! Please try again")
 
-            # check if skill name exceeds 30 characters
-            if len(updated_role.Role_Name) > 30:
-                errors.append(
-                    "Role Name exceeds character limit of 30! Please try again")
+        # check if skill name exceeds 30 characters
+        if len(updated_role.Role_Name) > 30:
+            errors.append(
+                "Role Name exceeds character limit of 30! Please try again")
 
-            # check for empty skill description
-            if len(updated_role.Role_Description) == 0:
-                errors.append(
-                    "Role Description cannot be empty! Please try again")
+        # check for empty skill description
+        if len(updated_role.Role_Description) == 0:
+            errors.append(
+                "Role Description cannot be empty! Please try again")
 
-            # check if skill name exceeds 170 characters
-            if len(updated_role.Role_Description) > 170:
-                errors.append(
-                    "Role Description exceeds character limit of 170! Please try again")
+        # check if skill name exceeds 170 characters
+        if len(updated_role.Role_Description) > 170:
+            errors.append(
+                "Role Description exceeds character limit of 170! Please try again")
 
         if (len(errors) > 0):
             return {
