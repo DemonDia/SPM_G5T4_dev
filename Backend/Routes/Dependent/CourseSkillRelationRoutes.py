@@ -8,7 +8,7 @@ from HelperFunctions import *
 # ===========================test functions===========================
 
 
-@app.delete("/courseSkillRelations/deleteall")
+@app.delete("/coursekillrelations/deleteall")
 def deleteAll():
     return deleteAllData(CourseSkillRelationModel)
 
@@ -77,6 +77,64 @@ async def addRoleSkillRelation(Course_ID: str, session: Session = Depends(get_se
         return {
             "success": True,
             "data": results
+        }
+
+    except Exception as e:
+        errors.append(str(e))
+        return {
+            "success": False,
+            "message": errors
+        }
+
+
+@app.put('/courseskillrelations/{Course_ID}')
+async def updateCourseSkillRelations(Course_ID: str, request: Request, session: Session = Depends(get_session)):
+    errors = []
+    try:
+        requestData = await request.json()
+        statement = select(CourseModel).where(
+            CourseModel.Course_ID == Course_ID)
+        result = session.exec(statement)
+
+        chosenRoleResult = result.all()
+        if len(chosenRoleResult) == 0:
+            return  # yes this returns the success = false json
+        else:
+            role = chosenRoleResult[0]
+        if role == None:
+            errors.append("Role does not exist!")
+            errors.append(str(e))
+            return {
+                "success": False,
+                "message": errors
+            }
+
+        # delete relations
+        existingCourseSkillStatement = select(
+            CourseSkillRelationModel).where(CourseSkillRelationModel.Course_ID == Course_ID)
+        allExistingCourseSkillRelations = session.exec(
+            existingCourseSkillStatement)
+        allRelations = allExistingCourseSkillRelations.all()
+        for relation in allRelations:
+            session.delete(relation)
+
+        # add again
+        for Skill_ID in requestData["Skills"]:
+            newRoleSkillRelation = CourseSkillRelationModel()
+            newRoleSkillRelation.Course_ID = Course_ID
+            newRoleSkillRelation.Skill_ID = Skill_ID
+            session.add(newRoleSkillRelation)
+
+        if len(errors) > 0:
+            return {
+                "success": False,
+                "message": errors
+            }
+        session.commit()
+        session.close()
+        return {
+            "success": True,
+            "message": "Related skills are updated!"
         }
 
     except Exception as e:

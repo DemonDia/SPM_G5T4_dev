@@ -132,7 +132,6 @@ async def updateRoleSkillRelations(Role_ID: int, request: Request, session: Sess
         allRelations = allExistingRoleSkillRelations.all()
         for relation in allRelations:
             session.delete(relation)
-        session.commit()
 
         # add again
         for Skill_ID in requestData["Skills"]:
