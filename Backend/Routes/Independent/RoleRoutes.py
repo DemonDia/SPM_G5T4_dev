@@ -229,7 +229,7 @@ def updateRole(Role_ID: int, updated_role: RoleModel, session: Session = Depends
             errors.append("Role not found!")
 
         findDuplicateRoleStatement = select(RoleModel).where(
-            RoleModel.Role_Name == updated_role.Role_Name)
+            RoleModel.Role_Name == updated_role.Role_Name and RoleModel.Role_ID != Role_ID)
         results = session.exec(findDuplicateRoleStatement).all()
         print("Results",results)
 
