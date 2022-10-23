@@ -6,7 +6,7 @@
     >
       <input
         type="text"
-        placeholder="Search for skills to assign.."
+        :placeholder="this.placeholder"
         v-model="search"
         v-on:keyup="searchItem"
       />
@@ -52,55 +52,68 @@ export default {
       autocompleteItems: [],
       pillItems: [],
       search: "",
-      url: {
-        skill: "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/available/",
-        role: "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/available/",
-      },
+      currUrl: "",
+      currName: "",
+      currID: "",
+      placeholder: "Search for " + this.ctype + "s to assign..."
     };
   },
-  props: ["ctype", "skills"],
+  props: ["ctype", "skills", "roles"],
   methods: {
     searchItem() {
         // only search if the search bar is not empty
       if (this.search.length > 0 && this.items.length > 0) {
         this.autocompleteItems = this.items.filter((element) =>
-          element.Skill_Name.toLowerCase().includes(this.search.toLowerCase())
+          element[this.currName].toLowerCase().includes(this.search.toLowerCase())
         );
       } else if (this.search.length == 0) {
         this.autocompleteItems = [];
       }
     },
+
     selectItem(item) {
-      if (this.pillItems.filter(currItem => currItem.Skill_ID === item.Skill_ID).length < 1)  {
+      if (this.pillItems.filter(currItem => currItem[this.currID] === item[this.currID]).length < 1)  {
         !this.pillItems.includes(item) ? this.pillItems.push(item) : null; // only push non duplicate items
       }
       this.search = "";
       this.autocompleteItems = [];
       this.$emit('pillItems', this.pillItems);  // emit the pillItems array to the parent component
     },
+
     unselectItem(item) {
-      this.pillItems = this.pillItems.filter((value) => value.Skill_ID != item); // remove item from pillItems array
+      this.pillItems = this.pillItems.filter((value) => value[this.currID] != item); // remove item from pillItems array
       console.log(this.pillItems)
       this.$emit('pillItems', this.pillItems);  // emit the pillItems array to the parent component
     },
-    getRoleSkill(role_id) {
-      var getRoleSkillUrl =
-        "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/" +
-        role_id;
-      return new Promise((resolve, reject) => {
-        axios
-          .get(getRoleSkillUrl)
-          .then((response) => {
-            resolve(response.data.data);
-          })
-          .catch((err) => reject(err));
-      });
-    },
+
+    // getRoleSkill(role_id) {
+    //   var getRoleSkillUrl =
+    //     "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/" +
+    //     role_id;
+    //   return new Promise((resolve, reject) => {
+    //     axios
+    //       .get(getRoleSkillUrl)
+    //       .then((response) => {
+    //         resolve(response.data.data);
+    //       })
+    //       .catch((err) => reject(err));
+    //   });
+    // },
   },
+
   computed: {},
+
   async mounted() {
-    var url = this.url[this.ctype];
-    axios.get(url).then((response) => {
+    if (this.ctype == 'skill') {
+      this.currName = 'Skill_Name';
+      this.currID = 'Skill_ID';
+      this.currUrl = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/available/";
+    } else if (this.ctype == 'role') {
+      this.currName = 'Role_Name';
+      this.currID = 'Role_ID';
+      this.currUrl = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/available/";
+    };
+    axios.get(this.currUrl).then((response) => {
       var result = response.data.data;
       this.items = result;
     });
@@ -109,7 +122,6 @@ export default {
     if (this.skills) {
       this.pillItems = this.skills;
     }
-
   },
 };
 </script>
