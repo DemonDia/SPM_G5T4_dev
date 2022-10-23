@@ -196,9 +196,9 @@ export default {
     background-color: #fbfbfb;
   }
 
-  .menu-frame:hover, .menu-frame:focus, .menu-frame::after {
+  .menu-frame:hover, .menu-frame:active {
     background-color: #404089;
-    transition: 0.3s;
+    transition: 0.2s ease-in-out;
   }
 
   .menu-dot {
@@ -208,13 +208,19 @@ export default {
     border: none;
   }
 
-  .menu-dot:hover, .menu-dot:focus, .menu-dot::after {
+  .menu-dot:hover, .menu-dot:active {
     color: #fbfbfb;
-    transition: 0.3s;
+    transition: 0.2s ease-in-out;
   }
 
   .dropdown-toggle::after {
-      display: none !important;
+    display: none !important;
+  }
+
+  .dropdown-item:active, .dropdown-item:active {
+    background-color: #404089;
+    color: #fbfbfb;
+    transition: 0.2s;
   }
 
   /* browser width is small */
