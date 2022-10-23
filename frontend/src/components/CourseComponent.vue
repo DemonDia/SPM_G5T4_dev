@@ -37,8 +37,9 @@
               aria-expanded="false"
         ></button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="#">Update</a></li>
-          <li><a class="dropdown-item" href="#">Delete</a></li>
+          <li><a class="dropdown-item" @click="updateItem(this.courseID,'course')" v-if="authenticated && (user.Role == 1)">Update</a></li>
+          <!-- <li><a class="dropdown-item" href="#">Delete</a></li> -->
+          <li><a class="dropdown-item" href="#">Add to Learning Journey</a></li>
         </ul>
       </div>
     </div>
@@ -47,13 +48,15 @@
 
 <script>
 import PillComponent from "@/components/PillComponent.vue";
+import router from "../router";
+import { mapGetters } from "vuex";
 
 export default {
   name: "CourseComponent",
   components: {
     PillComponent
   },
-  props: ["course", "indx"],
+  props: ["course", "indx", "id", "ctype"],
   data() {
     return {
       category: this.course.Course_Category,
@@ -63,6 +66,19 @@ export default {
       status: this.course.Course_Status,
       type: this.course.Course_Type,
       skills: this.course.Skills,
+    }
+  },
+  computed: {
+    ...mapGetters({
+      user: "auth/user",
+      authenticated: "auth/authenticated",
+    }),
+  },
+  methods: {
+    updateItem(id, ctype) {
+      if(ctype == "course") {
+        router.push({ name: 'update-course', params: { course_id: id } });
+      } 
     }
   },
 };
@@ -115,7 +131,7 @@ export default {
   .menu-frame {
     justify-content: center;
     align-items: center;
-    height: 30px;
+    height: 32px;
     max-width: 60px;
     padding: 0 20px; 
     margin-left: auto;
@@ -123,10 +139,26 @@ export default {
     border-radius: 20px;
   }
 
+  .menu-frame:hover, .menu-frame:active {
+    background-color: #404089;
+    transition: 0.2s ease-in-out;
+  }
+
   .menu-dot {
-    font-size: 2.1rem;
+    font-size: 2rem;
     background-color: transparent;
     border: none;
+  }
+
+  .menu-dot:hover, .menu-dot:active {
+    color: #fbfbfb;
+    transition: 0.2s ease-in-out;
+  }
+
+  .dropdown-item:active, .dropdown-item:active {
+    background-color: #404089;
+    color: #fbfbfb;
+    transition: 0.2s;
   }
 
   #typeBadge {
