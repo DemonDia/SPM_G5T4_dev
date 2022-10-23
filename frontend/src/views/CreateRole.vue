@@ -4,6 +4,7 @@
       <div
         class="col-sm-12 col-xl-8 mx-auto my-3 p-5 text-start rounded rounded-4 shadow-lg mb-5 bg-body"
       >
+        <!-- Header -->
         <h3>Create a Role</h3>
         <h6 class="text-secondary mt-3 mb-3">
           What role would you like to create today?
@@ -64,6 +65,7 @@
 
         <!-- Content -->
         <form @submit.prevent="handleSubmit" method="POST">
+
           <!-- Page 1 -->
           <div v-show="this.currFormPg == 1" id="formPg1">
             <FormComponent
@@ -75,7 +77,6 @@
               :isSubmitted="isSubmitted"
               :formType="role_name.formType"
             />
-
             <FormComponent
               v-model="role_description.role_description"
               :label="role_description.label"
@@ -86,6 +87,7 @@
               :formType="role_description.formType"
             />
           </div>
+
           <!-- Page 2 -->
           <div v-show="this.currFormPg == 2" id="formPg2">
             <PillSearchComponent
@@ -94,6 +96,7 @@
               @pillItems="getPill"
             ></PillSearchComponent>
           </div>
+
           <!-- Page 3 -->
           <div v-show="this.currFormPg == 3" id="formPg3">
             <p class="mt-3 mb-1 fw-bold">Role Name</p>
@@ -107,6 +110,8 @@
 
         <!-- Buttons -->
         <div class="row d-flex justify-content-around my-sm-3 my-md-5 p-3">
+
+          <!-- First Button -->
           <button
             type="button"
             class="btn col-md-4 col-sm-6 m-2"
@@ -121,6 +126,7 @@
             {{ this.progress[currFormPg - 1].button1 }}
           </button>
 
+          <!-- Second Button -->
           <button
             type="button"
             class="btn col-md-4 col-sm-5 m-2"
@@ -135,10 +141,6 @@
             {{ this.progress[currFormPg - 1].button2 }}
           </button>
         </div>
-
-        <!-- <button class="btn btn-secondary m-3" @click="resetForm" type="reset">
-          Reset
-        </button> -->
       </div>
     </div>
   </DashboardLayout>

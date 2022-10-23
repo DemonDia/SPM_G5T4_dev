@@ -1,15 +1,14 @@
 <template>
   <div class="card-component mt-3 mb-2 mx-auto p-4">
     <div class="row justify-content-between">
-
       <!-- Title -->
       <div class="card-component-header m-0 col-lg-8 col-9">
         <h5 class="card-component-title text-start">{{ title }}</h5>
       </div>
 
       <!-- Menu Button -->
-      <div class="menu-frame col-3 mt-0 p-3 pt-0 d-flex flex-wrap">
-        <button class="ph-dots-three menu-dot" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+      <div class="menu-frame col-3 d-flex flex-wrap justify-content-center">
+        <button class="ph-dots-three menu-dot mx-auto pt-0" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           <li><a class="dropdown-item" @click="updateItem(id, ctype)">Update</a></li>
@@ -32,7 +31,7 @@
 </template>
 
 <script>
-import PillComponent from "./PillComponent.vue";
+import PillComponent from "@/components/PillComponent.vue";
 import axios from "axios";
 import { createToast } from 'mosha-vue-toastify';
 import router from "../router";
@@ -187,13 +186,24 @@ export default {
     height: 30px;
     max-width: 60px;
     border-radius: 20px;
-    background-color: rgb(251, 251, 251);
+    background-color: #fbfbfb;
+  }
+
+  .menu-frame:hover, .menu-frame:focus, .menu-frame::after {
+    background-color: #404089;
+    transition: 0.3s;
   }
 
   .menu-dot {
     font-size: 2.1rem;
     background-color: transparent;
+    color: #404089;
     border: none;
+  }
+
+  .menu-dot:hover, .menu-dot:focus, .menu-dot::after {
+    color: #fbfbfb;
+    transition: 0.3s;
   }
 
   .dropdown-toggle::after {
