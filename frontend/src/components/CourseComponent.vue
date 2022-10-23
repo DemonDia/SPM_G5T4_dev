@@ -5,6 +5,7 @@
       <div class="col-md-3 col-12 p-3 mx-auto">
         <img :src="`https://picsum.photos/id/${this.indx}/200/200`" class="img-fluid" alt="Course Image Illustration"/>
       </div>
+
       <!-- Card Content -->
       <div class="col-6 flex-grow-1 card-content p-2 px-4 pt-0 pt-md-2">
         <div class="tags text-start p-2 ps-0 mt-0 my-2">
@@ -25,6 +26,7 @@
           <pill-component :pillList="this.skills" ctype="role"/>
         </div>
       </div>
+
       <!-- Menu Button -->
       <div class="col-1 menu-frame d-flex flex-wrap">
         <button
@@ -44,7 +46,7 @@
 </template>
 
 <script>
-import PillComponent from "./PillComponent.vue";
+import PillComponent from "@/components/PillComponent.vue";
 
 export default {
   name: "CourseComponent",

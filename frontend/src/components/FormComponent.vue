@@ -17,6 +17,8 @@
           class="form-control"
           :class="[this.errors.length > 0 ? 'is-invalid' : '']"
         >
+
+        <!-- Else text area -->
         <textarea v-else-if="this.formType=='textarea'"
           v-bind="$attrs"
           :value="modelValue"
@@ -29,10 +31,12 @@
       </div>
       <div class="row">
         <div class="text-start text-danger col-sm-12" :class="this.formType=='textarea' ? 'col-lg-8' : 'col-lg-10'">
+
           <!-- Character limit warning (before submission) -->
           <p v-if="this.overLimit" class="pt-1">
             {{ this.warning }}
           </p>
+
           <!-- Show errors -->
           <div v-if="this.errors.length == 1">
             <p class="pt-1">
@@ -47,6 +51,7 @@
             </ul>
           </div>
         </div>
+
         <!-- Word count for text area -->
         <div class="col-sm-12 col-lg-4">
           <p class="text-sm-start text-lg-end pt-2" v-if="this.formType=='textarea'" :class="this.overLimit ? 'text-danger' : ''">

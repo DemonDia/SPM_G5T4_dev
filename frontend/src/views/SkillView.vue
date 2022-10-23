@@ -2,12 +2,8 @@
   <DashboardLayout>
     <div class="container-fluid" id="skillMain">
       <!-- Spinner -->
-      <div v-if="skills.length < 1 && noSkillFound==false" id="rippleP">
-        <div class="lds-ripple">
-          <div></div>
-          <div></div>
-        </div>
-      </div>
+      <SpinnerComponent v-if="skills.length < 1 && noSkillFound==false" />
+      
       <!-- Dashboard -->
       <div v-else class="">
         <div class="row mt-3 mx-auto">
@@ -30,10 +26,11 @@
 </template>
 
 <script>
-import DashboardLayout from "./Dashboard/Layout/DashboardLayout.vue";
-import CardComponent from "../components/CardComponent.vue";
+import DashboardLayout from "@/views/Dashboard/Layout/DashboardLayout.vue";
+import CardComponent from "@/components/CardComponent.vue";
 import axios from "axios";
 import { mapGetters } from "vuex";
+import SpinnerComponent from "@/components/SpinnerComponent.vue";
 
 
 export default {
@@ -41,7 +38,8 @@ export default {
   components: {
     DashboardLayout,
     CardComponent,
-  },
+    SpinnerComponent
+},
   data() {
     return {
       skills: /* to get skills from database */

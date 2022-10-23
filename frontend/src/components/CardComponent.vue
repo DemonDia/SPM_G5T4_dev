@@ -1,7 +1,6 @@
 <template>
   <div class="card-component mt-3 mb-2 mx-auto p-4">
     <div class="row justify-content-between">
-
       <!-- Title -->
       <div class="card-component-header m-0 col-lg-8 col-9">
         <h5 class="card-component-title text-start">{{ title }}</h5>
@@ -32,7 +31,7 @@
 </template>
 
 <script>
-import PillComponent from "./PillComponent.vue";
+import PillComponent from "@/components/PillComponent.vue";
 import axios from "axios";
 import { createToast } from 'mosha-vue-toastify';
 import router from "../router";

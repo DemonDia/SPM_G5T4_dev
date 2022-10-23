@@ -2,7 +2,7 @@
     <DashboardLayout>
       <div class="container-fluid p-5" id="createSkillMain">
         <h1>Create a skill</h1>
-  
+        <!-- Modal -->
         <div v-show="checked">
           <ModalComponent 
           type="Skill" 
@@ -12,6 +12,7 @@
         />
         </div>
   
+        <!-- Form -->
         <form @submit.prevent="createSkill" method="POST">
           <FormComponent
             v-model="skill_name.skill_name"
@@ -43,9 +44,9 @@
   </template>
   
   <script>
-    import DashboardLayout from "./Dashboard/Layout/DashboardLayout.vue";
-    import FormComponent from "../components/FormComponent.vue";
-    import ModalComponent from "../components/ModalComponent.vue";
+    import DashboardLayout from "@/views/Dashboard/Layout/DashboardLayout.vue";
+    import FormComponent from "@/components/FormComponent.vue";
+    import ModalComponent from "@/components/ModalComponent.vue";
     import axios from "axios";
   
     export default {
