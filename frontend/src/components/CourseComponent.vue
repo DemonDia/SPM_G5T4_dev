@@ -1,42 +1,44 @@
 <template>
-  <div class="card-component container-fluid p-3 m-4 mx-auto">
-    <div class="row">
+  <div v-if="this.status=='Active'" class="card-component m-4 p-3">
+    <div class="row justify-content-between">
       <!-- Image -->
-      <img src="https://picsum.photos/600" alt="" />
-
-      <!-- Title -->
-      <div class="card-content">
-        <h4 class="card-title">{{ title }}</h4>
-        
-        <!-- Description -->
-        <p class="card-description">
-          {{ desc }}
-        </p>
-        <div class="card-bottom">
-          <div class="options">
-            <!-- Pills Component -->
-            <!-- <p class="fw-bold">Skills</p> -->
-            <pill-component class="mt-3" :pillList="pillList" :ctype="ctype"/>
-          </div>
+      <div class="col-md-3 col-12 p-3 mx-auto">
+        <img :src="`https://picsum.photos/id/${this.indx}/200/200`" class="img-fluid" alt="Course Image Illustration"/>
+      </div>
+      <!-- Card Content -->
+      <div class="col-6 flex-grow-1 card-content p-2 px-4 pt-0 pt-md-2">
+        <div class="tags text-start p-2 ps-0 mt-0 my-2">
+          <span class="badge text-dark me-2" id="typeBadge">
+            <p>{{ this.type }}</p>
+          </span>
+          <span class="badge text-dark me-2" id="catBadge">
+            <p>{{ this.category }}</p>
+          </span>
+        </div>
+        <h5 class="card-title text-start my-2">
+          {{ this.courseID + ": " + this.title }}
+        </h5>
+        <div class="card-body my-2">
+          <p class="card-text text-start">{{ this.desc }}</p>
+        </div>
+        <div class="card-bottom my-2">
+          <pill-component :pillList="this.skills" ctype="role"/>
         </div>
       </div>
-
       <!-- Menu Button -->
-      <div class="menu-frame col-3 mt-0 p-3 pt-0">
+      <div class="col-1 menu-frame d-flex flex-wrap">
         <button
-          class="ph-dots-three-vertical menu-dot"
-          type="button"
-          id="dropdownMenuButton1"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
+              class="ph-dots-three-vertical menu-dot"
+              type="button"
+              id="dropdownMenuButton1"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
         ></button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           <li><a class="dropdown-item" href="#">Update</a></li>
           <li><a class="dropdown-item" href="#">Delete</a></li>
         </ul>
       </div>
-
-    
     </div>
   </div>
 </template>
@@ -45,137 +47,93 @@
 import PillComponent from "./PillComponent.vue";
 
 export default {
-  name: "CardComponent",
+  name: "CourseComponent",
   components: {
     PillComponent
   },
-  props: ["title", "desc", "active" ,"pillList", "ctype"],
-  methods: {},
+  props: ["course", "indx"],
+  data() {
+    return {
+      category: this.course.Course_Category,
+      desc: this.course.Course_Desc,
+      courseID: this.course.Course_ID.toUpperCase(),
+      title: this.course.Course_Name,
+      status: this.course.Course_Status,
+      type: this.course.Course_Type,
+      skills: this.course.Skills,
+    }
+  },
 };
 </script>
 
 <style scoped>
-* {
-  margin: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-
-img {
-  border-radius: 10%;
-  display: block;
-  object-fit: cover;
-  margin: 0 auto;
-  max-width: 15%;
-  min-height: 100%;
-  transition: all 0.5s ease 0s;
-}
-
-.card-component {
-  padding: 20px 16px;
-  background-color: white;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: 0.2s;
-  max-height: 30%;
-  box-shadow: 0 3px 3px 0 rgb(0 0 0 / 4%), 0 5px 15px 0 rgb(0 0 0 / 4%);
-}
-.card-component-body {
-  font-size: 0.8em;
-  max-height: 85px;
-  overflow: hidden;
-  display: block;
-}
-
-.card-component-text {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  word-wrap: break-word;
-}
-
-.menu-frame {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  height: 30px;
-  max-width: 60px;
-  padding: 0 20px;
-  margin-left: auto;
-  margin-right: 8px;
-  border-radius: 20px;
-}
-
-.menu-dot {
-  font-size: 2.1rem;
-  background-color: transparent;
-  border: none;
-}
-
-.dropdown-toggle::after {
-  display: none !important;
-}
-
-.card-content {
-  flex: 1 50%;
-  -webkit-flex: 1 50%;
-  padding: 0.8rem;
-}
-.card-title {
-  text-align: left;
-	font-size: 1.2rem;
-  font-weight: 700;
-  margin: 0;
-}
-
-.card-description {
-  text-align: left;
-	font-size: 0.8rem;
-  margin: 0;
-  margin-top: 1rem;
-  color: #888;
-	overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  max-height: 2rem;
-  line-height: 1rem;
-}
-.card-bottom {
-	display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-	align-content: center;
-	-webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-	border-top: 1px solid #efefef;
-  text-align: right;
-	padding-top: 0.5rem;
-	margin-top: 1rem;
-	font-size: 0.8rem;
-  text-align: left;
-	color: rgb(0, 0, 0);
-}
-.card__price {
-  color: #E35354;
-  text-align: center;
-  font-weight: 700;
-  font-size: 1rem;
-}
-
-
-/* browser width is small */
-@media screen and (min-width: 768px) {
-  .card-component-text {
-    -webkit-line-clamp: 2;
+  * {
+    margin: 0;
+    box-sizing: border-box;
   }
-}
 
-@media screen and (max-width: 516px) {
-  .card-component-text {
-    -webkit-line-clamp: 2;
+  .card-component {
+    background-color: white;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+    height: max-content;
+    box-shadow: 0 3px 3px 0 rgb(0 0 0 / 4%), 0 5px 15px 0 rgb(0 0 0 / 4%);
   }
-}
+
+  .card-component-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: transparent;
+    align-items: center;
+  }
+
+  .card-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-wrap: break-word;
+  }
+
+  .card-body {
+    max-height: 85px;
+    overflow: hidden;
+    display: block;
+  }
+
+  .card-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-wrap: break-word;
+  }
+
+  .menu-frame {
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    max-width: 60px;
+    padding: 0 20px; 
+    margin-left: auto;
+    margin-right: 8px;
+    border-radius: 20px;
+  }
+
+  .menu-dot {
+    font-size: 2.1rem;
+    background-color: transparent;
+    border: none;
+  }
+
+  #typeBadge {
+    border: 2px solid #00b8ff;
+    color: #00b8ff;
+  }
+
+  #catBadge {
+    border: 2px solid #ff00c1;
+    color: #ff00c1;
+  }
 </style>
