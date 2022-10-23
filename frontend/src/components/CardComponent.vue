@@ -7,7 +7,7 @@
       </div>
 
       <!-- Menu Button -->
-      <div class="menu-frame col-3 d-flex flex-wrap justify-content-center">
+      <div class="menu-frame col-3 d-flex flex-wrap justify-content-center"  v-if="authenticated && (user.Role == 1)">
         <button class="ph-dots-three menu-dot mx-auto pt-0" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -35,6 +35,7 @@ import PillComponent from "@/components/PillComponent.vue";
 import axios from "axios";
 import { createToast } from 'mosha-vue-toastify';
 import router from "../router";
+import { mapGetters } from "vuex";
 
 export default {
   name: "CardComponent",
@@ -127,8 +128,14 @@ export default {
         router.push({ name: 'UpdateSkill', params: { role_id: id } });
       } else if (ctype == 'role') {
         router.push({ name: 'update-role', params: { role_id: id } });
-      }
+      } 
     }
+  },
+  computed: {
+    ...mapGetters({
+      user: "auth/user",
+      authenticated: "auth/authenticated",
+    }),
   },
 };
 </script>
