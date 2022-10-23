@@ -65,7 +65,6 @@
 
         <!-- Content -->
         <form @submit.prevent="handleSubmit" method="POST">
-
           <!-- Page 1 -->
           <div v-show="this.currFormPg == 1" id="formPg1">
             <FormComponent
@@ -110,7 +109,6 @@
 
         <!-- Buttons -->
         <div class="row d-flex justify-content-around my-sm-3 my-md-5 p-3">
-
           <!-- First Button -->
           <button
             type="button"
@@ -192,7 +190,7 @@
           {
             title: "STEP 1",
             bg: "#56d1dc",
-            description: "Input Role details",
+            description: "Input role details",
             button1: "Back to Step 1",
             button2: "Next: Assign Skills",
           },
