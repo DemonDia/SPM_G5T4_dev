@@ -37,8 +37,9 @@
               aria-expanded="false"
         ></button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="#">Update</a></li>
-          <li><a class="dropdown-item" href="#">Delete</a></li>
+          <li><a class="dropdown-item" @click="updateItem(this.courseID,'course')" v-if="authenticated && (user.Role == 1)">Update</a></li>
+          <!-- <li><a class="dropdown-item" href="#">Delete</a></li> -->
+          <li><a class="dropdown-item" href="#">Add to Learning Journey</a></li>
         </ul>
       </div>
     </div>
@@ -47,13 +48,15 @@
 
 <script>
 import PillComponent from "@/components/PillComponent.vue";
+import router from "../router";
+import { mapGetters } from "vuex";
 
 export default {
   name: "CourseComponent",
   components: {
     PillComponent
   },
-  props: ["course", "indx"],
+  props: ["course", "indx", "id", "ctype"],
   data() {
     return {
       category: this.course.Course_Category,
@@ -63,6 +66,19 @@ export default {
       status: this.course.Course_Status,
       type: this.course.Course_Type,
       skills: this.course.Skills,
+    }
+  },
+  computed: {
+    ...mapGetters({
+      user: "auth/user",
+      authenticated: "auth/authenticated",
+    }),
+  },
+  methods: {
+    updateItem(id, ctype) {
+      if(ctype == "course") {
+        router.push({ name: 'update-course', params: { course_id: id } });
+      } 
     }
   },
 };
