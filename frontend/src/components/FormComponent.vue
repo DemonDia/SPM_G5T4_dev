@@ -16,6 +16,7 @@
           v-on:keyup="this.checkChar"
           class="form-control"
           :class="[this.errors.length > 0 ? 'is-invalid' : '']"
+          :disabled="disabled"
         >
 
         <!-- Else text area -->
@@ -27,6 +28,7 @@
           v-on:keyup="this.checkChar"
           class="form-control"
           :class="[this.errors.length > 0 ? 'is-invalid' : '']"
+          :disabled="disabled"
         ></textarea>
       </div>
       <div class="row">
@@ -72,7 +74,7 @@
         overLimit: false,
       }
     },
-    props: ['label', 'modelValue', 'limit', 'errors', 'isSubmitted', 'formType'],
+    props: ['label', 'modelValue', 'limit', 'errors', 'isSubmitted', 'formType','disabled'],
     methods: {
       checkChar(){
         if (this.modelValue.length > Number(this.limit)) {

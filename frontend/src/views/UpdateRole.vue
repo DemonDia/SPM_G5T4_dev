@@ -2,12 +2,9 @@
   <DashboardLayout>
     <div class="container-fluid p-sm-5" id="updateRoleMain">
       <!-- Spinner -->
-      <div v-if="!noRoleFound" id="rippleP">
-        <div class="lds-ripple">
-          <div></div>
-          <div></div>
-        </div>
-      </div>
+      <SpinnerComponent v-if="!noRoleFound" />
+      
+      <!-- Content -->
       <div
         v-else
         class="col-sm-12 col-xl-8 mx-auto my-3 p-5 text-start rounded rounded-4 shadow-lg mb-5 bg-body"
@@ -60,7 +57,7 @@
           ></PillSearchComponent>
         </form>
 
-        <!-- Buttons -->
+        <!-- Button -->
         <div class="row d-flex justify-content-around my-sm-3 my-md-5 p-3">
           <button
             type="button"
@@ -68,6 +65,7 @@
             @click="handleSubmit"
             data-bs-toggle="modal"
             data-bs-target="#submitModal"
+            id="submitBtn"
           >
             Update Role
           </button>
@@ -84,16 +82,18 @@
   import axios from "axios";
   import PillSearchComponent from "@/components/PillSearchComponent.vue";
   import PillComponent from "@/components/PillComponent.vue";
+  import SpinnerComponent from "@/components/SpinnerComponent.vue";
 
   export default {
     name: "UpdateRole",
     components: {
-      DashboardLayout,
-      FormComponent,
-      ModalComponent,
-      PillSearchComponent,
-      PillComponent,
-    },
+    DashboardLayout,
+    FormComponent,
+    ModalComponent,
+    PillSearchComponent,
+    PillComponent,
+    SpinnerComponent
+},
     data() {
       return {
         role_name: {
@@ -298,6 +298,9 @@
 </script>
 
 <style scoped>
+  #updateRoleMain {
+    min-height: 100vh;
+  }
   .back-btn {
     border: none;
     background: none;
@@ -308,64 +311,17 @@
   }
 
   .back-btn:hover {
-    color: #1a73e8;
-    transition: 0.3s ease-in-out;
+    color: #404089;
+    transition: 0.2s ease-in-out;
   }
 
-  #updateRoleMain {
-    min-height: 100vh;
+  #submitBtn {
+    background-color: #434ce8;
+    color: #fbfbfb;
   }
 
-  #rippleP {
-    position: absolute;
-    top: 45%;
-    left: 47%;
-  }
-
-  .lds-ripple {
-    display: inline-block;
-    position: relative;
-    width: 80px;
-    height: 80px;
-  }
-  .lds-ripple div {
-    position: absolute;
-    border: 4px solid rgb(0, 0, 0);
-    opacity: 1;
-    border-radius: 50%;
-    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-  }
-  .lds-ripple div:nth-child(2) {
-    animation-delay: -0.5s;
-  }
-  @keyframes lds-ripple {
-    0% {
-      top: 36px;
-      left: 36px;
-      width: 0;
-      height: 0;
-      opacity: 0;
-    }
-    4.9% {
-      top: 36px;
-      left: 36px;
-      width: 0;
-      height: 0;
-      opacity: 0;
-    }
-    5% {
-      top: 36px;
-      left: 36px;
-      width: 0;
-      height: 0;
-      opacity: 1;
-    }
-    100% {
-      top: 0px;
-      left: 0px;
-      width: 72px;
-      height: 72px;
-      opacity: 0;
-    }
+  #submitBtn:hover {
+    background-color: #404089;
+    transition: 0.2s ease-in-out;
   }
 </style>
