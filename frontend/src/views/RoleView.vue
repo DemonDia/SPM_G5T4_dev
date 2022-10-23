@@ -79,6 +79,7 @@
 </script>
 
 <style>
+
   #roleMain {
     min-height:  100vh;
   }
@@ -95,7 +96,6 @@
     width: 80px;
     height: 80px;
   }
-
   .lds-ripple div {
     position: absolute;
     border: 4px solid rgb(0, 0, 0);
@@ -103,11 +103,9 @@
     border-radius: 50%;
     animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
   }
-
   .lds-ripple div:nth-child(2) {
     animation-delay: -0.5s;
   }
-
   @keyframes lds-ripple {
     0% {
       top: 36px;
