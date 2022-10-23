@@ -16,7 +16,7 @@
           v-bind:key="key"
           @click="selectItem(value)"
         >
-          {{ value.Skill_Name }}
+          {{ value[this.currName] }}
         </li>
       </div>
       <div class="icon">
@@ -31,9 +31,9 @@
         v-bind:key="key"
       >
         <div class="pill-content">
-          <span class="pill-text p-2 px-1"> {{ value.Skill_Name }} </span>
+          <span class="pill-text p-2 px-1"> {{ value[this.currName] }} </span>
           <div class="pill-icon p-2 px-1 me-1">
-            <i class="ph-x" @click="unselectItem(value.Skill_ID)"></i>
+            <i class="ph-x" @click="unselectItem(value[this.currID])"></i>
           </div>
         </div>
       </div>
@@ -61,7 +61,7 @@ export default {
   props: ["ctype", "skills", "roles"],
   methods: {
     searchItem() {
-        // only search if the search bar is not empty
+      // only search if the search bar is not empty
       if (this.search.length > 0 && this.items.length > 0) {
         this.autocompleteItems = this.items.filter((element) =>
           element[this.currName].toLowerCase().includes(this.search.toLowerCase())

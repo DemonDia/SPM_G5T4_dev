@@ -215,7 +215,7 @@
       },
       methods: {
         handleSubmit() {
-          this.createRole().then((res) => {
+          this.createSkill().then((res) => {
             var roleStatus = res.data;
             this.assignSkills(roleStatus.data).then((result) => {
               var assignSkillStatus = result.data;
