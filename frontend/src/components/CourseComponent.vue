@@ -131,7 +131,7 @@ export default {
   .menu-frame {
     justify-content: center;
     align-items: center;
-    height: 30px;
+    height: 32px;
     max-width: 60px;
     padding: 0 20px; 
     margin-left: auto;
@@ -139,10 +139,26 @@ export default {
     border-radius: 20px;
   }
 
+  .menu-frame:hover, .menu-frame:active {
+    background-color: #404089;
+    transition: 0.2s ease-in-out;
+  }
+
   .menu-dot {
-    font-size: 2.1rem;
+    font-size: 2rem;
     background-color: transparent;
     border: none;
+  }
+
+  .menu-dot:hover, .menu-dot:active {
+    color: #fbfbfb;
+    transition: 0.2s ease-in-out;
+  }
+
+  .dropdown-item:active, .dropdown-item:active {
+    background-color: #404089;
+    color: #fbfbfb;
+    transition: 0.2s;
   }
 
   #typeBadge {
