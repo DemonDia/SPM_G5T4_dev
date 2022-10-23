@@ -162,12 +162,12 @@ export default {
   }
 
   #typeBadge {
-    border: 2px solid #00b8ff;
-    color: #00b8ff;
+    border: 2px solid #3e0b5e;
+    color: #3e0b5e;
   }
 
   #catBadge {
-    border: 2px solid #ff00c1;
-    color: #ff00c1;
+    border: 2px solid #b43e8f;
+    color: #b43e8f;
   }
 </style>
