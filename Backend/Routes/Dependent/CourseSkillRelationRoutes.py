@@ -8,7 +8,7 @@ from HelperFunctions import *
 # ===========================test functions===========================
 
 
-@app.delete("/coursekillrelations/deleteall")
+@app.delete("/courseskillrelations/deleteall")
 def deleteAll():
     return deleteAllData(CourseSkillRelationModel)
 

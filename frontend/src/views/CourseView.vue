@@ -4,24 +4,27 @@
       <!-- Spinner -->
       <SpinnerComponent v-if="courses.length < 1 && noCourseFound == false" />
 
-       <!-- Dashboard -->
-       <div v-else class="">
-          <!-- Search by Skills -->
-          <div class="container-sm my-5 mb-3 text-start">
-            <PillSearchComponent ctype="skill" @pillItems="getPill"></PillSearchComponent>
-          </div>
-          <!-- Course Card -->
-          <div v-for="(value, key) in courses" v-bind:key="key">
-            <CourseComponent 
-              :course="value" 
-              :indx="key" 
-              v-if="this.pillItemsFromComponent.length == 0 || this.isFound(value.Skills)">
-            </CourseComponent>
+      <!-- Dashboard -->
+      <div v-else class="">
+        
+        <!-- Search by Skills -->
+        <div class="container-sm my-5 mb-3 text-start">
+          <PillSearchComponent ctype="skill" @pillItems="getPill"></PillSearchComponent>
+        </div>
+
+        <!-- Course Card -->
+        <div v-for="(value, key) in courses" v-bind:key="key">
+          <CourseComponent 
+            :course="value" 
+            :indx="key" 
+            v-if="this.pillItemsFromComponent.length == 0 || this.isFound(value.Skills)">
+          </CourseComponent>
         </div>
       </div>
+
       <!-- No Course Found -->
       <div v-show="noCourseFound" class="fs-3 fw-bold text-center align-middle pt-5 my-5">
-        Sorry! No courses found!
+        Sorry! No course found!
       </div>
     </div>
   </DashboardLayout>
