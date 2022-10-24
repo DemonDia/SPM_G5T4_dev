@@ -35,6 +35,24 @@ def getRelatedCourses(targetModelIdValue):
             "messaage": e,
             "data": []
         }
+
+def getRelatedRoles(targetModelIdValue):
+    try:
+        session = Session(engine)
+        statement = select(RoleModel.Role_Name).select_from(join(RoleModel, CourseSkillRelationModel)).where(
+            CourseSkillRelationModel.Skill_ID == targetModelIdValue)
+        results = session.exec(statement).all()
+        return {
+            "success": True,
+            "data": results
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "messaage": e,
+            "data": []
+        }
+
 # returns json
 
 
@@ -140,9 +158,11 @@ def getSkillById(Skill_ID: int, session: Session = Depends(get_session)):
         skillDict = {}
         for columnName, columnValue in skill:
             skillDict[columnName] = columnValue
-        outcome = getRelatedCourses(Skill_ID)
-        print(outcome)
-        skillDict["Courses"] = outcome["data"]
+        relatedCourses = getRelatedCourses(Skill_ID)
+        relatedRoles = getRelatedRoles(Skill_ID)
+        skillDict["Courses"] = relatedCourses["data"]
+        skillDict["Roles"] = relatedRoles["data"]
+        
         # return role
         return {
             "success": True,
