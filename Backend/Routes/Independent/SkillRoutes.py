@@ -218,7 +218,8 @@ def createSkills(skill: SkillModel, session: Session = Depends(get_session)):
         session.close()
         return {
             "success": True,
-            "message": "Successfully added"
+            "message": "Successfully added",
+            "data":skill.Skill_ID
         }
     except Exception as e:
         errors.append(str(e))
