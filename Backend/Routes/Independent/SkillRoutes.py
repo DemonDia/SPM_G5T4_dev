@@ -39,8 +39,8 @@ def getRelatedCourses(targetModelIdValue):
 def getRelatedRoles(targetModelIdValue):
     try:
         session = Session(engine)
-        statement = select(RoleModel.Role_Name).select_from(join(RoleModel, CourseSkillRelationModel)).where(
-            CourseSkillRelationModel.Skill_ID == targetModelIdValue)
+        statement = select(RoleModel.Role_Name).select_from(join(RoleModel, RoleSkillRelationModel)).where(
+            RoleSkillRelationModel.Skill_ID == targetModelIdValue)
         results = session.exec(statement).all()
         return {
             "success": True,
