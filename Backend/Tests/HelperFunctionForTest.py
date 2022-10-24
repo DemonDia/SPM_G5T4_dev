@@ -98,7 +98,7 @@ def getSingleRow(url,rowId):
 
 # Gets all rows
 def getAllRows(url):
-    rows = requests.get(url+"/")
+    rows = requests.get(url)
     return rows.json()
 
 # Add row
