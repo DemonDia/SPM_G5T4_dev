@@ -124,7 +124,7 @@ def getAvailableSkills(session: Session = Depends(get_session)):
         }
 
 @app.get("/skills/{Skill_ID}/")
-def getRole(Skill_ID: int, session: Session = Depends(get_session)):
+def getSkillById(Skill_ID: int, session: Session = Depends(get_session)):
     errors = []
     try:
         skill = session.get(SkillModel, Skill_ID)
