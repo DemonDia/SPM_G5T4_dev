@@ -28,41 +28,46 @@ def addSkillTest():
 
 def viewExistingSkillTest():
     print("User Story: View Existing Skills")
-    before = getSingleRow(BASE+entityName+"/available/", 1)
-    print("before",before)
+    beforeNoOfAvailableSkills = getAllRows(BASE+entityName+"/available")
+    print("Before:")
+    print("No of available rows: "+str(len(beforeNoOfAvailableSkills["data"])))
     triggerTestCase("View Existing Skills",
                     True, entityName, {
                     }, "readAllAvailable", None)
-    after = getSingleRow(BASE+entityName, 1)
+    after = getAllRows(BASE+entityName+"/available")
     print("after",after)
     return
 
 def updatingSkillTest():
     print("User Story: Update Skill")
-    #before = getSingleRow(BASE+entityName, 1)
-    #print("before",before)
+    beforeNoOfAvailableSkills = getAllRows(BASE+entityName+"/")
+    print("Before:")
+    print("No of available rows: "+str(len(beforeNoOfAvailableSkills["data"])))
     triggerTestCase("Update skill fields",
                     True, entityName, {
                         "Skill_Name": "Fluffing",
                         "Skill_Description": "Thinking on the spot",
                         "Active": True
                     }, "updateById", 1)
-    #after = getSingleRow(BASE+entityName, 1)
-    #print("after",after)
+    after = getAllRows(BASE+entityName+"/")
+    print("after",after)
     return
 
 #do it
 def deleteSkillTest():
     print("User Story: Soft Delete Skill")
-
-    triggerTestCase("soft Delete skill fields",
-                    True, entityName, {
+    beforeNoOfAvailableSkills = getAllRows(BASE+entityName+"/available")
+    print("Before:")
+    print("No of available rows: "+str(len(beforeNoOfAvailableSkills["data"])))
+    triggerTestCase("Update skill fields",
+                    True, entityName+"1", {
                     }, "softDelete", 1)
-
+    after = getAllRows(BASE+entityName+"/available")
+    print("after",after)
     return
 
 def testAllSkillCases():
     addSkillTest()
     viewExistingSkillTest()
-    updatingSkillTest()
-    deleteSkillTest()
+    #updatingSkillTest()
+    #deleteSkillTest()
