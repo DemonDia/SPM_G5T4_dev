@@ -128,7 +128,7 @@ def getAvailableRoles(session: Session = Depends(get_session)):
 
 
 @app.get("/roles/{Role_ID}/")
-def getRole(Role_ID: int, session: Session = Depends(get_session)):
+def getRoleById(Role_ID: int, session: Session = Depends(get_session)):
     errors = []
     try:
         role = session.get(RoleModel, Role_ID)
