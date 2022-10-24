@@ -217,6 +217,7 @@
         handleSubmit() {
           this.createSkill().then((res) => {
             var roleStatus = res.data;
+            console.log(roleStatus.data)
             this.assignSkills(roleStatus.data).then((result) => {
               var assignSkillStatus = result.data;
               
@@ -262,7 +263,7 @@
 
         assignSkills(skill_id) {
           var assignRolesUrl =
-            "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/";
+            "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skillrolerelations/";
           return new Promise((resolve, reject) => {
             axios
               .post(assignRolesUrl, {

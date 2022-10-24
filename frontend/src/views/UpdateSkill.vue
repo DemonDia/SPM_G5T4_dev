@@ -14,7 +14,7 @@
           </button>
           <h3>Update a skill</h3>
           <h6 class="text-secondary mt-3 mb-3">
-            Change the existing values in the input box
+            You can change the skill or add new roles to the skill
           </h6>
   
           <!-- Popup -->
@@ -51,8 +51,8 @@
   
             <PillSearchComponent
               class="mt-3"
-              ctype="skill"
-              :skills="skills_array"
+              ctype="role"
+              :skills="roles_array"
               @pillItems="getPill"
             ></PillSearchComponent>
           </form>
@@ -98,14 +98,14 @@
         return {
           skill_name: {
             skill_name: "",
-            label: "skill Name",
+            label: "Skill Name",
             limit: "30",
             errors: [],
             formType: "input",
           },
           skill_description: {
             skill_description: "",
-            label: "skill Description",
+            label: "Skill Description",
             limit: "170",
             errors: [],
             formType: "textarea",
@@ -114,34 +114,25 @@
           isSubmitted: false,
           checked: false,
           RNerrors: [
-            "skill Name cannot be empty! Please try again",
-            "skill already exists! Please try again",
-            "skill Name exceeds character limit of 30! Please try again",
+            "Skill Name cannot be empty! Please try again",
+            "Skill already exists! Please try again",
+            "Skill Name exceeds character limit of 30! Please try again",
           ],
           pillItemsFromComponent: [],
           noSkillFound: false,
-          skills_array: [],
+          roles_array: [],
           currentSkill_ID: this.$route.params.skill_id,
         };
       },
       methods: {
-        // Logic
-        // To collect all the information from the model and send it to the backend
-  
-        // Steps
-        // View skill will pass the skill_id to this page
-        // This page will use the skill_id to get the skill information from the backend
-        // The skill information will be displayed in the input boxes
-        // The user can change the information and submit it to the backend
-        // The backend will update the skill information in the database
-        // The user will be redirected to the View skill page
-  
+    
         handleSubmit() {
           // submitted form
           this.isSubmitted = true;
           this.updateskill(this.currentSkill_ID).then((res) => {
             var skillStatus = res.data;
             // check success
+            console.log(skillStatus)
             if (skillStatus.success) {
               this.assignSkills(this.currentSkill_ID).then((result) => {
                 this.resetErrors();
@@ -171,8 +162,8 @@
           return new Promise((resolve, reject) => {
             axios
               .put(updateskillUrl, {
-                skill_Name: this.skill_name.skill_name,
-                skill_Description: this.skill_description.skill_description,
+                Skill_Name: this.skill_name.skill_name,
+                Skill_Description: this.skill_description.skill_description,
                 Active: true,
               })
               .then((response) => {
@@ -184,7 +175,7 @@
   
         assignSkills(skill_id) {
           var assignSkillsUrl =
-            "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skillskillrelations/" +
+            "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skillrolerelations/" +
             skill_id;
           return new Promise((resolve, reject) => {
             axios
@@ -198,7 +189,7 @@
           });
         },
   
-        getskillInfo(skill_id) {
+        getSkillInfo(skill_id) {
           var getskillUrl =
             "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/" +
             skill_id;
@@ -214,7 +205,7 @@
   
         getSkillRole(skill_id) {
           var getRoleSkillUrl =
-            "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/" +
+            "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skillrolerelations/" +
             skill_id;
           return new Promise((resolve, reject) => {
             axios
@@ -277,8 +268,9 @@
       async mounted() {
         document.title = "LJMS - Update skill";
         // get skill information from backend
-        var skillInfo = await this.getskillInfo(this.currentSkill_ID);
+        var skillInfo = await this.getSkillInfo(this.currentSkill_ID);
         var skillRoles = await this.getSkillRole(this.currentSkill_ID);
+        
         skillInfo && skillRoles
           ? (this.noSkillFound = true)
           : (this.noSkillFound = false);
