@@ -8,20 +8,23 @@
       <div v-else class="">
 
         <!-- Search by Skills -->
-        <div class="container-sm my-5 mb-3 text-start">
+        <div class="container-md my-5 mb-3 text-start">
           <PillSearchComponent ctype="skill" @pillItems="getPill"></PillSearchComponent>
         </div>
 
         <!-- Create Role -->
         <div class="row mt-3 mx-auto">
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <router-link to="/create-role" tag="button" class="btn btn-dark btn-lg" v-if=" user.Role == 1">Create Role</router-link>
+            <router-link to="/create-role" tag="button" class="btn btn-dark btn-lg mx-3" v-if=" user.Role == 1">Create Role</router-link>
           </div>
         </div>
 
         <!-- Role Card -->
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
-          <div v-for="(value, key) in roles" v-bind:key="key">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 mx-3">
+          <div 
+            v-for="(value, key) in roles" v-bind:key="key" 
+            v-show="this.pillItemsFromComponent.length == 0 || this.isFound(value.Skills)"
+          >
             <card-component 
               :title="value.Role_Name" 
               :desc="value.Role_Description" 
@@ -30,7 +33,7 @@
               :id="value.Role_ID" 
               ctype="role" 
               @reload="reload()"
-              v-if="this.pillItemsFromComponent.length == 0 || this.isFound(value.Skills)"
+              
             />
           </div>
         </div>
@@ -69,6 +72,7 @@
         noSkillFound: false,
         pillItemsFromComponent: [],
         selectedSkills: [],
+        filteredRoles: [],
       }
     },
     methods: {
@@ -96,6 +100,7 @@
       },
 
       isFound(arr1) {
+        console.log(arr1)
         // show roles that include SOME of the skills selected
         // return (this.selectedSkills.some( x => arr1.includes(x) ));
 
