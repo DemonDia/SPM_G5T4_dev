@@ -22,7 +22,7 @@ def addSeedData():
 def getRelatedCourses(targetModelIdValue):
     try:
         session = Session(engine)
-        statement = select(CourseModel.Course_Name).select_from(join(CourseModel, CourseSkillRelationModel)).where(
+        statement = select(CourseModel.Course_Name,CourseModel.Course_ID).select_from(join(CourseModel, CourseSkillRelationModel)).where(
             CourseSkillRelationModel.Skill_ID == targetModelIdValue)
         results = session.exec(statement).all()
         return {
@@ -39,7 +39,7 @@ def getRelatedCourses(targetModelIdValue):
 def getRelatedRoles(targetModelIdValue):
     try:
         session = Session(engine)
-        statement = select(RoleModel.Role_Name).select_from(join(RoleModel, RoleSkillRelationModel)).where(
+        statement = select(RoleModel.Role_Name,RoleModel.Role_ID).select_from(join(RoleModel, RoleSkillRelationModel)).where(
             RoleSkillRelationModel.Skill_ID == targetModelIdValue)
         results = session.exec(statement).all()
         return {
