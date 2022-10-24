@@ -22,7 +22,7 @@ BASE = "http://127.0.0.1:8000/"
 # operationType (str) --> CRUD; from 'operationTypes' list
 # fieldValue (any) --> value of given field; default is None
 def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,operationType = "readAll",fieldValue = None):
-    assert entityName in entities,"Entity name '"+ entityName+"' not found. Unable to test"
+    # assert entityName in entities,"Entity name '"+ entityName+"' not found. Unable to test"
     assert operationType in operationTypes, "Operation type '"+operationType+"' not found. Unable to test"
     print("============================================")
     print(testCaseName)
@@ -118,7 +118,7 @@ def updateRow(url, rowId,jsonObject):
     return updatedRow.json()
 
 def softDeleteRow(url,rowId):
-    softDeleted = requests.put(url+"/delete/{rowId}".format(rowId=rowId))
+    softDeleted = requests.put(url+"/delete/{rowId}/".format(rowId=rowId))
     return softDeleted.json()
 
 # Delete rows
