@@ -40,7 +40,7 @@ def viewExistingSkillTest():
 
 def updatingSkillTest():
     print("User Story: Update Skill")
-    beforeNoOfAvailableSkills = getAllRows(BASE+entityName+"/")
+    beforeNoOfAvailableSkills = getAllRows(BASE+entityName)
     print("Before:")
     print("No of available rows: "+str(len(beforeNoOfAvailableSkills["data"])))
     triggerTestCase("Update skill fields",
@@ -49,7 +49,7 @@ def updatingSkillTest():
                         "Skill_Description": "Thinking on the spot",
                         "Active": True
                     }, "updateById", 1)
-    after = getAllRows(BASE+entityName+"/")
+    after = getAllRows(BASE+entityName)
     print("after",after)
     return
 
@@ -59,8 +59,8 @@ def deleteSkillTest():
     beforeNoOfAvailableSkills = getAllRows(BASE+entityName+"/available")
     print("Before:")
     print("No of available rows: "+str(len(beforeNoOfAvailableSkills["data"])))
-    triggerTestCase("Update skill fields",
-                    True, entityName+"1", {
+    triggerTestCase("Soft delete Skill",
+                    True, entityName, {
                     }, "softDelete", 1)
     after = getAllRows(BASE+entityName+"/available")
     print("after",after)
@@ -69,5 +69,5 @@ def deleteSkillTest():
 def testAllSkillCases():
     addSkillTest()
     viewExistingSkillTest()
-    #updatingSkillTest()
-    #deleteSkillTest()
+    updatingSkillTest()
+    deleteSkillTest()
