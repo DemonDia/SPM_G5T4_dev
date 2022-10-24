@@ -68,7 +68,7 @@ async def addRoleSkillRelation(request: Request, session: Session = Depends(get_
 
 
 @app.get('/roleskillrelations/{Role_ID}')
-async def addRoleSkillRelation(Role_ID: int, session: Session = Depends(get_session)):
+async def addSkillToRoles(Role_ID: int, session: Session = Depends(get_session)):
     errors = []
     try:
         role = session.get(RoleModel, Role_ID)
@@ -103,7 +103,7 @@ async def addRoleSkillRelation(Role_ID: int, session: Session = Depends(get_sess
 
 # request{skills; collect skillID}
 @app.put('/roleskillrelations/{Role_ID}')
-async def updateRoleSkillRelations(Role_ID: int, request: Request, session: Session = Depends(get_session)):
+async def updateRelatedSkillsOfRole(Role_ID: int, request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
         requestData = await request.json()
