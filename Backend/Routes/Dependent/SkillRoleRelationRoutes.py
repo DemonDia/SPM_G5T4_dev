@@ -11,15 +11,60 @@ from fastapi import Request
 # ===========================actual CRUD functions===========================
 # input should be an array
 # requests contains "Skill_ID" and a list "skills" which contains the Role_ID of the skills to add
+@app.post('/skillrolerelations/')
+async def addRelatedRoles(request: Request, session: Session = Depends(get_session)):
+    errors = []
+    try:
+        requestData = await request.json()
+        statement = select(SkillModel).where(
+            SkillModel.Skill_ID == requestData["Skill_ID"])
+        result = session.exec(statement)
+        #role = result.one()
+
+        chosenSkillResult = result.all()
+        if len(chosenSkillResult) == 0:
+            return  # yes this returns the success = false json
+        else:
+            role = chosenSkillResult[0]
+        if role == None:
+            errors.append("Role does not exist!")
+            errors.append(str(e))
+            return {
+                "success": False,
+                "message": errors
+            }
+        for Role_ID in requestData["Roles"]:
+            newRoleSkillRelation = RoleSkillRelationModel()
+            newRoleSkillRelation.Skill_ID = requestData["Skill_ID"]
+            newRoleSkillRelation.Role_ID = Role_ID
+            session.add(newRoleSkillRelation)
+
+        if len(errors) > 0:
+            return {
+                "success": False,
+                "message": errors
+            }
+        session.commit()
+        session.close()
+        return {
+            "success": True,
+            "message": "Skill(s) assigned to role"
+        }
+
+    except Exception as e:
+        errors.append(str(e))
+        return {
+            "success": False,
+            "message": errors
+        }
 
 @app.get('/skillrolerelations/{Skill_ID}')
 async def addRolesToSkill(Skill_ID: int, session: Session = Depends(get_session)):
     errors = []
     try:
-        role = session.get(SkillModel, Skill_ID)
-        if role == None:
+        skill = session.get(SkillModel, Skill_ID)
+        if skill == None:
             errors.append("Skill does not exist!")
-            errors.append(str(e))
             return {
                 "success": False,
                 "message": errors
@@ -56,11 +101,11 @@ async def updateRelatedRolesOfSkill(Skill_ID: int, request: Request, session: Se
             SkillModel.Skill_ID == Skill_ID)
         result = session.exec(statement)
 
-        chosenRoleResult = result.all()
-        if len(chosenRoleResult) == 0:
+        chosenSkillResult = result.all()
+        if len(chosenSkillResult) == 0:
             return  # yes this returns the success = false json
         else:
-            role = chosenRoleResult[0]
+            role = chosenSkillResult[0]
         if role == None:
             errors.append("Skill does not exist!")
             errors.append(str(e))

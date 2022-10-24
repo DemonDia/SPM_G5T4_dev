@@ -20,7 +20,7 @@ def deleteAll():
 # input should be an array
 # requests contains "Role_ID" and a list "skills" which contains the Skill_ID of the skills to add
 @app.post('/roleskillrelations/')
-async def addRoleSkillRelation(request: Request, session: Session = Depends(get_session)):
+async def addRelatedSkills(request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
         requestData = await request.json()
