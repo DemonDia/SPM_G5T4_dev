@@ -33,7 +33,7 @@
                   :style="[
                     this.currFormPg > key
                       ? { 'background-color': value.bg }
-                      : { 'background-color': '#404089', opacity: 0.1 },
+                      : { 'opacity': 0.1 },
                   ]"
                 ></div>
                 <div class="row">
@@ -98,12 +98,12 @@
             </div>
 
             <!-- Page 3 -->
-            <div v-show="this.currFormPg == 3" id="formPg3">
-              <p class="mt-3 mb-1 fw-bold">Skill Name</p>
+            <div v-show="this.currFormPg == 3" id="formPg3"  class="mt-2 pt-1 mb-0">
+              <p class="fw-bold">Skill Name</p>
               <p class="text-break">{{ skill_name.skill_name }}</p>
-              <p class="mt-3 mb-1 fw-bold">Skill Description</p>
+              <p class="fw-bold">Skill Description</p>
               <p class="text-break">{{ skill_description.skill_description }}</p>
-              <p class="mt-3 mb-1 fw-bold">Roles</p>
+              <p class="fw-bold mb-0">Roles</p>
               <pill-component :pillList="pillValue" />
             </div>
           </form>
@@ -190,21 +190,21 @@
           progress: [
             {
               title: "STEP 1",
-              bg: "#56d1dc",
+              bg: "#e4afff",
               description: "Input skill details",
               button1: "Back to Step 1",
               button2: "Next: Assign Roles",
             },
             {
               title: "STEP 2",
-              bg: "#5d7bd5",
+              bg: "#c86bfa",
               description: "Assign skills (optional)",
               button1: "Back to Step 1",
               button2: "Next: Confirm summary",
             },
             {
               title: "STEP 3",
-              bg: "#404089",
+              bg: "#2d0f51",
               description: "Confirm summary",
               button1: "Back to Step 2",
               button2: "Submit",
@@ -353,7 +353,6 @@
   </script>
   
   <style scoped>
-  
     #createSkillMain {
       min-height: 100vh;
     }
@@ -368,6 +367,31 @@
     .progressbar {
       border-radius: 2px;
       height: 8px;
+    }
+  
+    #formPg1, #formPg2, #formPg3 {
+      height: 30vh;
+    }
+
+    .btn-primary {
+      background-color: #434ce8;
+      color: #fbfbfb;
+      border: 0px;
+    }
+
+    .btn-primary:hover {
+      background-color: #404089 !important; 
+      transition: 0.2s ease-in-out;
+    }
+
+    .btn-warning {
+      background-color: #fdd023;
+      border: 0px;
+    }
+
+    .btn-warning:hover, .btn-warning:focus {
+      background-color: #e9b200 !important;
+      transition: 0.2s ease-in-out;
     }
   </style>
   

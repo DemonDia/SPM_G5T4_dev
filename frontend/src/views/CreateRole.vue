@@ -33,7 +33,7 @@
                 :style="[
                   this.currFormPg > key
                     ? { 'background-color': value.bg }
-                    : { opacity: 0.1 },
+                    : { 'opacity': 0.1 },
                 ]"
               ></div>
               <div class="row">
