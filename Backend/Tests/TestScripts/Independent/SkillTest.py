@@ -51,7 +51,18 @@ def updatingSkillTest():
     #print("after",after)
     return
 
+#do it
+def deleteSkillTest():
+    print("User Story: Soft Delete Skill")
+
+    triggerTestCase("soft Delete skill fields",
+                    True, entityName, {
+                    }, "softDelete", 1)
+
+    return
+
 def testAllSkillCases():
     addSkillTest()
     viewExistingSkillTest()
     updatingSkillTest()
+    deleteSkillTest()

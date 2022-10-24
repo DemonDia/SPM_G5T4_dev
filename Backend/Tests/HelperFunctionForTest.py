@@ -131,7 +131,7 @@ def updateRow(url, rowId,jsonObject):
     return updatedRow.json()
 
 def softDeleteRow(url,rowId):
-    softDeleted = requests.put(url+"/delete/{rowId}".format(rowId=rowId))
+    softDeleted = requests.put(url+"/delete/{rowId}/".format(rowId=rowId))
     return softDeleted.json()
 
 # Delete rows
