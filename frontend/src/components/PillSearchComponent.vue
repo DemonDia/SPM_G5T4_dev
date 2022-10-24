@@ -85,20 +85,6 @@ export default {
       console.log(this.pillItems)
       this.$emit('pillItems', this.pillItems);  // emit the pillItems array to the parent component
     },
-
-    // getRoleSkill(role_id) {
-    //   var getRoleSkillUrl =
-    //     "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/" +
-    //     role_id;
-    //   return new Promise((resolve, reject) => {
-    //     axios
-    //       .get(getRoleSkillUrl)
-    //       .then((response) => {
-    //         resolve(response.data.data);
-    //       })
-    //       .catch((err) => reject(err));
-    //   });
-    // },
   },
 
   computed: {},
