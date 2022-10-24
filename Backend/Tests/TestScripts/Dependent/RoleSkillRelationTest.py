@@ -23,7 +23,17 @@ def addSkillsToRoleTest():
                         "Roles": [1, 2, 3]
                     }, "addRelation")
 
+def viewSkillsRelatedToRole():
+    print("View skills related to role")
+    triggerTestCase("View skills related to role", True, skillToRole,
+                    None, "readById",1)
+
+def viewRolesRelatedToSkill():
+    print("View roles related to skill")
+    triggerTestCase("View roles related to skill", True, skillToRole,
+                    None, "readById",1)
 
 def testAllRoleSkillRelationCases():
     addRoleSkillRelationTest()
     addSkillsToRoleTest()
+    viewSkillsRelatedToRole()
