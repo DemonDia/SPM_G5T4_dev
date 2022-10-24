@@ -28,42 +28,40 @@ def addSkillTest():
 
 def viewExistingSkillTest():
     print("User Story: View Existing Skills")
-    beforeNoOfAvailableSkills = getAllRows(BASE+entityName+"/available")
-    print("Before:")
-    print("No of available rows: "+str(len(beforeNoOfAvailableSkills["data"])))
+    before = getAllRows(BASE+entityName+"/available/")  #get all skills where active=1
+    print("before",before)
     triggerTestCase("View Existing Skills",
-                    True, entityName, {
-                    }, "readAllAvailable", None)
-    after = getAllRows(BASE+entityName+"/available")
+                    True, entityName+"/available/", {
+                    }, "readAll", None)
+    after = getAllRows(BASE+entityName+"/available/")
     print("after",after)
     return
 
 def updatingSkillTest():
     print("User Story: Update Skill")
-    beforeNoOfAvailableSkills = getAllRows(BASE+entityName)
-    print("Before:")
-    print("No of available rows: "+str(len(beforeNoOfAvailableSkills["data"])))
+    before = getAllRows(BASE+entityName+"/") #get all skills
+    print("before",before)
     triggerTestCase("Update skill fields",
                     True, entityName, {
                         "Skill_Name": "Fluffing",
                         "Skill_Description": "Thinking on the spot",
                         "Active": True
                     }, "updateById", 1)
-    after = getAllRows(BASE+entityName)
+    after = getAllRows(BASE+entityName+"/")
     print("after",after)
     return
 
 #do it
 def deleteSkillTest():
     print("User Story: Soft Delete Skill")
-    beforeNoOfAvailableSkills = getAllRows(BASE+entityName+"/available")
-    print("Before:")
-    print("No of available rows: "+str(len(beforeNoOfAvailableSkills["data"])))
-    triggerTestCase("Soft delete Skill",
+    before = getAllRows(BASE+entityName+"/available/")#get all skills where active=1
+    print("before",before)
+    triggerTestCase("soft Delete skill fields",
                     True, entityName, {
                     }, "softDelete", 1)
-    after = getAllRows(BASE+entityName+"/available")
+    after = getAllRows(BASE+entityName+"/available/")
     print("after",after)
+
     return
 
 def testAllSkillCases():
