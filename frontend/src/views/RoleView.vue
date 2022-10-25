@@ -33,7 +33,6 @@
               :id="value.Role_ID" 
               ctype="role" 
               @reload="reload()"
-              
             />
           </div>
         </div>
@@ -68,11 +67,8 @@
         roles: [], // roles from database
         numRolesFound: 0,
         noRoleFound: false,
-        availSkills: ['Select skills:'],
-        noSkillFound: false,
         pillItemsFromComponent: [],
         selectedSkills: [],
-        filteredRoles: [],
       }
     },
     methods: {
@@ -85,8 +81,6 @@
           if (this.roles.length == 0) {
             this.noRoleFound = true
           }
-        }).catch((error) => {
-          console.log(error)
         });
       },
 
