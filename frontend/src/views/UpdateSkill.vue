@@ -12,15 +12,15 @@
           <button @click="goBack" class="ph-arrow-left back-btn mb-3">
             Back
           </button>
-          <h3>Update a skill</h3>
+          <h3>Update a Skill</h3>
           <h6 class="text-secondary mt-3 mb-3">
-            You can change the skill or add new roles to the skill
+            You may change the skill details or add/remove roles to this skill
           </h6>
   
           <!-- Popup -->
           <div v-show="checked">
             <ModalComponent
-              type="skill"
+              type="Skill"
               func="update"
               :isSuccess="isSuccess"
               @clicked="onClickModal"
@@ -67,7 +67,7 @@
               data-bs-target="#submitModal"
               id="submitBtn"
             >
-              Update skill
+              Update Skill
             </button>
           </div>
         </div>
