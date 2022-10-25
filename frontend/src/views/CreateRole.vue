@@ -66,7 +66,7 @@
         <!-- Content -->
         <form @submit.prevent="handleSubmit" method="POST">
           <!-- Page 1 -->
-          <div v-show="this.currFormPg == 1" id="formPg1">
+          <div v-show="this.currFormPg == 1" id="formPg1" class="my-4">
             <FormComponent
               v-model="role_name.role_name"
               :label="role_name.label"
@@ -97,7 +97,7 @@
           </div>
 
           <!-- Page 3 -->
-          <div v-show="this.currFormPg == 3" id="formPg3" class="mt-2 pt-1 mb-0">
+          <div v-show="this.currFormPg == 3" id="formPg3" class="pt-1 my-4 my-md-5 mx-1">
             <p class="fw-bold mt-1 mb-0">Role Name</p>
             <p class="text-break">{{ role_name.role_name }}</p>
             <p class="fw-bold mb-0">Role Description</p>
@@ -127,7 +127,7 @@
           <!-- Second Button -->
           <button
             type="button"
-            class="btn col-md-4 col-sm-5 m-2"
+            class="btn col-md-4 col-sm-5 m-2 order-sm-last order-first"
             :class="[
               this.currFormPg == 3 ? 'btn-warning' : 'btn-primary',
               this.isSubmitted && this.isSuccess ? 'disabled' : '',
@@ -418,7 +418,7 @@
   }
 
   #formPg1, #formPg2, #formPg3 {
-    height: 30vh;
+    min-height: 38vh;
   }
 
   .btn-primary {

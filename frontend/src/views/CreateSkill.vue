@@ -98,7 +98,7 @@
             </div>
 
             <!-- Page 3 -->
-            <div v-show="this.currFormPg == 3" id="formPg3"  class="mt-2 pt-1 mb-0">
+            <div v-show="this.currFormPg == 3" id="formPg3"  class="pt-1 my-4 my-md-5 mx-1">
               <p class="fw-bold mt-1 mb-0">Skill Name</p>
               <p class="text-break">{{ skill_name.skill_name }}</p>
               <p class="fw-bold mb-0">Skill Description</p>
@@ -371,7 +371,7 @@
     }
   
     #formPg1, #formPg2, #formPg3 {
-      height: 30vh;
+      min-height: 38vh;
     }
 
     .btn-primary {

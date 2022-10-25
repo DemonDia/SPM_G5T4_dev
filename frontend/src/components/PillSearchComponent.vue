@@ -144,12 +144,14 @@ export default {
   }
 
   .search-input .autocomplete-box {
-    max-height: 280px;
+    max-height: 25vh;
     padding: 0px;
     overflow-y: auto;
-    z-index: 1;
-    opacity: 0;
+    z-index: 100;
+    background-color: rgba(255, 255, 255, 0.96);
     pointer-events: none;
+    position: absolute;
+    width: inherit;
   }
 
   .search-input.active .autocomplete-box {
@@ -209,5 +211,6 @@ export default {
 
   .pills {
     flex-wrap: wrap;
+    position: relative;
   }
 </style>
