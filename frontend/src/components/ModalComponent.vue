@@ -28,7 +28,7 @@
 <script>
     export default {
     name: "ModalComponent",
-    props: ["type", "isSuccess"],
+    props: ["type", "isSuccess", "func"],
     data() {
         return {
             header: "",
@@ -41,12 +41,12 @@
             if (this.isSuccess) {
                 this.header = "Success!"
                 this.icon = "bi bi-emoji-smile-fill icon-green"
-                this.message = this.type + " created successfully."
+                this.message = this.type + " " + this.func + "d successfully."
             }
             else {
                 this.header = "Try again!"
                 this.icon = "bi bi-emoji-frown-fill icon-red"
-                this.message = this.type + " is unsuccessfully created. Please fix the errors."
+                this.message = this.type + " is unsuccessfully " + this.func + "d. Please fix the errors."
             }
         },
         onClickButton(event) {

@@ -8,6 +8,7 @@ from Routes.Independent.RoleRoutes import *
 # routes of dependent entities
 from Routes.Dependent.CourseSkillRelationRoutes import *
 from Routes.Dependent.RoleSkillRelationRoutes import *
+from Routes.Dependent.SkillRoleRelationRoutes import *
 
 from HelperFunctions import *
 from ErrorHandler import *

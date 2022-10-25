@@ -1,25 +1,24 @@
 <template>
-    <div class="search-container mt-3">
-        <i class="ph-magnifying-glass"></i>
-        <input type="text" name="" id="" class="side-search" placeholder="Skill title or keyword"/>
-        <div class="vl"></div>
-        <i class="ph-briefcase"></i>
-        <input type="text" name="" id="" class="main-search" placeholder="Add Role or anything">
-        <input type="button" class="search-button" value="Search">
-    </div>
-  </template>
+  <div class="search-container mt-3">
+      <i class="ph-magnifying-glass"></i>
+      <input type="text" name="" id="" class="side-search" placeholder="Skill title or keyword"/>
+      <div class="vl"></div>
+      <i class="ph-briefcase"></i>
+      <input type="text" name="" id="" class="main-search" placeholder="Add Role or anything">
+      <input type="button" class="search-button" value="Search">
+  </div>
+</template>
   
-  <script>
+<script>
   export default {
     name: "SearchComponent",
     data() {
       return {};
     },
   };
-  </script>
+</script>
   
-  <style scoped>
-
+<style scoped>
   * {
     font-family: "Poppins", sans-serif;
     margin: 0;
@@ -96,6 +95,5 @@
     font-size: 1.5em;
     margin-right: 0.5em;
   }
-
-  </style>
+</style>
   

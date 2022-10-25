@@ -1,5 +1,5 @@
 <template>
-  <div class="row d-flex justify-content-center my-5 ms-0 pe-3">
+  <div class="row d-flex justify-content-center my-sm-2 my-md-5 ms-0 pe-3">
     <div class="col-sm-12 col-md-3 text-xs-start text-sm-center pt-1 px-0">
         <label class="form-label pt-1" v-if="label">
           {{ label }}
@@ -15,8 +15,11 @@
           @input="$emit('update:modelValue', $event.target.value)"
           v-on:keyup="this.checkChar"
           class="form-control"
-          :class="[this.errors.length > 0 && this.isSubmitted ? 'is-invalid' : '']"
+          :class="[this.errors.length > 0 ? 'is-invalid' : '']"
+          :disabled="disabled"
         >
+
+        <!-- Else text area -->
         <textarea v-else-if="this.formType=='textarea'"
           v-bind="$attrs"
           :value="modelValue"
@@ -24,36 +27,33 @@
           @input="$emit('update:modelValue', $event.target.value)"
           v-on:keyup="this.checkChar"
           class="form-control"
-          :class="[this.errors.length > 0 && this.isSubmitted ? 'is-invalid' : '']"
+          :class="[this.errors.length > 0 ? 'is-invalid' : '']"
+          :disabled="disabled"
         ></textarea>
       </div>
       <div class="row">
-        <div class="text-start text-danger col-sm-12 col-lg-8">
+        <div class="text-start text-danger col-sm-12" :class="this.formType=='textarea' ? 'col-lg-8' : 'col-lg-10'">
+
           <!-- Character limit warning (before submission) -->
-          <p v-if="this.overLimit" class="pt-2">
+          <p v-if="this.overLimit" class="pt-1">
             {{ this.warning }}
           </p>
-  
+
           <!-- Show errors -->
-          <div v-if="this.errors.length == 1 && this.isSubmitted">
-            <!-- <p class="text-start text-danger">
-              Please fix these errors:
-            </p> -->
-            <p class="ps-1">
+          <div v-if="this.errors.length == 1">
+            <p class="pt-1">
               {{ this.errors[0] }}
             </p>
           </div>
-          <div v-if="this.errors.length > 1 && this.isSubmitted">
-            <!-- <p class="text-start text-danger">
-              Please fix these errors:
-            </p> -->
-            <ul class="ps-4">
-              <li v-for="(error, index) in this.errors" v-bind:key="index">
+          <div v-if="this.errors.length > 1">
+            <ul>
+              <li v-for="(error, key) in this.errors" :key="key" class="pt-1">
                 {{ error }}
               </li>
             </ul>
           </div>
         </div>
+
         <!-- Word count for text area -->
         <div class="col-sm-12 col-lg-4">
           <p class="text-sm-start text-lg-end pt-2" v-if="this.formType=='textarea'" :class="this.overLimit ? 'text-danger' : ''">
@@ -68,27 +68,13 @@
 <script>
   export default {
     name: "FormComponent",
-    // props: {
-    //   label: {
-    //     type: String,
-    //     default: ''
-    //   },
-    //   modelValue: {
-    //     type: [String, Number],
-    //     default: ''
-    //   },
-    //   limit: {
-    //     type: String,
-    //     default: ''
-    //   }
-    // },
     data() {
       return {
         warning: "",
         overLimit: false,
       }
     },
-    props: ['label', 'modelValue', 'limit', 'errors', 'isSubmitted', 'formType'],
+    props: ['label', 'modelValue', 'limit', 'errors', 'isSubmitted', 'formType','disabled'],
     methods: {
       checkChar(){
         if (this.modelValue.length > Number(this.limit)) {
@@ -106,11 +92,9 @@
   }
 </script>
 <style scoped>
-  
   * {
     margin: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
   }
- 
 </style>

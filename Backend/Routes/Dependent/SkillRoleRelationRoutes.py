@@ -8,32 +8,24 @@ from Models.IndependentModels import *
 from HelperFunctions import *
 from fastapi import Request
 
-# ===========================test functions===========================
-
-
-@app.delete("/roleskillrelations/deleteall")
-def deleteAll():
-    return deleteAllData(RoleSkillRelationModel)
-
-
 # ===========================actual CRUD functions===========================
 # input should be an array
-# requests contains "Role_ID" and a list "skills" which contains the Skill_ID of the skills to add
-@app.post('/roleskillrelations/')
-async def addRelatedSkills(request: Request, session: Session = Depends(get_session)):
+# requests contains "Skill_ID" and a list "skills" which contains the Role_ID of the skills to add
+@app.post('/skillrolerelations/')
+async def addRelatedRoles(request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
         requestData = await request.json()
-        statement = select(RoleModel).where(
-            RoleModel.Role_ID == requestData["Role_ID"])
+        statement = select(SkillModel).where(
+            SkillModel.Skill_ID == requestData["Skill_ID"])
         result = session.exec(statement)
         #role = result.one()
 
-        chosenRoleResult = result.all()
-        if len(chosenRoleResult) == 0:
+        chosenSkillResult = result.all()
+        if len(chosenSkillResult) == 0:
             return  # yes this returns the success = false json
         else:
-            role = chosenRoleResult[0]
+            role = chosenSkillResult[0]
         if role == None:
             errors.append("Role does not exist!")
             errors.append(str(e))
@@ -41,10 +33,10 @@ async def addRelatedSkills(request: Request, session: Session = Depends(get_sess
                 "success": False,
                 "message": errors
             }
-        for Skill_ID in requestData["Skills"]:
+        for Role_ID in requestData["Roles"]:
             newRoleSkillRelation = RoleSkillRelationModel()
-            newRoleSkillRelation.Role_ID = requestData["Role_ID"]
-            newRoleSkillRelation.Skill_ID = Skill_ID
+            newRoleSkillRelation.Skill_ID = requestData["Skill_ID"]
+            newRoleSkillRelation.Role_ID = Role_ID
             session.add(newRoleSkillRelation)
 
         if len(errors) > 0:
@@ -66,21 +58,19 @@ async def addRelatedSkills(request: Request, session: Session = Depends(get_sess
             "message": errors
         }
 
-
-@app.get('/roleskillrelations/{Role_ID}')
-async def addSkillToRoles(Role_ID: int, session: Session = Depends(get_session)):
+@app.get('/skillrolerelations/{Skill_ID}')
+async def addRolesToSkill(Skill_ID: int, session: Session = Depends(get_session)):
     errors = []
     try:
-        role = session.get(RoleModel, Role_ID)
-        if role == None:
-            errors.append("Role does not exist!")
-            errors.append(str(e))
+        skill = session.get(SkillModel, Skill_ID)
+        if skill == None:
+            errors.append("Skill does not exist!")
             return {
                 "success": False,
                 "message": errors
             }
-        statement = select(SkillModel.Skill_Name, SkillModel.Skill_ID).select_from(
-            join(RoleModel, join(SkillModel, RoleSkillRelationModel))).where(RoleModel.Role_ID == Role_ID)
+        statement = select(RoleModel.Role_Name, RoleModel.Role_ID).select_from(
+            join(SkillModel, join(RoleModel, RoleSkillRelationModel))).where(SkillModel.Skill_ID == Skill_ID)
         results = session.exec(statement).all()
 
         if len(errors) > 0:
@@ -102,22 +92,22 @@ async def addSkillToRoles(Role_ID: int, session: Session = Depends(get_session))
         }
 
 # request{skills; collect skillID}
-@app.put('/roleskillrelations/{Role_ID}')
-async def updateRelatedSkillsOfRole(Role_ID: int, request: Request, session: Session = Depends(get_session)):
+@app.put('/skillrolerelations/{Skill_ID}')
+async def updateRelatedRolesOfSkill(Skill_ID: int, request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
         requestData = await request.json()
-        statement = select(RoleModel).where(
-            RoleModel.Role_ID == Role_ID)
+        statement = select(SkillModel).where(
+            SkillModel.Skill_ID == Skill_ID)
         result = session.exec(statement)
 
-        chosenRoleResult = result.all()
-        if len(chosenRoleResult) == 0:
+        chosenSkillResult = result.all()
+        if len(chosenSkillResult) == 0:
             return  # yes this returns the success = false json
         else:
-            role = chosenRoleResult[0]
+            role = chosenSkillResult[0]
         if role == None:
-            errors.append("Role does not exist!")
+            errors.append("Skill does not exist!")
             errors.append(str(e))
             return {
                 "success": False,
@@ -126,7 +116,7 @@ async def updateRelatedSkillsOfRole(Role_ID: int, request: Request, session: Ses
 
         # delete relations
         existingRoleSkillStatement = select(
-            RoleSkillRelationModel).where(RoleSkillRelationModel.Role_ID == Role_ID)
+            RoleSkillRelationModel).where(RoleSkillRelationModel.Skill_ID == Skill_ID)
         allExistingRoleSkillRelations = session.exec(
             existingRoleSkillStatement)
         allRelations = allExistingRoleSkillRelations.all()
@@ -134,7 +124,7 @@ async def updateRelatedSkillsOfRole(Role_ID: int, request: Request, session: Ses
             session.delete(relation)
 
         # add again
-        for Skill_ID in requestData["Skills"]:
+        for Role_ID in requestData["Roles"]:
             newRoleSkillRelation = RoleSkillRelationModel()
             newRoleSkillRelation.Role_ID = Role_ID
             newRoleSkillRelation.Skill_ID = Skill_ID
@@ -149,7 +139,7 @@ async def updateRelatedSkillsOfRole(Role_ID: int, request: Request, session: Ses
         session.close()
         return {
             "success": True,
-            "message": "Related skills are updated!"
+            "message": "Related roles are updated!"
         }
 
     except Exception as e:
