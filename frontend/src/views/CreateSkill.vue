@@ -13,7 +13,7 @@
           <!-- Modal -->
           <div v-show="checked">
             <ModalComponent 
-            type="Skill" 
+            type="skill" 
             :isSuccess="isSuccess" 
             func="create"
             @clicked="onClickModal"
@@ -99,9 +99,9 @@
 
             <!-- Page 3 -->
             <div v-show="this.currFormPg == 3" id="formPg3"  class="mt-2 pt-1 mb-0">
-              <p class="fw-bold">Skill Name</p>
+              <p class="fw-bold mt-1 mb-0">Skill Name</p>
               <p class="text-break">{{ skill_name.skill_name }}</p>
-              <p class="fw-bold">Skill Description</p>
+              <p class="fw-bold mb-0">Skill Description</p>
               <p class="text-break">{{ skill_description.skill_description }}</p>
               <p class="fw-bold mb-0">Roles</p>
               <pill-component :pillList="pillValue" />
@@ -198,7 +198,7 @@
             {
               title: "STEP 2",
               bg: "#c86bfa",
-              description: "Assign skills (optional)",
+              description: "Assign roles (optional)",
               button1: "Back to Step 1",
               button2: "Next: Confirm summary",
             },

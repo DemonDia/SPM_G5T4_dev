@@ -14,13 +14,13 @@
           </button>
           <h3>Update a Skill</h3>
           <h6 class="text-secondary mt-3 mb-3">
-            You may change the skill details or add/remove roles to this skill
+            Change the skill details or add/remove roles to this skill
           </h6>
   
           <!-- Popup -->
           <div v-show="checked">
             <ModalComponent
-              type="Skill"
+              type="skill"
               func="update"
               :isSuccess="isSuccess"
               @clicked="onClickModal"

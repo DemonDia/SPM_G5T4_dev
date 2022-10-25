@@ -14,13 +14,13 @@
         </button>
         <h3>Update a Role</h3>
         <h6 class="text-secondary mt-3 mb-3">
-          Change the existing values in the input box
+          Change the role details or add/remove skills to this role
         </h6>
 
         <!-- Popup -->
         <div v-show="checked">
           <ModalComponent
-            type="Role"
+            type="role"
             func="update"
             :isSuccess="isSuccess"
             @clicked="onClickModal"

@@ -13,7 +13,7 @@
                 <div>
                     <i :class="icon" style="font-size: 5rem" :style="{ 'color': isSuccess ? '#87C60A' : '#F19104'}"></i>
                 </div>
-                <div>
+                <div class="msg">
                     {{this.message}}
                 </div>
             </div>
@@ -62,4 +62,8 @@
   i {
     width: 30px;
   }
+
+  .msg:first-letter{
+  text-transform: capitalize
+}
 </style>  
