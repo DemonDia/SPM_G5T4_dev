@@ -7,22 +7,37 @@
       <!-- Dashboard -->
       <div v-else class="">
 
-        <!-- Search by Skills -->
+        <!-- Search by Roles -->
         <div class="container-md my-5 mb-3 text-start">
           <PillSearchComponent ctype="role" @pillItems="getPill"></PillSearchComponent>
         </div>
 
+        <!-- Create Skill -->
         <div class="row mt-3 mx-auto">
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <router-link to="/create-skill" tag="button" class="btn btn-dark btn-lg" v-if=" user.Role == 1">Create Skill</router-link>
           </div>
         </div>
+
+        <!-- Skill Card -->
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
-          <div v-for="(value, key) in skills" v-bind:key="key" v-show="this.pillItemsFromComponent.length == 0 || this.isFound(value.Roles)">
-            <card-component :title="value.Skill_Name" :desc="value.Skill_Description" :active="value.Active" :id="value.Skill_ID" :pillList="value.Roles" ctype="skill" @reload="reload()"/>
+          <div 
+            v-for="(value, key) in skills" v-bind:key="key" 
+            v-show="this.pillItemsFromComponent.length == 0 || this.isFound(value.Roles)"
+          >
+            <card-component 
+              :title="value.Skill_Name" 
+              :desc="value.Skill_Description" 
+              :active="value.Active" 
+              :id="value.Skill_ID" 
+              :pillList="value.Roles" 
+              ctype="skill" 
+              @reload="reload()"
+            />
           </div>
         </div>
       </div>
+      
       <!-- No Skill Found -->
       <div v-show="noSkillFound" class="fs-3 fw-bold text-center align-middle pt-5 my-5">
         Sorry! No skill found!
@@ -52,13 +67,9 @@
       return {
         skills: [], // to get skills from database 
         numSkillsFound: 0,
-        results: [], // temporary array
-        numSkills: 0, // to populate based on length of array
         noSkillFound: false,
-        tempRoleList: ["traffic police", "chef", "gordon ramsay's critique", "madagascar tour guide"],
         pillItemsFromComponent: [],
         selectedRoles: [],
-        filteredRoles: [],
       }
     },
     methods: {
@@ -76,14 +87,14 @@
        getPill(item) {
         // emit content to be passed into the selectedList
         this.pillItemsFromComponent = item;
-        this.selectedRoles = item.map(role => {
-          return role.Role_Name
+        this.selectedRoles = item.map(skill => {
+          return skill.Role_Name
         });
-        this.noSkillFound = 0
+        this.numSkillsFound = 0
       },
 
       isFound(arr1) {
-        // show roles that include SOME of the skills selected
+        // show skills that include SOME of the roles selected
         // return (this.selectedRoles.some( x => arr1.includes(x) ));
 
         // show roles that include ALL of the skills selected
@@ -118,5 +129,4 @@
 #skillMain {
     min-height: 100vh;
   }
-
 </style>

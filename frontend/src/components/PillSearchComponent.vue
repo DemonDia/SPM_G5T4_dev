@@ -55,7 +55,7 @@ export default {
       currUrl: "",
       currName: "",
       currID: "",
-      placeholder: "Search for " + this.ctype + "s to assign..."
+      placeholder: "Search for " + this.ctype + "s"
     };
   },
   props: ["ctype", "skills", "roles"],
