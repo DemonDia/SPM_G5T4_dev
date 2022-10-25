@@ -10,6 +10,7 @@ import Login from '../views/Login.vue'
 import store from '@/store'
 import UpdateRole from '../views/UpdateRole.vue'
 import UpdateCourse from '../views/UpdateCourse.vue'
+import UpdateSkill from '../views/UpdateSkill.vue'
 
 const routes = [
   {
@@ -49,6 +50,22 @@ const routes = [
     path: '/update-role/:role_id',
     name: 'update-role',
     component: UpdateRole,
+    beforeEnter: (to, from, next) => {
+      if (!store.getters['auth/authenticated']) {
+        return next({ name: 'login' })
+      }
+
+      if (store.getters['auth/user'].Role != 1) {
+        return next({ name: 'home' })
+      }
+
+      next()
+    },
+  },
+  {
+    path: '/update-skill/:skill_id',
+    name: 'update-skill',
+    component: UpdateSkill,
     beforeEnter: (to, from, next) => {
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })

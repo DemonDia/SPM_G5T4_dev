@@ -125,7 +125,7 @@ export default {
     },
     updateItem(id, ctype) {
       if(ctype == "skill") {
-        router.push({ name: 'UpdateSkill', params: { role_id: id } });
+        router.push({ name: 'update-skill', params: { skill_id: id } });
       } else if (ctype == 'role') {
         router.push({ name: 'update-role', params: { role_id: id } });
       } 

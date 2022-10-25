@@ -26,53 +26,53 @@
 </template>
 
 <script>
-import DashboardLayout from "@/views/Dashboard/Layout/DashboardLayout.vue";
-import CardComponent from "@/components/CardComponent.vue";
-import axios from "axios";
-import { mapGetters } from "vuex";
-import SpinnerComponent from "@/components/SpinnerComponent.vue";
+  import DashboardLayout from "@/views/Dashboard/Layout/DashboardLayout.vue";
+  import CardComponent from "@/components/CardComponent.vue";
+  import axios from "axios";
+  import { mapGetters } from "vuex";
+  import SpinnerComponent from "@/components/SpinnerComponent.vue";
 
 
-export default {
-  name: "SkillView",
-  components: {
-    DashboardLayout,
-    CardComponent,
-    SpinnerComponent
-},
-  data() {
-    return {
-      skills: /* to get skills from database */
-      [],
-      results: [], // temporary array
-      numSkills: 0, // to populate based on length of array
-      noSkillFound: false,
-      tempRoleList: ["traffic police", "chef", "gordon ramsay's critique", "madagascar tour guide"],
-    }
+  export default {
+    name: "SkillView",
+    components: {
+      DashboardLayout,
+      CardComponent,
+      SpinnerComponent
   },
-  methods: {
-    reload() {
-      var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/available";
-      axios.get(url).then((response) => {
-        var result = response.data.data
-        this.skills = result
-        if (this.skills.length == 0) {
-          this.noSkillFound = true
-        }
-      });
-    }
-  },
-   mounted() {
-    document.title = "LJMS - Skills";
-    this.reload()
-  },
-  computed: {
-    ...mapGetters({
-      user: "auth/user",
-      authenticated: "auth/authenticated",
-    }),
-  },
-};
+    data() {
+      return {
+        skills: /* to get skills from database */
+        [],
+        results: [], // temporary array
+        numSkills: 0, // to populate based on length of array
+        noSkillFound: false,
+        tempRoleList: ["traffic police", "chef", "gordon ramsay's critique", "madagascar tour guide"],
+      }
+    },
+    methods: {
+      reload() {
+        var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/available";
+        axios.get(url).then((response) => {
+          var result = response.data.data
+          this.skills = result
+          if (this.skills.length == 0) {
+            this.noSkillFound = true
+          }
+        });
+      }
+    },
+    mounted() {
+      document.title = "LJMS - Skills";
+      this.reload()
+    },
+    computed: {
+      ...mapGetters({
+        user: "auth/user",
+        authenticated: "auth/authenticated",
+      }),
+    },
+  };
 </script>
 
 <style scoped>

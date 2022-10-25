@@ -28,30 +28,51 @@ def addSkillTest():
 
 def viewExistingSkillTest():
     print("User Story: View Existing Skills")
-    before = getSingleRow(BASE+entityName+"/available/", 1)
-    print("before",before)
+    beforeNoOfAllSkills = getAllRows(BASE+entityName+"/")
+    beforeNoOfAvailableSkills=getAllRows(BASE+entityName+"/available/")  #get all skills where active=1
+    print("Before")
+    print("No of all rows: "+str(len(beforeNoOfAllSkills["data"])))
+    print("No of available rows: "+str(len(beforeNoOfAvailableSkills["data"])))
     triggerTestCase("View Existing Skills",
-                    True, entityName, {
-                    }, "readAllAvailable", None)
-    after = getSingleRow(BASE+entityName, 1)
-    print("after",after)
+                    True, entityName+"/available/", {}, "readAll", None)
+
+    afterNoOfAllSkills=getAllRows(BASE+entityName+"/")
+    afterNoOfAvailableSkills = getAllRows(BASE+entityName+"/available/")
+    print("After")
+    print("No of all rows: "+str(len(afterNoOfAllSkills["data"])))
+    print("No of available rows: "+str(len(afterNoOfAvailableSkills["data"])))
     return
 
 def updatingSkillTest():
     print("User Story: Update Skill")
-    #before = getSingleRow(BASE+entityName, 1)
-    #print("before",before)
     triggerTestCase("Update skill fields",
                     True, entityName, {
                         "Skill_Name": "Fluffing",
                         "Skill_Description": "Thinking on the spot",
                         "Active": True
                     }, "updateById", 1)
-    #after = getSingleRow(BASE+entityName, 1)
-    #print("after",after)
+    return
+
+#do it
+def deleteSkillTest():
+    print("User Story: Soft Delete Skill")
+    beforeNoOfAllSkills = getAllRows(BASE+entityName+"/")
+    beforeNoOfAvailableSkills=getAllRows(BASE+entityName+"/available/")  #get all skills where active=1
+    print("Before")
+    print("No of all rows: "+str(len(beforeNoOfAllSkills["data"])))
+    print("No of available rows: "+str(len(beforeNoOfAvailableSkills["data"])))
+    triggerTestCase("soft Delete skill fields",
+                    True, entityName, {
+                    }, "softDelete", 1)
+    afterNoOfAllSkills=getAllRows(BASE+entityName+"/")
+    afterNoOfAvailableSkills = getAllRows(BASE+entityName+"/available/")
+    print("After")
+    print("No of all rows: "+str(len(afterNoOfAllSkills["data"])))
+    print("No of available rows: "+str(len(afterNoOfAvailableSkills["data"])))
     return
 
 def testAllSkillCases():
     addSkillTest()
     viewExistingSkillTest()
     updatingSkillTest()
+    deleteSkillTest()

@@ -33,7 +33,7 @@
                 :style="[
                   this.currFormPg > key
                     ? { 'background-color': value.bg }
-                    : { opacity: 0.1 },
+                    : { 'opacity': 0.1 },
                 ]"
               ></div>
               <div class="row">
@@ -65,7 +65,6 @@
 
         <!-- Content -->
         <form @submit.prevent="handleSubmit" method="POST">
-
           <!-- Page 1 -->
           <div v-show="this.currFormPg == 1" id="formPg1">
             <FormComponent
@@ -110,7 +109,6 @@
 
         <!-- Buttons -->
         <div class="row d-flex justify-content-around my-sm-3 my-md-5 p-3">
-
           <!-- First Button -->
           <button
             type="button"

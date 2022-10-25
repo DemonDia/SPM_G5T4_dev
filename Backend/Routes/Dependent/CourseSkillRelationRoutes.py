@@ -8,7 +8,7 @@ from HelperFunctions import *
 # ===========================test functions===========================
 
 
-@app.delete("/coursekillrelations/deleteall")
+@app.delete("/courseskillrelations/deleteall")
 def deleteAll():
     return deleteAllData(CourseSkillRelationModel)
 
@@ -17,7 +17,7 @@ def deleteAll():
 # input should be an array
 # requests contains "CourseId" and a list "skills" which contains the Skill_ID of the skills to add
 @app.post('/courseskillrelations/')
-async def addcourseSkillRelation(request: Request, session: Session = Depends(get_session)):
+async def addSkillsToCourses(request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
         requestData = await request.json()
