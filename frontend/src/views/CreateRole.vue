@@ -13,7 +13,7 @@
         <!-- Popup -->
         <div v-show="checked">
           <ModalComponent
-            type="Role"
+            type="role"
             :isSuccess="isSuccess"
             func="create"
             @clicked="onClickModal"
@@ -98,9 +98,9 @@
 
           <!-- Page 3 -->
           <div v-show="this.currFormPg == 3" id="formPg3" class="mt-2 pt-1 mb-0">
-            <p class="fw-bold">Role Name</p>
+            <p class="fw-bold mt-1 mb-0">Role Name</p>
             <p class="text-break">{{ role_name.role_name }}</p>
-            <p class="fw-bold">Role Description</p>
+            <p class="fw-bold mb-0">Role Description</p>
             <p class="text-break">{{ role_description.role_description }}</p>
             <p class="fw-bold mb-0">Skills</p>
             <pill-component :pillList="pillValue" />
@@ -190,7 +190,7 @@
           {
             title: "STEP 1",
             bg: "#e4afff",
-            description: "Input Role details",
+            description: "Input role details",
             button1: "Back to Step 1",
             button2: "Next: Assign Skills",
           },
