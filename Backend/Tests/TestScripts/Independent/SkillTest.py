@@ -29,39 +29,29 @@ def addSkillTest():
 def viewExistingSkillTest():
     print("User Story: View Existing Skills")
 
-    beforeNoOfAllSkills = getAllRows(BASE+entityName+"/")
-    beforeNoOfAvailableSkills=getAllRows(BASE+entityName+"/available/")  #get all skills where active=1
-    print("Before")
-    print("No of all rows: "+str(len(beforeNoOfAllSkills["data"])))
-    print("No of available rows: "+str(len(beforeNoOfAvailableSkills["data"])))
+    before = getAllRows(BASE+entityName+"/available/")  #get all skills where active=1
+    print("before",before)
     triggerTestCase("View Existing Skills",
                     True, entityName+"/available/", {}, "readAll", None)
 
     afterNoOfAllSkills=getAllRows(BASE+entityName+"/")
     afterNoOfAvailableSkills = getAllRows(BASE+entityName+"/available/")
-    print("After")
-    print("No of all rows: "+str(len(afterNoOfAllSkills["data"])))
-    print("No of available rows: "+str(len(afterNoOfAvailableSkills["data"])))
+    before = getAllRows(BASE+entityName+"/available/")  #get all skills where active=1
+    print("before",before)
     return
 
 def updatingSkillTest():
     print("User Story: Update Skill")
-    beforeNoOfAllSkills = getAllRows(BASE+entityName+"/")
-    beforeNoOfAvailableSkills=getAllRows(BASE+entityName+"/available/")  #get all skills where active=1
-    print("Before")
-    print("No of all rows: "+str(len(beforeNoOfAllSkills["data"])))
-    print("No of available rows: "+str(len(beforeNoOfAvailableSkills["data"])))
+    before = getAllRows(BASE+entityName+"/") #get all skills
+    print("before",before)
     triggerTestCase("Update skill fields",
                     True, entityName, {
                         "Skill_Name": "Fluffing",
                         "Skill_Description": "Thinking on the spot",
                         "Active": True
                     }, "updateById", 1)
-    afterNoOfAllSkills=getAllRows(BASE+entityName+"/")
-    afterNoOfAvailableSkills = getAllRows(BASE+entityName+"/available/")
-    print("After")
-    print("No of all rows: "+str(len(afterNoOfAllSkills["data"])))
-    print("No of available rows: "+str(len(afterNoOfAvailableSkills["data"])))
+    after = getAllRows(BASE+entityName+"/")
+    print("after",after)
     return
 
 #do it
