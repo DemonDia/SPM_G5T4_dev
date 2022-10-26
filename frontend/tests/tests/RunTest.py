@@ -8,6 +8,7 @@ sys.path.append(os.path.dirname(CURRENT_DIR))
 
 from driverutil.Browser import Browser
 from pageobjects.LoginPage import LoginLJMS
+from pageobjects.Roles import Roles
 
 
 class RunTest(unittest.TestCase):
@@ -18,13 +19,17 @@ class RunTest(unittest.TestCase):
 
         self.driver = Browser().getbrowser(browsername)
         self.driver.get(localUrl)
-        self.LoginLJMS = LoginLJMS(self.driver)
+        # self.LoginLJMS = LoginLJMS(self.driver)
+        self.Roles = Roles(self.driver)
 
-    def testLogin(self):
-        self.LoginLJMS.login("Admin") 
+    def testRoles(self):
+        self.Roles.createRole()
 
-    def testLoginWrongID(self):
-        self.LoginLJMS.loginWrongID("190001")
+    # def testLogin(self):
+    #     self.LoginLJMS.login("Admin") 
+
+    # def testLoginWrongID(self):
+    #     self.LoginLJMS.loginWrongID("190001")
 
     def tearDown(self):
         self.driver.quit()
