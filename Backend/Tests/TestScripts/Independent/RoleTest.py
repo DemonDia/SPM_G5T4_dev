@@ -58,9 +58,21 @@ def updatingRoleTest():
                         "Role_Description": "Clean common areas, toilets",
                         "Active": True
                     }, "updateById", 1)
+    return
+
+def deleteRoleTest():
+    print("User Story: Soft Delete Role")
+
+    triggerTestCase("soft Delete role fields",
+                    True, entityName, {
+                    }, "softDelete", 1)
+
+    return
+    
 
 
 def testAllRoleCases():
     addRoleTest()
     viewExistingRoleTest()
     updatingRoleTest()
+    deleteRoleTest()
