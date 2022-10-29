@@ -10,7 +10,7 @@ from HelperFunctions import *
 
 @app.delete("/staff/deleteall")
 def deleteAll():
-    return deleteAllData(UserRoleModel)
+    return deleteAllData(StaffModel)
 
 
 @app.post("/staff/seedall")
