@@ -1,7 +1,7 @@
 import requests
 # =====================Universal variables=====================
 # name of entities
-entities = ["roles","skills","course","roleskillrelations","courseskillrelations"]
+entities = ["roles","skills","course","userroles","roleskillrelations","courseskillrelations","staff","learningjourney"]
 
 # name of operations (based on CRUD)
 # Names:
@@ -53,6 +53,7 @@ def seedAllData():
 # delete ALL the testing data
 def cleanUp():
     for entity in range(len(entities)-1,-1,-1):
+        print("entities[entity]",entities[entity])
         deleteAll(BASE+entities[entity]+"/")
 
 # check if test case pass
