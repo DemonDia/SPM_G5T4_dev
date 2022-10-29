@@ -17,3 +17,8 @@ class Staff(BaseModel):
     Dept: str
     Email: str
     Role: Optional[int] = None
+
+class LearningJourney(BaseModel):
+    LearningJourney_ID: Optional[int] = None
+    Staff_ID: Optional[int] = None
+    Role_ID: Optional[int] = None
