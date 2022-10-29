@@ -21,9 +21,10 @@ class CourseSkillRelationModel(SQLModel,table=True):
     )
 class StaffModel(SQLModel,table=True):
     __tablename__: "staffmodel"
-    Staff_ID: Optional[str] = Field(default=None, primary_key=True)
+    Staff_ID: Optional[int] = Field(default=None, primary_key=True)
     Staff_FName: str
     Staff_LName: str
     Dept: str
     Email: str
     Role: Optional[int] = Field(default=None, foreign_key="userrolemodel.Role_ID") 
+
