@@ -1,3 +1,4 @@
+from tkinter.tix import Tree
 from typing import Optional
 from sqlmodel import Field, SQLModel
 
@@ -18,3 +19,11 @@ class CourseSkillRelationModel(SQLModel,table=True):
     Skill_ID: Optional[int] = Field(
         default=None, foreign_key="skillmodel.Skill_ID", primary_key=True
     )
+class StaffModel(SQLModel,table=True):
+    __tablename__: "staffmodel"
+    Staff_ID: Optional[str] = Field(default=None, primary_key=True)
+    Staff_FName: str
+    Staff_LName: str
+    Dept: str
+    Email: str
+    Role: Optional[int] = Field(default=None, foreign_key="userrolemodel.Role_ID") 
