@@ -8,7 +8,7 @@ entities = ["roles","skills","course","userroles","roleskillrelations","coursesk
 # create --> create new entity
 # readAll --> read all existing rows
 # readById --> read by specific Id
-operationTypes = ["create","readAll","readAllAvailable","readById","updateById","softDelete","addRelation"]
+operationTypes = ["create","readAll","readAllAvailable","readById","updateById","softDelete","hardDelete","addRelation"]
 
 # base URL
 BASE = "http://127.0.0.1:8000/"
@@ -41,6 +41,8 @@ def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,oper
         triggeredTestCase = softDeleteRow(BASE+entityName,fieldValue)
     if operationType == "addRelation":
         triggeredTestCase = addRelation(BASE+entityName,inputJson)
+    if operationType == "hardDelete":
+        triggeredTestCase = deleteRow(BASE,fieldValue)
     validateOutcome(triggeredTestCase, expectedResult,testCaseName)
     print("Complete")
 
