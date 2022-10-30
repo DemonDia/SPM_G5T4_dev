@@ -1,7 +1,7 @@
 import requests
 # =====================Universal variables=====================
 # name of entities
-entities = ["roles","skills","course","userroles","roleskillrelations","courseskillrelations","staff","learningjourney"]
+entities = ["roles","skills","course","userroles","roleskillrelations","courseskillrelations","staff","learningjourney","courselearningjourney"]
 
 # name of operations (based on CRUD)
 # Names:
@@ -43,6 +43,8 @@ def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,oper
         triggeredTestCase = addRelation(BASE+entityName,inputJson)
     if operationType == "hardDelete":
         triggeredTestCase = deleteRow(BASE,fieldValue)
+    if operationType == "deleteRelation":
+        triggeredTestCase = deleteRelation(BASE+entityName,inputJson)
     validateOutcome(triggeredTestCase, expectedResult,testCaseName)
     print("Complete")
 
@@ -114,6 +116,9 @@ def addRelation(url,jsonObject):
     addedRelation = requests.post(url+"/", json=jsonObject)
     return addedRelation.json()
 
+def deleteRelation(url,jsonObject):
+    deletedRelation = requests.delete(url+"/", json=jsonObject)
+    return deletedRelation.json()
 # Update rows
 def updateRow(url, rowId,jsonObject):
     print(url+"/"+str(rowId))

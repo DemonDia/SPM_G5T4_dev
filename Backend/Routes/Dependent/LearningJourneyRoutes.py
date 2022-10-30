@@ -8,7 +8,9 @@ from HelperFunctions import *
 from fastapi import Request
 
 # ===========================test functions===========================
-
+@app.post("/learningjourney/seedall")
+def seedAll():
+    return seedInitialData("learningjourney",LearningJourneyModel,25,True)
 
 @app.delete("/learningjourney/deleteall")
 def deleteAll():
