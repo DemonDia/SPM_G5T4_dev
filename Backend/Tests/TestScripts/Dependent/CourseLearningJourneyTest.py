@@ -5,8 +5,8 @@ learningJourney = "courselearningjourney"
 
 
 def AddCourseLearningJourney():
-    print("User Story: Add course to Learning Journey")
-    triggerTestCase("Create learning journey", True, learningJourney,
+    print("User Story: Add course(s) to Learning Journey")
+    triggerTestCase("Adding of courses to learning journey", True, learningJourney,
                     {
                         "LearningJourney_ID": 1,
                         "Courses": ["COR001","COR002","COR006"]

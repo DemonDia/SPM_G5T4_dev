@@ -3,7 +3,7 @@ from Schema.IndependentSchema import Skill
 from database import *
 from sqlmodel import Session, select, delete, join
 from config import app
-from Models.DependentModels import LearningJourneyModel
+from Models.DependentModels import CourseLearningJourneyModel
 from HelperFunctions import *
 from fastapi import Request
 
@@ -12,7 +12,7 @@ from fastapi import Request
 
 @app.delete("/courselearningjourney/deleteall")
 def deleteAll():
-    return deleteAllData(LearningJourneyModel)
+    return deleteAllData(CourseLearningJourneyModel)
 
 @app.post('/courselearningjourney/')
 async def AddCourseLearningJourney(request: Request, session: Session = Depends(get_session)):
@@ -26,12 +26,12 @@ async def AddCourseLearningJourney(request: Request, session: Session = Depends(
 
         chosenLearningJourney = result.all()
         if len(chosenLearningJourney) == 0:
-            return "testnull" # yes this returns the success = false json
+            learningJourney = None
         else:
             learningJourney = chosenLearningJourney[0]
-        if learningJourney == None:
+
+        if not learningJourney:
             errors.append("learningJourney does not exist!")
-            errors.append(str(e))
             return {
                 "success": False,
                 "message": errors
