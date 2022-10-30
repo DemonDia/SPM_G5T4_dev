@@ -12,6 +12,7 @@ from Routes.Dependent.RoleSkillRelationRoutes import *
 from Routes.Dependent.SkillRoleRelationRoutes import *
 from Routes.Dependent.StaffRoutes import *
 from Routes.Dependent.LearningJourneyRoutes import *
+from Routes.Dependent.CourseLearningJourneyRoutes import *
 
 from HelperFunctions import *
 from ErrorHandler import *

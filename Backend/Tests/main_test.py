@@ -4,6 +4,7 @@ from TestScripts.Dependent.CourseSkillRelationTest import testAllCourseSkillRela
 from TestScripts.Independent.RoleTest import testAllRoleCases
 from TestScripts.Independent.SkillTest import testAllSkillCases
 from TestScripts.Dependent.LearningJourneyTest import testAllLearningJourneyCases
+from TestScripts.Dependent.CourseLearningJourneyTest import testAllCourseLearningJourneyCases
 import pytest
 
 @pytest.fixture(autouse=True)
@@ -18,10 +19,10 @@ def mainTest():
     # trigger test cases for each entity
     testAllRoleCases()
     testAllSkillCases()
-    # testAllRoleSkillRelationCases()
+    testAllRoleSkillRelationCases()
     testAllCourseSkillRelationCases()
     testAllLearningJourneyCases()
-
+    testAllCourseLearningJourneyCases()
     # remove all the test data after testing is complete
 
 if __name__ == "__main__":
