@@ -103,9 +103,6 @@ jobs:
           command: npm install 
           name: Import Frontend Dependencies
       - run:
-          command: export NODE_OPTIONS=--openssl-legacy-provider
-
-      - run:
           command: npm run build
           name: Build Frontend into Production
       # - run:
