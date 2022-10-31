@@ -49,12 +49,16 @@ async def addLearningJourney(request: Request, session: Session = Depends(get_se
         newLearningJourney.Role_ID = roleId
         newLearningJourney.Staff_ID = staffId
         session.add(newLearningJourney)
+        
+        courses = requestData["Courses"]
+
 
         session.commit()
         session.close()
         return {
             "success": True,
-            "message": "Learning journey created"
+            "message": "Learning journey created",
+            "data": newLearningJourney.LearningJourney_ID
         }
 
     except Exception as e:
