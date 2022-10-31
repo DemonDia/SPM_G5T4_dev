@@ -9,7 +9,7 @@ def createLearningJourney():
     triggerTestCase("Create learning journey", True, learningJourney,
                     {
                         "Staff_ID":130001,
-                        # "Courses": ["COR001"],
+                        "Courses": ["COR001","COR002"],
                         "Role_ID": 1
                     }, "addRelation"
                     )
