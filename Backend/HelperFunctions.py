@@ -1,5 +1,3 @@
-import pathlib
-from unittest import result
 from sqlmodel import Session, select, delete
 from database import *  # requires Backend.
 from TableInfo import modelColumnInfo  # requires Backend.

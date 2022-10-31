@@ -1,4 +1,3 @@
-from tkinter.tix import Tree
 from typing import Optional
 from sqlmodel import Field, SQLModel
 
