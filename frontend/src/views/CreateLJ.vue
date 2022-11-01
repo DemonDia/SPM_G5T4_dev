@@ -1,13 +1,13 @@
 <template>
   <DashboardLayout>
-    <div class="container-fluid p-sm-5" id="createRoleMain">
+    <div class="container-fluid p-sm-5" id="createLJMain">
       <div
         class="col-sm-12 col-xl-8 mx-auto my-3 p-5 text-start rounded rounded-4 shadow-lg mb-5 bg-body"
       >
         <!-- Header -->
-        <h3>Create a Role</h3>
+        <h3>Create a Learning Journey</h3>
         <h6 class="text-secondary mt-3 mb-3">
-          What role would you like to create today?
+          Let's kickstart your learning journey!
         </h6>
 
         <!-- Popup -->
@@ -23,7 +23,7 @@
         <!-- Progress Tracker -->
         <div class="row gx-4 progress p-0">
           <div
-            class="col-12 col-md-4"
+            class="col-12 col-md-6"
             v-for="(value, key) in progress"
             :key="key"
           >
@@ -66,45 +66,86 @@
         <!-- Content -->
         <form @submit.prevent="handleSubmit" method="POST">
           <!-- Page 1 -->
-          <div v-show="this.currFormPg == 1" id="formPg1" class="my-4">
-            <FormComponent
-              v-model="role_name.role_name"
-              :label="role_name.label"
-              type="text"
-              :limit="role_name.limit"
-              :errors="role_name.errors"
-              :isSubmitted="isSubmitted"
-              :formType="role_name.formType"
-            />
-            <FormComponent
-              v-model="role_description.role_description"
-              :label="role_description.label"
-              type="text"
-              :limit="role_description.limit"
-              :errors="role_description.errors"
-              :isSubmitted="isSubmitted"
-              :formType="role_description.formType"
-            />
+          <div 
+            id="formPg1"
+            v-if="this.currFormPg == 1" 
+            @reload="reload()"
+            class="my-4 mx-auto"
+          >
+            <!-- Spinner -->
+            <div v-if="this.roles.length < 1 && noRoleFound==false">
+              <SpinnerComponent/>
+            </div>
+            <!-- Role Selection -->
+            <div v-else>
+              <div class="text-center fw-bold my-2">
+                You have selected: 
+                <span id="selected">{{this.selectedRname}}</span>
+              </div>
+              <div id="tiles" class="d-sm-block d-md-flex flex-wrap justify-content-around">
+                <div 
+                  v-for="(value, key) in this.roles" 
+                  :key="key"
+                  class="p-1 overflow-scroll d-sm-block d-md-inline-block"
+                >
+                  <TileComponent 
+                    :id="value.Role_ID"
+                    :name="value.Role_Name"
+                    type="radio"
+                    @clicked="onClickTile"
+                  >
+                  </TileComponent>
+                </div>
+              </div>
+            </div>
+            <!-- No Role Found -->
+            <div v-show="noRoleFound" class="fs-3 fw-bold text-center align-middle pt-5 my-5">
+              Sorry! No role found!
+            </div>
           </div>
 
           <!-- Page 2 -->
-          <div v-show="this.currFormPg == 2" id="formPg2">
-            <PillSearchComponent
-              class="my-5"
-              ctype="skill"
-              @pillItems="getPill"
-              func="search"
-            ></PillSearchComponent>
-          </div>
-
-          <!-- Page 3 -->
-          <div v-show="this.currFormPg == 3" id="formPg3" class="pt-1 my-4 my-md-5 mx-1">
-            <p class="fw-bold mt-1 mb-0">Role Name</p>
-            <p class="text-break">{{ role_name.role_name }}</p>
-            <p class="fw-bold mb-0">Role Description</p>
-            <p class="text-break">{{ role_description.role_description }}</p>
-            <p class="fw-bold mb-0">Skills</p>
-            <pill-component :pillList="pillValue" />
+          <div 
+            id="formPg2"
+            v-if="this.currFormPg == 2" 
+            class="my-4 mx-auto"
+          >
+            <!-- Spinner -->
+            <div v-if="this.courses.length < 1 && noCourseFound==false">
+              <SpinnerComponent/>
+            </div>
+            <!-- Role Selection -->
+            <div v-else>
+              <div class="text-center fw-bold my-2">
+                You have selected: 
+                <span 
+                  id="selected" 
+                  v-for="(value,key) in this.selectedCname" 
+                  :key="key"
+                >
+                  {{value}}
+                </span>
+              </div>
+              <div id="tiles" class="d-sm-block d-md-flex flex-wrap justify-content-around">
+                <div 
+                  v-for="(value, key) in this.courses" 
+                  :key="key"
+                  class="p-1 overflow-scroll d-sm-block d-md-inline-block"
+                >
+                  <TileComponent 
+                    :id="value.Course_ID"
+                    :name="value.Course_Name"
+                    type="checkbox"
+                    @clicked="onClickTile"
+                  >
+                  </TileComponent>
+                </div>
+              </div>
+            </div>
+            <!-- No Course Found -->
+            <div v-show="noCourseFound" class="fs-3 fw-bold text-center align-middle pt-5 my-5">
+              Sorry! No course found!
+            </div>
           </div>
         </form>
 
@@ -130,12 +171,12 @@
             type="button"
             class="btn col-md-4 col-sm-5 m-2 order-sm-last order-first"
             :class="[
-              this.currFormPg == 3 ? 'btn-warning' : 'btn-primary',
+              this.currFormPg == 2 ? 'btn-warning' : 'btn-primary',
               this.isSubmitted && this.isSuccess ? 'disabled' : '',
             ]"
             @click="goToNextPg"
-            :data-bs-toggle="this.currFormPg == 3 ? 'modal' : ''"
-            :data-bs-target="this.currFormPg == 3 ? '#submitModal' : ''"
+            :data-bs-toggle="this.currFormPg == 2 ? 'modal' : ''"
+            :data-bs-target="this.currFormPg == 2 ? '#submitModal' : ''"
           >
             {{ this.progress[currFormPg - 1].button2 }}
           </button>
@@ -144,88 +185,97 @@
     </div>
   </DashboardLayout>
 </template>
-
+  
 <script>
   import DashboardLayout from "./Dashboard/Layout/DashboardLayout.vue";
   import FormComponent from "../components/FormComponent.vue";
   import ModalComponent from "../components/ModalComponent.vue";
   import axios from "axios";
-  import PillSearchComponent from "@/components/PillSearchComponent.vue";
-  import PillComponent from "@/components/PillComponent.vue";
-
+  import SpinnerComponent from "@/components/SpinnerComponent.vue";
+  import TileComponent from "@/components/TileComponent.vue";
+  
   export default {
-    name: "CreateRole",
+    name: "LJView",
     components: {
       DashboardLayout,
       FormComponent,
       ModalComponent,
-      PillSearchComponent,
-      PillComponent,
+      SpinnerComponent,
+      TileComponent,
     },
     data() {
       return {
-        role_name: {
-          role_name: "",
-          label: "Role Name",
-          limit: "30",
-          errors: [],
-          formType: "input",
-        },
-        role_description: {
-          role_description: "",
-          label: "Role Description",
-          limit: "170",
-          errors: [],
-          formType: "textarea",
-        },
+        roles: [],
+        courses: [{Course_ID: 1, Course_Name: "dummy1"}, {Course_ID: 2, Course_Name: "dummy2"}],
+        noRoleFound: false,
+        noCourseFound: false,
+        selectedR: "",
+        selectedRname: "",
+        selectedC: [],
+        selectedCname: [],
         isSuccess: false,
         isSubmitted: false,
         checked: false,
-        RNerrors: [
-          "Role Name cannot be empty! Please try again",
-          "Role already exists! Please try again",
-          "Role Name exceeds character limit of 30! Please try again",
-        ],
         currFormPg: 1,
         progress: [
           {
             title: "STEP 1",
             bg: "#e4afff",
-            description: "Input role details",
+            description: "Select a role",
             button1: "Back to Step 1",
-            button2: "Next: Assign Skills",
+            button2: "Next: Select Courses",
           },
           {
             title: "STEP 2",
             bg: "#c86bfa",
-            description: "Assign skills (optional)",
+            description: "Select courses",
             button1: "Back to Step 1",
-            button2: "Next: Confirm summary",
-          },
-          {
-            title: "STEP 3",
-            bg: "#2d0f51",
-            description: "Confirm summary",
-            button1: "Back to Step 2",
             button2: "Submit",
           },
         ],
         pillItemsFromComponent: [],
       };
     },
+
     methods: {
+      async reload() {
+        this.pillItemsFromComponent = [];
+        var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/available";
+        await axios.get(url).then((response) => {
+          var result = response.data.data;
+          if (result.length == 0) {
+            this.noRoleFound = true;
+          }
+          else {
+            this.roles = result;
+          }
+        });
+      },
+
+      async loadCourses() {
+        var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/course/available";
+        await axios.get(url).then((response) => {
+          var result = response.data.data;
+          console.log(result)
+          if (result.length == 0) {
+            this.noCourseFound = true;
+          }
+          else {
+            this.courses = result;
+          }
+        });
+      },
+
       handleSubmit() {
-        this.createRole().then((res) => {
+        this.createLJ().then((res) => {
           var roleStatus = res.data;
           this.assignSkills(roleStatus.data).then((result) => {
             var assignSkillStatus = result.data;
-            
             this.resetErrors();
             if (roleStatus.success || assignSkillStatus.success) {
               this.resetForm();
               this.isSuccess = true;
             } else {
-              // failure case
               this.isSuccess = false;
               for (let err in roleStatus.message) {
                 let msg = roleStatus.message[err];
@@ -244,51 +294,37 @@
         });
       },
       
-      createRole() {
-        var createRoleUrl =
+      createLJ() {
+        var createLJUrl =
           "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/";
         return new Promise((resolve, reject) => {
           axios
-            .post(createRoleUrl, {
-              Role_Name: this.role_name.role_name,
-              Role_Description: this.role_description.role_description,
-              Active: true,
+            .post(createLJUrl, {
+              // Role_Name: this.role_name.role_name,
+              // Role_Description: this.role_description.role_description,
+              // Active: true,
             })
             .then((response) => {
               resolve(response);
             })
             .catch((err) => reject(err));
         });
-      },
-      
-      assignSkills(role_id) {
-        var assignSkillsUrl =
-          "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/";
-        return new Promise((resolve, reject) => {
-          axios
-            .post(assignSkillsUrl, {
-              Role_ID: role_id,
-              Skills: this.pillSkill_IDArray,
-            })
-            .then((response) => {
-              resolve(response);
-            })
-            .catch((err) => reject(err));
-        });
-      },
-      
-      resetForm() {
-        this.role_name.role_name = "";
-        this.role_description.role_description = "";
       },
       
       onClickModal(value) {
-        // modal is closed
-        // reset checked value:
         this.checked = value;
         if (this.isSubmitted && this.isSuccess) {
-          // go back to View All
-          this.$router.replace({ name: "roles" });
+          this.$router.replace({ name: "learningjourney" });
+        }
+      },
+
+      onClickTile(value) {
+        if (value.type == 'radio') {
+          this.selectedR = value.id;
+          this.selectedRname = value.name;
+        } else if (value.type == 'checkbox') {
+          this.selectedC.push(value.id);
+          this.selectedCname.push(value.name)
         }
       },
 
@@ -297,31 +333,25 @@
       },
 
       goToNextPg() {
-        if (this.currFormPg == 3) {
-          // submit form
+        if (this.currFormPg == 2) {
           this.handleSubmit();
         } else {
           this.currFormPg += 1;
         }
+
       },
 
       goToPg(x) {
         this.currFormPg = x;
       },
 
-      getPill(item) {
-        // emit content to be passed into the pillItemsFromComponent
-        this.pillItemsFromComponent = item;
-      },
-
       resetErrors() {
-        // reset fields
-        this.role_name.errors = [];
-        this.role_description.errors = [];
-        this.isSubmitted = NaN;
-        this.isSuccess = NaN;
-        this.checked = NaN;
-        this.pillItemsFromComponent = []
+        // this.role_name.errors = [];
+        // this.role_description.errors = [];
+        // this.isSubmitted = NaN;
+        // this.isSuccess = NaN;
+        // this.checked = NaN;
+        // this.pillItemsFromComponent = []
       },
     },
     
@@ -348,13 +378,14 @@
     },
     
     mounted() {
-      document.title = "LJMS - Create Role";
+      document.title = "LJMS - Create Learning Journey";
+      this.reload();
     },
   };
 </script>
-
+  
 <style scoped>
-  #createRoleMain {
+  #createLJMain {
     min-height: 100vh;
   }
 
@@ -370,8 +401,14 @@
     height: 8px;
   }
 
-  #formPg1, #formPg2, #formPg3 {
-    min-height: 38vh;
+  #formPg1, #formPg2 {
+    height: 38vh;
+  }
+
+  #tiles {
+    height: 35vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
   }
 
   .btn-primary {
@@ -393,5 +430,9 @@
   .btn-warning:hover, .btn-warning:focus {
     background-color: #e9b200 !important;
     transition: 0.2s ease-in-out;
+  }
+
+  #selected {
+    color: #404089;
   }
 </style>

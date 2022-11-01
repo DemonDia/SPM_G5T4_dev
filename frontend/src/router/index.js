@@ -6,6 +6,7 @@ import SkillView from '../views/SkillView.vue'
 import LJView from '../views/LJView.vue'
 import CreateRole from '../views/CreateRole.vue'
 import CreateSkill from '../views/CreateSkill.vue'
+import CreateLJ from '../views/CreateLJ.vue'
 import Login from '../views/Login.vue'
 import store from '@/store'
 import UpdateRole from '../views/UpdateRole.vue'
@@ -98,6 +99,22 @@ const routes = [
     path: '/create-skill',
     name: 'create-skill',
     component: CreateSkill,
+    beforeEnter: (to, from, next) => {
+      if (!store.getters['auth/authenticated']) {
+        return next({ name: 'login' })
+      }
+
+      if (store.getters['auth/user'].Role != 1) {
+        return next({ name: 'home' })
+      }
+      
+      next()
+    },
+  },
+  {
+    path: '/create-journey',
+    name: 'create-journey',
+    component: CreateLJ,
     beforeEnter: (to, from, next) => {
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
