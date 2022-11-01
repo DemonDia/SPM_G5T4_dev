@@ -56,10 +56,9 @@ async def addSkillsToCourses(request: Request, session: Session = Depends(get_se
 async def addRoleSkillRelation(Course_ID: str, session: Session = Depends(get_session)):
     errors = []
     try:
-        role = session.get(CourseModel, Course_ID)
-        if role == None:
-            errors.append("Role does not exist!")
-            errors.append(str(e))
+        course = session.get(CourseModel, Course_ID)
+        if course == None:
+            errors.append("Course does not exist!")
             return {
                 "success": False,
                 "message": errors
@@ -103,7 +102,6 @@ async def updateCourseSkillRelations(Course_ID: str, request: Request, session: 
             role = chosenRoleResult[0]
         if role == None:
             errors.append("Role does not exist!")
-            errors.append(str(e))
             return {
                 "success": False,
                 "message": errors
