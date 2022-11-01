@@ -8,7 +8,7 @@ entities = ["roles","skills","course","userroles","roleskillrelations","coursesk
 # create --> create new entity
 # readAll --> read all existing rows
 # readById --> read by specific Id
-operationTypes = ["create","readAll","readAllAvailable","readById","updateById","softDelete","hardDelete","addRelation"]
+operationTypes = ["create","readAll","readAllAvailable","readById","updateById","softDelete","hardDelete","addRelation","readByStaffId"]
 
 # base URL
 BASE = "http://127.0.0.1:8000/"
@@ -35,6 +35,8 @@ def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,oper
         triggeredTestCase = getAllRows(BASE+entityName+"/available")
     if operationType == "readById":
         triggeredTestCase = getSingleRow(BASE+entityName, fieldValue)
+    if operationType == "readByStaffId":
+        triggeredTestCase = getByStaffId(BASE+entityName,fieldValue)
     if operationType == "updateById":
         triggeredTestCase = updateRow(BASE+entityName,fieldValue,inputJson)
     if operationType == "softDelete":
@@ -97,8 +99,11 @@ def resetDataToDefaults(url):
 # =====================CRUD functions=====================
 # Gets single row based on its ID
 def getSingleRow(url,rowId):
-
     obtainedRow = requests.get(url+"/{rowId}".format(rowId=rowId))
+    return obtainedRow.json()
+
+def getByStaffId(url,staffId):
+    obtainedRow = requests.get(url+"/staff/{staffId}".format(staffId=staffId))
     return obtainedRow.json()
 
 # Gets all rows
