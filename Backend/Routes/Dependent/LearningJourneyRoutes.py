@@ -11,12 +11,12 @@ from fastapi import Request
 # ===========================test functions===========================
 
 
-@app.post("/learningjourney/seedall")
+@app.post("/learningjourney/seedall",tags=["LearningJourney","SeedAll"])
 def seedAll():
     return seedInitialData("learningjourney", LearningJourneyModel, 25, True)
 
 
-@app.delete("/learningjourney/deleteall")
+@app.delete("/learningjourney/deleteall",tags=["LearningJourney","DeleteAll"])
 def deleteAll():
     return deleteAllData(LearningJourneyModel)
 
@@ -70,7 +70,7 @@ def getAllRelatedCourses():
 # ===========================actual CRUD functions===========================
 
 
-@app.post("/learningjourney/")
+@app.post("/learningjourney/",tags=["LearningJourney"])
 async def addLearningJourney(request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -135,7 +135,7 @@ async def addLearningJourney(request: Request, session: Session = Depends(get_se
         }
 
 
-@app.get('/learningjourney/')
+@app.get('/learningjourney/',tags=["LearningJourney"])
 def getLearningJourney(session: Session = Depends(get_session)):
     errors = []
     try:
@@ -167,7 +167,7 @@ def getLearningJourney(session: Session = Depends(get_session)):
         }
 
 
-@app.get("/learningjourney/{LearningJourney_ID}/")
+@app.get("/learningjourney/{LearningJourney_ID}/",tags=["LearningJourney"])
 def getLearningJourneyById(LearningJourney_ID: int, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -199,7 +199,7 @@ def getLearningJourneyById(LearningJourney_ID: int, session: Session = Depends(g
         }
 
 
-@app.get("/learningjourney/staff/{Staff_ID}")
+@app.get("/learningjourney/staff/{Staff_ID}",tags=["LearningJourney"])
 def getLearningJourneyByStaff(Staff_ID: int, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -246,7 +246,7 @@ def getLearningJourneyByStaff(Staff_ID: int, session: Session = Depends(get_sess
         }
 
 
-@app.delete("/learningjourney/{LearningJourney_ID}/")
+@app.delete("/learningjourney/{LearningJourney_ID}/",tags=["LearningJourney"])
 def deleteLearningJourney(LearningJourney_ID: int, session: Session = Depends(get_session)):
     errors = []
     try:

@@ -9,11 +9,11 @@ from fastapi import Request
 # ===========================test functions===========================
 
 
-@app.delete("/courselearningjourney/deleteall")
+@app.delete("/courselearningjourney/deleteall",tags=["CourseLearningJourney","DeleteAll"])
 def deleteAll():
     return deleteAllData(CourseLearningJourneyModel)
 
-@app.post('/courselearningjourney/')
+@app.post('/courselearningjourney/',tags=["CourseLearningJourney"])
 async def AddCourseLearningJourney(request: Request, session: Session = Depends(get_session)):
     errors = []
     try:

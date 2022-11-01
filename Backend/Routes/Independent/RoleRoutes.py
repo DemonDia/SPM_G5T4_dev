@@ -10,12 +10,12 @@ from HelperFunctions import *
 # ===========================test functions===========================
 
 
-@app.delete("/roles/deleteall")
+@app.delete("/roles/deleteall",tags=["Roles","DeleteAll"])
 def deleteAll():
     return deleteAllData(RoleModel)
 
 
-@app.post("/roles/seedall")
+@app.post("/roles/seedall",tags=["Roles","SeedAll"])
 def addSeedData():
     return seedInitialData("role", RoleModel)
 
@@ -66,7 +66,7 @@ def getAllRelatedSkills():
 # ===========================actual CRUD functions===========================
 
 
-@app.get('/roles/')
+@app.get('/roles/',tags=["Roles"])
 def getRoles(session: Session = Depends(get_session)):
     errors = []
     try:
@@ -97,7 +97,7 @@ def getRoles(session: Session = Depends(get_session)):
         }
 
 
-@app.get('/roles/available/')
+@app.get('/roles/available/',tags=["Roles"])
 def getAvailableRoles(session: Session = Depends(get_session)):
     errors = []
     try:
@@ -127,7 +127,7 @@ def getAvailableRoles(session: Session = Depends(get_session)):
         }
 
 
-@app.get("/roles/{Role_ID}/")
+@app.get("/roles/{Role_ID}/",tags=["Roles"])
 def getRoleById(Role_ID: int, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -159,7 +159,7 @@ def getRoleById(Role_ID: int, session: Session = Depends(get_session)):
         }
 
 
-@app.get("/roles/courses/{Role_ID}")
+@app.get("/roles/courses/{Role_ID}",tags=["Roles"])
 def getCoursesByRole(Role_ID: int, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -200,7 +200,7 @@ def getCoursesByRole(Role_ID: int, session: Session = Depends(get_session)):
         }
 
 
-@app.post("/roles/")
+@app.post("/roles/",tags=["Roles"])
 def createRoles(role: RoleModel, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -257,7 +257,7 @@ def createRoles(role: RoleModel, session: Session = Depends(get_session)):
 # update role
 
 
-@app.put("/roles/{Role_ID}/")
+@app.put("/roles/{Role_ID}/",tags=["Roles"])
 def updateRole(Role_ID: int, updated_role: RoleModel, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -326,7 +326,7 @@ def updateRole(Role_ID: int, updated_role: RoleModel, session: Session = Depends
 # softDeleteRole
 
 
-@app.put("/roles/delete/{Role_ID}/")
+@app.put("/roles/delete/{Role_ID}/",tags=["Roles"])
 def softDeleteRole(Role_ID: int, session: Session = Depends(get_session)):
     try:
         #skill = session.get(SkillModel).where(SkillModel.Skill_Name == Skill_Name)

@@ -8,11 +8,11 @@ from HelperFunctions import *
 
 # ===========================test functions===========================
 
-@app.delete("/staff/deleteall")
+@app.delete("/staff/deleteall",tags=["Staff","DeleteAll"])
 def deleteAll():
     return deleteAllData(StaffModel)
 
 
-@app.post("/staff/seedall")
+@app.post("/staff/seedall",tags=["Staff","SeedAll"])
 def addSeedData():
     return seedInitialData("staff", StaffModel, 25, False, "staff")

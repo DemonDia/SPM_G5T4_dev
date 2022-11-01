@@ -21,8 +21,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 
-@app.get("/")
-async def hello():
+@app.get("/",tags=["HealthCheck"])
+async def healthCheck():
     return "OK"
 
 
