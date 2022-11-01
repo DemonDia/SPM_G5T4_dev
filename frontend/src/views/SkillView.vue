@@ -9,7 +9,11 @@
 
         <!-- Search by Roles -->
         <div class="container-md my-5 mb-3 text-start">
-          <PillSearchComponent ctype="role" @pillItems="getPill"></PillSearchComponent>
+          <PillSearchComponent 
+            ctype="role" 
+            @pillItems="getPill"
+            func="filter"
+          ></PillSearchComponent>
         </div>
 
         <!-- Create Skill -->

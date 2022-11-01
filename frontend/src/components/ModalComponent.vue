@@ -59,11 +59,11 @@
 </script>
   
 <style scoped>
-  i {
-    width: 30px;
-  }
+    i {
+        width: 30px;
+    }
 
-  .msg:first-letter{
-  text-transform: capitalize
-}
+    .msg:first-letter{
+        text-transform: capitalize
+    }
 </style>  

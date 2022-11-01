@@ -56,6 +56,7 @@
             ctype="skill"
             :skills="skills_array"
             @pillItems="getPill"
+            func="search"
           ></PillSearchComponent>
         </form>
 
