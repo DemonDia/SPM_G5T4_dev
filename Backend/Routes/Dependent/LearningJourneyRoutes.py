@@ -136,7 +136,7 @@ async def addLearningJourney(request: Request, session: Session = Depends(get_se
 
 
 @app.get('/learningjourney/')
-def getRoles(session: Session = Depends(get_session)):
+def getLearningJourney(session: Session = Depends(get_session)):
     errors = []
     try:
         stmt = select(LearningJourneyModel)
