@@ -3,8 +3,8 @@ from fastapi import Response, Depends
 from database import *
 from sqlmodel import Session, select, delete, join
 from config import app
-from Models.IndependentModels import RoleModel, SkillModel
-from Models.DependentModels import RoleSkillRelationModel
+from Models.IndependentModels import RoleModel, SkillModel, CourseModel
+from Models.DependentModels import RoleSkillRelationModel, CourseSkillRelationModel
 from HelperFunctions import *
 
 # ===========================test functions===========================
@@ -25,7 +25,7 @@ def addSeedData():
 def getRelatedSkills(targetModelIdValue):
     try:
         session = Session(engine)
-        statement = select(SkillModel.Skill_ID,SkillModel.Skill_Name).select_from(join(SkillModel, RoleSkillRelationModel)).where(
+        statement = select(SkillModel.Skill_ID, SkillModel.Skill_Name).select_from(join(SkillModel, RoleSkillRelationModel)).where(
             RoleSkillRelationModel.Role_ID == targetModelIdValue)
         results = session.exec(statement).all()
         return {
@@ -159,6 +159,47 @@ def getRoleById(Role_ID: int, session: Session = Depends(get_session)):
         }
 
 
+@app.get("/roles/courses/{Role_ID}")
+def getCoursesByRole(Role_ID: int, session: Session = Depends(get_session)):
+    errors = []
+    try:
+        # CourseSkillRelationModel
+        results = []
+        role = session.get(RoleModel, Role_ID)
+        # role not found
+        if not role:
+            errors.append("Role not found")
+
+        statement = select(CourseModel.Course_ID, CourseModel.Course_Name)\
+            .select_from(join(CourseModel,\
+                join(CourseSkillRelationModel,\
+                    join(SkillModel,\
+                        RoleSkillRelationModel)))).where(RoleSkillRelationModel.Role_ID == Role_ID )
+        courses = session.exec(statement).all()
+        for course in courses:
+            if course not in results:
+                results.append(course)
+
+# get all the skills of roles
+# get all the skills of courses
+
+        if len(errors) > 0:
+            return {
+                "success": False,
+                "message": errors
+            }
+        return {
+            "success": True,
+            "data": results
+        }
+    except Exception as e:
+        errors.append(str(e))
+        return {
+            "success": False,
+            "message": errors
+        }
+
+
 @app.post("/roles/")
 def createRoles(role: RoleModel, session: Session = Depends(get_session)):
     errors = []
@@ -204,7 +245,7 @@ def createRoles(role: RoleModel, session: Session = Depends(get_session)):
         return {
             "success": True,
             "message": "Successfully added",
-            "data":role.Role_ID
+            "data": role.Role_ID
         }
 
     except Exception as e:
@@ -221,21 +262,21 @@ def updateRole(Role_ID: int, updated_role: RoleModel, session: Session = Depends
     errors = []
     try:
         #skill = session.get(SkillModel, Skill_ID)
-        print("updated_role",updated_role)
+        print("updated_role", updated_role)
         statement = select(RoleModel).where(RoleModel.Role_ID == Role_ID)
         result = session.exec(statement)
         role = result.one()
         # role not found
         if role == None:
             errors.append("Role not found!")
-            
+
         # cannot reuse existing name
         findDuplicateRoleStatement = select(RoleModel).where(
-            RoleModel.Role_Name == updated_role.Role_Name).where( RoleModel.Role_ID != Role_ID)
+            RoleModel.Role_Name == updated_role.Role_Name).where(RoleModel.Role_ID != Role_ID)
         results = session.exec(findDuplicateRoleStatement).all()
 
         # check for duplicate skill name
-        if len(results)>0:
+        if len(results) > 0:
             errors.append("Role already exists! Please try again")
 
         # check for empty skill name
