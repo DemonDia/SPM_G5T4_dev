@@ -42,7 +42,8 @@ The system would allow staff to set their learning goal by setting on a position
 Our project is hosted live at:
 * [Frontend Web Application](http://spm-smallbucket.s3-website-us-east-1.amazonaws.com/)
 * [Backend API Documentations](https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/docs)
-* [C4 Diagram](https://www.google.com)
+* [C4 Diagram](https://www.figma.com/file/6mlZ08E8T49QoVSF3Op89G/SPM-Group-2?node-id=0%3A1)
+* [ERD Diagram](https://lucid.app/lucidchart/4d0a5710-dff1-4924-a95c-e0c342fc66af/edit?viewport_loc=-239%2C51%2C1125%2C1031%2C0_0&invitationId=inv_3dafcc49-9a87-4aa9-afd1-25f656fc8152#)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -245,7 +246,7 @@ Note:
 ## Database
 Development/Production database is a hosted MySQL AWS RDS instance. 
 
-## Continuous Integrations 
+## Continuous Integration
 Continuous Integration is enabled for this repository via GitHub Actions. Deployment to the development server is handled when a PR merge to main is successful.
 
 Refer the CI pipeline scripts in `/.circleci/config.yml`.
@@ -257,5 +258,5 @@ Refer the CI pipeline scripts in `/.circleci/config.yml`.
 [Vue-url]: https://vuejs.org/
 [FastAPI]: https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi
 [FastAPI-url]: https://fastapi.tiangolo.com/
-[MYSQL]: https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white
+[MYSQL]: https://img.shields.io/badge/mysql-205571.svg?style=for-the-badge&logo=mysql&logoColor=white
 [MYSQL-url]: https://www.sqlalchemy.org/
