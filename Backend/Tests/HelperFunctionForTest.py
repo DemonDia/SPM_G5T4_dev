@@ -44,7 +44,7 @@ def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,oper
     if operationType == "addRelation":
         triggeredTestCase = addRelation(BASE+entityName,inputJson)
     if operationType == "hardDelete":
-        triggeredTestCase = deleteRow(BASE,fieldValue)
+        triggeredTestCase = deleteRow(BASE+entityName,fieldValue)
     if operationType == "deleteRelation":
         triggeredTestCase = deleteRelation(BASE+entityName,inputJson)
     validateOutcome(triggeredTestCase, expectedResult,testCaseName)
@@ -136,5 +136,5 @@ def softDeleteRow(url,rowId):
 
 # Delete rows
 def deleteRow(url, rowId):
-    deletedRow = requests.delete(url+"{rowId}".format(rowId=rowId))
+    deletedRow = requests.delete(url+"/{rowId}/".format(rowId=rowId))
     return deletedRow.json()

@@ -30,10 +30,14 @@ def viewLearningJourney():
     triggerTestCase("View learning journey by Staff ID --Staff does not exist", False, learningJourney,
                     None, "readByStaffId", -1)
 
+
 def deleteLearningJourney():
     print("Delete learning journey")
-    triggerTestCase("Delete learning journey --Learning journey exists",True,learningJourney,None,"hardDelete",1 )
-    triggerTestCase("Delete learning journey --Learning journey does not exist",True,learningJourney,None,"hardDelete",-1 )
+    triggerTestCase("Delete learning journey --Learning journey exists",
+                    True, learningJourney, None, "hardDelete", 1)
+    triggerTestCase("Delete learning journey --Learning journey does not exist",
+                    False, learningJourney, None, "hardDelete", -1)
+
 
 def testAllLearningJourneyCases():
     createLearningJourney()
