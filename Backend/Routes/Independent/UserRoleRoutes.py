@@ -7,12 +7,12 @@ from HelperFunctions import *
 
 # ===========================test functions===========================
 
-@app.delete("/userroles/deleteall")
+@app.delete("/userroles/deleteall",tags=["UserRoles","DeleteAll"])
 def deleteAll():
     return deleteAllData(UserRoleModel)
 
 
-@app.post("/userroles/seedall")
+@app.post("/userroles/seedall",tags=["UserRoles","SeedAll"])
 def addSeedData():
     return seedInitialData("userroles", UserRoleModel, 25, False, "role")
 
