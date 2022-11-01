@@ -65,7 +65,7 @@ database_route = getenv("DATABASE_URL")
 # instantiate the FasAPI app
 app = FastAPI(
     title="SPM G5T4 Backend",
-    openapi_tags=tags_metadata
+    openapi_tags=tags_metadata,
     root_path="/dev/"   # when making pushes nid this line
 )
 # adding of middleware
