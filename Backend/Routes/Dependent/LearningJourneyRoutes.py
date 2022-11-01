@@ -1,20 +1,73 @@
 from fastapi import Response, Depends
-from Schema.IndependentSchema import Skill
 from database import *
 from sqlmodel import Session, select, delete, join
 from config import app
-from Models.DependentModels import LearningJourneyModel
+from Models.DependentModels import LearningJourneyModel, CourseLearningJourneyModel
+from Models.IndependentModels import CourseModel, StaffModel
+
 from HelperFunctions import *
 from fastapi import Request
 
 # ===========================test functions===========================
+
+
 @app.post("/learningjourney/seedall")
 def seedAll():
-    return seedInitialData("learningjourney",LearningJourneyModel,25,True)
+    return seedInitialData("learningjourney", LearningJourneyModel, 25, True)
+
 
 @app.delete("/learningjourney/deleteall")
 def deleteAll():
     return deleteAllData(LearningJourneyModel)
+
+# ===========================helper functions===========================
+
+
+def getRelatedCourses(targetModelIdValue):
+    try:
+        session = Session(engine)
+        statement = select(CourseModel.Course_ID, CourseModel.Course_Name).select_from(join(CourseModel, CourseLearningJourneyModel)).where(
+            CourseLearningJourneyModel.LearningJourney_ID == targetModelIdValue)
+        results = session.exec(statement).all()
+        return {
+            "success": True,
+            "data": results
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "messaage": e,
+            "data": []
+        }
+# returns json
+
+
+def getAllRelatedCourses():
+    try:
+        courseDict = {}
+        session = Session(engine)
+        statement = select(CourseModel.Course_Name, LearningJourneyModel.LearningJourney_ID).select_from(
+            join(LearningJourneyModel, join(CourseModel, CourseLearningJourneyModel)))
+        results = session.exec(statement).all()
+        for result in results:
+            if (result.LearningJourney_ID not in courseDict.keys()):
+                courseDict[result.LearningJourney_ID] = [result.Course_Name]
+            else:
+                courseDict[result.LearningJourney_ID].append(
+                    result.Course_Name)
+        print(courseDict)
+        return {
+            "success": True,
+            "data": courseDict
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "message": e,
+            "data": []
+        }
+
+# ===========================actual CRUD functions===========================
 
 
 @app.post("/learningjourney/")
@@ -40,20 +93,32 @@ async def addLearningJourney(request: Request, session: Session = Depends(get_se
         if (len(selectedStaffStatementResult) == 0):
             errors.append("Staff does not exist")
 
+        newLearningJourney = LearningJourneyModel(
+            Staff_ID=staffId, Role_ID=roleId)
+        session.add(newLearningJourney)
+        courses = requestData["Courses"]
+        for Course_ID in courses:
+            selectedCourseStatement = select(CourseModel).where(
+                CourseModel.Course_ID == Course_ID)
+            selectedCourseStatementResult = session.exec(
+                selectedCourseStatement)
+            selectedCourseStatementResult = selectedCourseStatementResult.all()
+            if (len(selectedCourseStatementResult) == 0):
+                errors.append("Course does not exist")
+                break
+            newCourseLearningJourneyRelation = CourseLearningJourneyModel()
+            newCourseLearningJourneyRelation.Course_ID = Course_ID
+            newCourseLearningJourneyRelation.LearningJourney_ID = newLearningJourney.LearningJourney_ID
+            session.add(newCourseLearningJourneyRelation)
+
         if (len(errors) > 0):
             return {
                 "success": False,
                 "message": errors
             }
-        newLearningJourney = LearningJourneyModel()
-        newLearningJourney.Role_ID = roleId
-        newLearningJourney.Staff_ID = staffId
-        session.add(newLearningJourney)
-        
-        courses = requestData["Courses"]
-
 
         session.commit()
+        session.refresh(newLearningJourney)
         session.close()
         return {
             "success": True,
@@ -67,4 +132,114 @@ async def addLearningJourney(request: Request, session: Session = Depends(get_se
             "success": False,
             "message": errors
 
+        }
+
+
+@app.get('/learningjourney/')
+def getRoles(session: Session = Depends(get_session)):
+    errors = []
+    try:
+        stmt = select(LearningJourneyModel)
+        getAllLearningJourneys = session.exec(stmt).all()
+        allCourses = getAllRelatedCourses()["data"]
+        allLearningJourneys = []
+        for learningJourney in getAllLearningJourneys:
+            learningJourneyDict = {}
+            for columnName, columnValue in learningJourney:
+                learningJourneyDict[columnName] = columnValue
+                if learningJourney.LearningJourney_ID in allCourses.keys():
+
+                    learningJourneyDict["Courses"] = allCourses[learningJourney.LearningJourney_ID]
+                else:
+                    learningJourneyDict["Courses"] = []
+
+            allLearningJourneys.append(learningJourneyDict)
+        return {
+            "success": True,
+            "data": allLearningJourneys,
+        }
+    except Exception as e:
+        print(e)
+        errors.append(str(e))
+        return {
+            "success": False,
+            "message": errors
+        }
+
+
+@app.get("/learningjourney/{LearningJourney_ID}/")
+def getLearningJourneyById(LearningJourney_ID: int, session: Session = Depends(get_session)):
+    errors = []
+    try:
+        learningJourney = session.get(LearningJourneyModel, LearningJourney_ID)
+        # role not found
+        if not learningJourney:
+            errors.append("Learning journey not found")
+
+        if len(errors) > 0:
+            return {
+                "success": False,
+                "message": errors
+            }
+        learningJourneyDict = {}
+        for columnName, columnValue in learningJourney:
+            learningJourneyDict[columnName] = columnValue
+        relatedCourses = getRelatedCourses(learningJourney.LearningJourney_ID)
+        learningJourneyDict["Courses"] = relatedCourses["data"]
+        # return role
+        return {
+            "success": True,
+            "data": learningJourneyDict
+        }
+    except Exception as e:
+        errors.append(str(e))
+        return {
+            "success": False,
+            "message": errors
+        }
+
+
+@app.get("/learningjourney/staff/{Staff_ID}/")
+def getLearningJourneyByStaff(Staff_ID: int, session: Session = Depends(get_session)):
+    errors = []
+    try:
+        # find staff
+        checkSelectedStaffStatement = select(StaffModel).where(StaffModel.Staff_ID == Staff_ID)
+        selectedStaff = session.exec(checkSelectedStaffStatement).all()
+        print("selectedStaff",selectedStaff)
+        if len(selectedStaff) == 0:
+            errors.append("Staff not found")
+
+        getLearningJourneyByStaffStatement = select(LearningJourneyModel).where(
+            LearningJourneyModel.Staff_ID == Staff_ID)
+        learningJourneys = session.exec(
+            getLearningJourneyByStaffStatement).all()
+        staffLearningJourneyList = []
+        allCoursesToLearningJourney = getAllRelatedCourses()["data"]
+        for learningJourney in learningJourneys:
+            learningJourneyDict = {}
+            for columnName, columnValue in learningJourney:
+                learningJourneyDict[columnName] = columnValue
+            if learningJourneyDict["LearningJourney_ID"] not in allCoursesToLearningJourney.keys():
+                learningJourneyDict["Courses"] = []
+            else:
+                learningJourneyDict["Courses"] = allCoursesToLearningJourney[learningJourneyDict["LearningJourney_ID"]]
+            staffLearningJourneyList.append(learningJourneyDict)
+
+        if len(errors) > 0:
+            return {
+                "success": False,
+                "message": errors
+            }
+
+        # get all the LJs
+        return {
+            "success": True,
+            "data": staffLearningJourneyList
+        }
+    except Exception as e:
+        errors.append(str(e))
+        return {
+            "success": False,
+            "message": errors
         }
