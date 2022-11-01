@@ -247,7 +247,7 @@ Note:
 Development/Production database is a hosted MySQL AWS RDS instance. 
 
 ## Continuous Integration
-Continuous Integration is enabled for this repository via GitHub Actions. Deployment to the development server is handled when a PR merge to main is successful.
+Continuous Integration is enabled for this repository via CircleCI. Deployment to the development server is handled when a PR merge to main is successful.
 
 Refer the CI pipeline scripts in `/.circleci/config.yml`.
 
