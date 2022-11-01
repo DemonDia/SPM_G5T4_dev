@@ -199,14 +199,15 @@ def getLearningJourneyById(LearningJourney_ID: int, session: Session = Depends(g
         }
 
 
-@app.get("/learningjourney/staff/{Staff_ID}/")
+@app.get("/learningjourney/staff/{Staff_ID}")
 def getLearningJourneyByStaff(Staff_ID: int, session: Session = Depends(get_session)):
     errors = []
     try:
         # find staff
-        checkSelectedStaffStatement = select(StaffModel).where(StaffModel.Staff_ID == Staff_ID)
+        checkSelectedStaffStatement = select(
+            StaffModel).where(StaffModel.Staff_ID == Staff_ID)
         selectedStaff = session.exec(checkSelectedStaffStatement).all()
-        print("selectedStaff",selectedStaff)
+        print("selectedStaff", selectedStaff)
         if len(selectedStaff) == 0:
             errors.append("Staff not found")
 
@@ -236,6 +237,43 @@ def getLearningJourneyByStaff(Staff_ID: int, session: Session = Depends(get_sess
         return {
             "success": True,
             "data": staffLearningJourneyList
+        }
+    except Exception as e:
+        errors.append(str(e))
+        return {
+            "success": False,
+            "message": errors
+        }
+
+
+@app.delete("/learningjourney/{LearningJourney_ID}/")
+def deleteLearningJourney(LearningJourney_ID: int, session: Session = Depends(get_session)):
+    errors = []
+    try:
+        # find the learning journey
+        selectedLearningJourneyStatement = select(LearningJourneyModel).where(LearningJourneyModel.LearningJourney_ID == LearningJourney_ID)
+        selectedLearningJourney = session.exec(selectedLearningJourneyStatement).all()
+        if(len(selectedLearningJourney) == 0):
+            errors.append("Learning journey does not exist!")
+        else:
+            selectedLearningJourney = selectedLearningJourney[0]
+        
+
+        # delete all the relations
+        # hard delete the relations
+        allRelatedRelationStatement = select(CourseLearningJourneyModel).where(
+            CourseLearningJourneyModel.LearningJourney_ID == LearningJourney_ID)
+        relationResults = session.exec(allRelatedRelationStatement)
+        allRelations = relationResults.all()
+        for relation in allRelations:
+            session.delete(relation)
+        session.delete(selectedLearningJourney)
+
+        session.commit()
+        session.close()
+        return {
+            "success": True,
+            "message": "Learning journey deleted"
         }
     except Exception as e:
         errors.append(str(e))
