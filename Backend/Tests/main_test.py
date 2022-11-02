@@ -3,6 +3,7 @@ from TestScripts.Dependent.RoleSkillRelationTest import testAllRoleSkillRelation
 from TestScripts.Dependent.CourseSkillRelationTest import testAllCourseSkillRelationCases
 from TestScripts.Independent.RoleTest import testAllRoleCases
 from TestScripts.Independent.SkillTest import testAllSkillCases
+from TestScripts.Dependent.StaffTest import testAllStaffCases
 from TestScripts.Dependent.LearningJourneyTest import testAllLearningJourneyCases
 from TestScripts.Dependent.CourseLearningJourneyTest import testAllCourseLearningJourneyCases
 import pytest
@@ -28,5 +29,5 @@ def mainTest():
 if __name__ == "__main__":
     cleanUp()
     seedAllData()
-    mainTest()
-    cleanUp()
+    # mainTest()
+    # cleanUp()
