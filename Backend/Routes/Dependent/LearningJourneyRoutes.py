@@ -220,7 +220,15 @@ def getLearningJourneyByStaff(Staff_ID: int, session: Session = Depends(get_sess
         for learningJourney in learningJourneys:
             learningJourneyDict = {}
             for columnName, columnValue in learningJourney:
-                learningJourneyDict[columnName] = columnValue
+                if columnName != "Role_ID":
+                    learningJourneyDict[columnName] = columnValue
+            # set role
+            selectedRoleStatement = select(RoleModel).where(RoleModel.Role_ID == learningJourney.Role_ID)  
+            selectedRole = session.exec(selectedRoleStatement).all()
+            if(len(selectedRole) == 0):
+                learningJourneyDict["Role"] = {}
+            else:
+                learningJourneyDict["Role"] = selectedRole[0]
             if learningJourneyDict["LearningJourney_ID"] not in allCoursesToLearningJourney.keys():
                 learningJourneyDict["Courses"] = []
             else:
