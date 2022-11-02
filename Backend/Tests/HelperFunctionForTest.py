@@ -1,14 +1,14 @@
 import requests
 # =====================Universal variables=====================
 # name of entities
-entities = ["roles","skills","course","userroles","roleskillrelations","courseskillrelations","staff","learningjourney","courselearningjourney"]
+entities = ["roles","skills","course","userroles","roleskillrelations","courseskillrelations","staff","learningjourney","courselearningjourney","courselearningjourney"]
 
 # name of operations (based on CRUD)
 # Names:
 # create --> create new entity
 # readAll --> read all existing rows
 # readById --> read by specific Id
-operationTypes = ["create","readAll","readAllAvailable","readById","updateById","softDelete","hardDelete","addRelation","readByStaffId"]
+operationTypes = ["create","readAll","readAllAvailable","readById","updateById","softDelete","hardDelete","addRelation","readByStaffId","readByStaffIDorEmail"]
 
 # base URL
 BASE = "http://127.0.0.1:8000/"
@@ -47,6 +47,8 @@ def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,oper
         triggeredTestCase = deleteRow(BASE+entityName,fieldValue)
     if operationType == "deleteRelation":
         triggeredTestCase = deleteRelation(BASE+entityName,inputJson)
+    if operationType == "readByStaffIDorEmail":
+        triggeredTestCase = getByStaffEmailOrID(BASE+entityName,inputJson)
     validateOutcome(triggeredTestCase, expectedResult,testCaseName)
     print("Complete")
 
@@ -106,6 +108,12 @@ def getByStaffId(url,staffId):
     obtainedRow = requests.get(url+"/staff/{staffId}".format(staffId=staffId))
     return obtainedRow.json()
 
+def getByStaffEmailOrID(url,jsonObject):
+    print("URL")
+    print(url+"/staff/one",)
+    obtainedRow = requests.get(url+"/one", json=jsonObject)
+    return obtainedRow.json()
+
 # Gets all rows
 def getAllRows(url):
     rows = requests.get(url)
@@ -138,3 +146,4 @@ def softDeleteRow(url,rowId):
 def deleteRow(url, rowId):
     deletedRow = requests.delete(url+"/{rowId}/".format(rowId=rowId))
     return deletedRow.json()
+
