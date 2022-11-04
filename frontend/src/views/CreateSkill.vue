@@ -23,7 +23,7 @@
           <!-- Progress Tracker -->
           <div class="row gx-4 progress p-0">
             <div
-              class="col-12 col-md-4"
+              class="col-12 col-sm-4"
               v-for="(value, key) in progress"
               :key="key"
             >
@@ -201,12 +201,12 @@
               bg: "#c86bfa",
               description: "Assign roles (optional)",
               button1: "Back to Step 1",
-              button2: "Next: Confirm summary",
+              button2: "Next: Confirm choices",
             },
             {
               title: "STEP 3",
               bg: "#2d0f51",
-              description: "Confirm summary",
+              description: "Summary",
               button1: "Back to Step 2",
               button2: "Submit",
             },

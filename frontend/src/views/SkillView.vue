@@ -129,8 +129,7 @@
 </script>
 
 <style scoped>
-
-#skillMain {
+  #skillMain {
     min-height: 100vh;
   }
 </style>

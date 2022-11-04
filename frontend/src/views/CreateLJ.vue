@@ -23,7 +23,7 @@
         <!-- Progress Tracker -->
         <div class="row gx-4 progress p-0">
           <div
-            class="col-12 col-md-6"
+            class="col-12 col-sm-4"
             v-for="(value, key) in progress"
             :key="key"
           >
@@ -70,29 +70,33 @@
             id="formPg1"
             v-if="this.currFormPg == 1" 
             @reload="reload()"
-            class="my-4 mx-auto"
+            class="my-4 mx-auto formPage"
           >
             <!-- Spinner -->
-            <div v-if="this.roles.length < 1 && noRoleFound==false">
+            <div v-if="this.roles.roles.length < 1 && noRoleFound==false">
               <SpinnerComponent/>
             </div>
             <!-- Role Selection -->
-            <div v-else>
-              <div class="text-center fw-bold my-2">
+            <div v-else v-if="!noRoleFound">
+              <div class="text-sm-start text-md-center fw-bold my-2">
                 You have selected: 
                 <span id="selected">{{this.selectedRname}}</span>
               </div>
-              <div id="tiles" class="d-sm-block d-md-flex flex-wrap justify-content-around">
+              <div 
+                id="tiles" 
+                class="d-sm-inline-flex d-md-flex flex-wrap justify-content-around"
+              >
                 <div 
-                  v-for="(value, key) in this.roles" 
+                  v-for="(value, key) in this.roles.roles" 
                   :key="key"
-                  class="p-1 overflow-scroll d-sm-block d-md-inline-block"
+                  class="p-1 overflow-scroll"
                 >
                   <TileComponent 
                     :id="value.Role_ID"
                     :name="value.Role_Name"
                     type="radio"
                     @clicked="onClickTile"
+                    :selected="this.selectedR"
                   >
                   </TileComponent>
                 </div>
@@ -107,28 +111,29 @@
           <!-- Page 2 -->
           <div 
             id="formPg2"
-            v-if="this.currFormPg == 2" 
-            class="my-4 mx-auto"
+            v-if="this.currFormPg == 2"
+            class="my-4 mx-auto formPage"
           >
             <!-- Spinner -->
-            <div v-if="this.courses.length < 1 && noCourseFound==false">
+            <div v-if="this.courses.courses.length < 1 && noCourseFound==false">
               <SpinnerComponent/>
             </div>
-            <!-- Role Selection -->
-            <div v-else>
-              <div class="text-center fw-bold my-2">
+            <!-- Course Selection -->
+            <div v-else v-if="!noCourseFound">
+              <div class="text-sm-start text-md-center fw-bold my-2">
                 You have selected: 
                 <span 
                   id="selected" 
-                  v-for="(value,key) in this.selectedCname" 
-                  :key="key"
                 >
-                  {{value}}
+                  {{this.selectedCname.join(', ')}}
                 </span>
               </div>
-              <div id="tiles" class="d-sm-block d-md-flex flex-wrap justify-content-around">
+              <div 
+                id="tiles"
+                class="d-sm-inline-flex d-md-flex flex-wrap justify-content-around"
+              >
                 <div 
-                  v-for="(value, key) in this.courses" 
+                  v-for="(value, key) in this.courses.courses" 
                   :key="key"
                   class="p-1 overflow-scroll d-sm-block d-md-inline-block"
                 >
@@ -137,6 +142,7 @@
                     :name="value.Course_Name"
                     type="checkbox"
                     @clicked="onClickTile"
+                    :selected="this.selectedC"
                   >
                   </TileComponent>
                 </div>
@@ -146,6 +152,18 @@
             <div v-show="noCourseFound" class="fs-3 fw-bold text-center align-middle pt-5 my-5">
               Sorry! No course found!
             </div>
+          </div>
+
+          <!-- Page 3 -->
+          <div 
+            id="formPg3"
+            v-show="this.currFormPg == 3"  
+            class="my-4 mx-auto formPage"
+          >
+            <p class="fw-bold mt-1 mb-0">Selected Role</p>
+            <p class="text-break">{{selectedRname}}</p>
+            <p class="fw-bold mb-0">Selected Courses</p>
+            <p class="text-break">{{selectedCname.join(', ')}}</p>
           </div>
         </form>
 
@@ -159,7 +177,7 @@
               this.currFormPg == 1
                 ? 'btn-outline-secondary disabled'
                 : 'btn-primary',
-              this.isSubmitted && this.isSuccess ? 'disabled' : '',
+              this.disableBtn && this.isSuccess && this.isSubmitted ? 'disabled' : '',
             ]"
             @click="goToPrevPg"
           >
@@ -171,12 +189,12 @@
             type="button"
             class="btn col-md-4 col-sm-5 m-2 order-sm-last order-first"
             :class="[
-              this.currFormPg == 2 ? 'btn-warning' : 'btn-primary',
-              this.isSubmitted && this.isSuccess ? 'disabled' : '',
+              this.currFormPg == 3 ? 'btn-warning' : 'btn-primary',
+              this.disableBtn ? 'disabled' : '',
             ]"
             @click="goToNextPg"
-            :data-bs-toggle="this.currFormPg == 2 ? 'modal' : ''"
-            :data-bs-target="this.currFormPg == 2 ? '#submitModal' : ''"
+            :data-bs-toggle="this.currFormPg == 3 ? 'modal' : ''"
+            :data-bs-target="this.currFormPg == 3 ? '#submitModal' : ''"
           >
             {{ this.progress[currFormPg - 1].button2 }}
           </button>
@@ -187,12 +205,14 @@
 </template>
   
 <script>
-  import DashboardLayout from "./Dashboard/Layout/DashboardLayout.vue";
-  import FormComponent from "../components/FormComponent.vue";
-  import ModalComponent from "../components/ModalComponent.vue";
+  import DashboardLayout from "@/views/Dashboard/Layout/DashboardLayout.vue";
+  import FormComponent from "@/components/FormComponent.vue";
+  import ModalComponent from "@/components/ModalComponent.vue";
   import axios from "axios";
   import SpinnerComponent from "@/components/SpinnerComponent.vue";
   import TileComponent from "@/components/TileComponent.vue";
+  import { mapGetters } from "vuex";
+import { createToast } from 'mosha-vue-toastify';
   
   export default {
     name: "LJView",
@@ -205,8 +225,15 @@
     },
     data() {
       return {
-        roles: [],
-        courses: [{Course_ID: 1, Course_Name: "dummy1"}, {Course_ID: 2, Course_Name: "dummy2"}],
+        roles: {
+          roles: [],
+          // errors: [],
+        },
+        courses: {
+          courses: [],
+          // errors: [],
+        },
+        // LJRoleErrors: [],
         noRoleFound: false,
         noCourseFound: false,
         selectedR: "",
@@ -230,16 +257,22 @@
             bg: "#c86bfa",
             description: "Select courses",
             button1: "Back to Step 1",
+            button2: "Next: Confirm choices",
+          },
+          {
+            title: "STEP 3",
+            bg: "#2d0f51",
+            description: "Summary",
+            button1: "Back to Step 2",
             button2: "Submit",
           },
         ],
-        pillItemsFromComponent: [],
+        disableBtn: false,
       };
     },
 
     methods: {
       async reload() {
-        this.pillItemsFromComponent = [];
         var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/available";
         await axios.get(url).then((response) => {
           var result = response.data.data;
@@ -247,62 +280,53 @@
             this.noRoleFound = true;
           }
           else {
-            this.roles = result;
+            this.noRoleFound = false;
+            this.roles.roles = result;
           }
         });
       },
 
-      async loadCourses() {
-        var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/course/available";
-        await axios.get(url).then((response) => {
+      loadCourses() {
+        var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/courses/" + this.selectedR;
+        axios.get(url).then((response) => {
           var result = response.data.data;
-          console.log(result)
           if (result.length == 0) {
             this.noCourseFound = true;
           }
           else {
-            this.courses = result;
+            this.noCourseFound = false;
+            this.courses.courses = result;
           }
         });
       },
 
       handleSubmit() {
+        this.isSubmitted = true;
         this.createLJ().then((res) => {
-          var roleStatus = res.data;
-          this.assignSkills(roleStatus.data).then((result) => {
-            var assignSkillStatus = result.data;
-            this.resetErrors();
-            if (roleStatus.success || assignSkillStatus.success) {
-              this.resetForm();
-              this.isSuccess = true;
-            } else {
-              this.isSuccess = false;
-              for (let err in roleStatus.message) {
-                let msg = roleStatus.message[err];
-                if (this.RNerrors.includes(msg)) {
-                  this.role_name.errors.push(msg);
-                } else {
-                  this.role_description.errors.push(msg);
-                }
-              }
-              // go back to form pg 1
-              this.currFormPg = 1;
-            }
-            // show Modal
-            this.checked = true;
-          });
+          var LJStatus = res.data;
+          this.resetErrors();
+          if (LJStatus.success) {
+            this.resetForm();
+            this.isSuccess = true;
+          } else {
+            // should be skipped
+            this.isSuccess = false;
+            this.currFormPg = 1;
+          }
+          // show Modal
+          this.checked = true;
         });
       },
       
       createLJ() {
         var createLJUrl =
-          "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/";
+          "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/learningjourney/";
         return new Promise((resolve, reject) => {
           axios
             .post(createLJUrl, {
-              // Role_Name: this.role_name.role_name,
-              // Role_Description: this.role_description.role_description,
-              // Active: true,
+              StaffID: this.user.StaffID,
+              Courses: this.selectedC,
+              Role_ID: this.selectedR,
             })
             .then((response) => {
               resolve(response);
@@ -314,17 +338,31 @@
       onClickModal(value) {
         this.checked = value;
         if (this.isSubmitted && this.isSuccess) {
+          this.disableBtn = true;
           this.$router.replace({ name: "learningjourney" });
         }
       },
 
       onClickTile(value) {
+        // store / update selection
         if (value.type == 'radio') {
           this.selectedR = value.id;
           this.selectedRname = value.name;
+          this.loadCourses();
         } else if (value.type == 'checkbox') {
-          this.selectedC.push(value.id);
-          this.selectedCname.push(value.name)
+          if (this.selectedC.includes(value.id)) {
+            let indexC = this.selectedC.indexOf(value.id);
+            let indexCname = this.selectedCname.indexOf(value.name);
+            this.selectedC.splice(indexC, 1);
+            this.selectedCname.splice(indexCname, 1);
+          } else {
+            this.selectedC.push(value.id);
+            this.selectedCname.push(value.name);
+          }
+        }
+        // update disabled button property
+        if (this.disableBtn) {
+          this.checkForm();
         }
       },
 
@@ -332,49 +370,60 @@
         this.currFormPg -= 1;
       },
 
-      goToNextPg() {
-        if (this.currFormPg == 2) {
-          this.handleSubmit();
-        } else {
-          this.currFormPg += 1;
-        }
-
-      },
-
       goToPg(x) {
         this.currFormPg = x;
       },
 
-      resetErrors() {
-        // this.role_name.errors = [];
-        // this.role_description.errors = [];
-        // this.isSubmitted = NaN;
-        // this.isSuccess = NaN;
-        // this.checked = NaN;
-        // this.pillItemsFromComponent = []
+      goToNextPg() {
+        // form validation
+        let status = this.checkForm();
+        if (status) {
+          if (this.currFormPg < 3) {
+            this.currFormPg += 1;
+          } else {
+            this.handleSubmit();
+          }
+        }
       },
+
+      checkForm() {
+        let cond1 = this.selectedR == "";
+        let cond2 = (this.selectedC).length < 1;
+        if ((this.currFormPg == 1 && cond1)  ||  (this.currFormPg == 2 && cond2)  || (this.currFormPg == 3 && (cond1 || cond2)) ){
+          this.sendToaster(cond1, cond2);
+          this.disableBtn = true;
+          return false;
+        }
+        this.disableBtn = false;
+        return true;
+      },
+
+      resetErrors() {
+        // this.roles.errors = [];
+        // this.courses.errors = [];
+        this.isSubmitted = NaN;
+        this.isSuccess = NaN;
+        this.checked = NaN;
+      },
+
+      sendToaster(cond1, cond2) {
+        let msg = ""
+        if (!cond1 && !cond2) {
+          msg = "Please select a role and a course"
+        } else if (!cond1) {
+          msg = "Please select a role to begin"
+        } else if (!cond2) {
+          msg = "You need at least one course to create a learning journey"
+        }
+        // error msg
+      }
     },
     
     computed: {
-      // This computed function will enumerate the pillItemsFromComponent where the key/value items is stored
-      // And then it will return the value of the key "skill_name" to be displayed in the pill
-      pillValue() {
-        const pillItems = [];
-        this.pillItemsFromComponent.forEach((value) => {
-          pillItems.push(value.Skill_Name);
-        });
-        return pillItems;
-      },
-
-      // This computed function will enumerate the pillItemsFromComponent where the key/value items is stored
-      // And then it will return the value of the key "skill_id" and return to the assign skill function.
-      pillSkill_IDArray() {
-        const pillItems = [];
-        this.pillItemsFromComponent.forEach((value) => {
-          pillItems.push(value.Skill_ID);
-        });
-        return pillItems;
-      },
+      ...mapGetters({
+        user: "auth/user",
+        authenticated: "auth/authenticated",
+      }),
     },
     
     mounted() {
@@ -401,7 +450,7 @@
     height: 8px;
   }
 
-  #formPg1, #formPg2 {
+  .formPage {
     height: 38vh;
   }
 

@@ -88,13 +88,13 @@
     export default {
       name: "UpdateSkill",
       components: {
-      DashboardLayout,
-      FormComponent,
-      ModalComponent,
-      PillSearchComponent,
-      PillComponent,
-      SpinnerComponent
-  },
+        DashboardLayout,
+        FormComponent,
+        ModalComponent,
+        PillSearchComponent,
+        PillComponent,
+        SpinnerComponent
+      },
       data() {
         return {
           skill_name: {
