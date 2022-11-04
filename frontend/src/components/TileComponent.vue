@@ -1,7 +1,7 @@
 <template>
     <div class="radio-tile-group" @click="onClickButton">
       <div class="input-container">
-          <input :type="this.type" name="radio">
+          <input :type="this.type" name="radio" :checked="isSelected()">
           <div class="radio-tile text-center p-1 text-break">
             <label>{{name}}</label>
           </div>
@@ -14,15 +14,30 @@
     name: "TileComponent",
     data() {
       return {
+        checked: false
       }
     },
-    props: ["name", "id", "type"],
+    props: ["name", "id", "type", "selected"],
     methods: {
       onClickButton(event) {
         this.$emit('clicked', {id: this.id, name: this.name, type: this.type});
+      },
+
+      isSelected() {
+        if (this.type == "radio") {
+          if (this.selected == this.id) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          if (this.selected.includes(this.id)) {
+            return true;
+          } else {
+            return false;
+          }
+        }
       }
-    },
-    computed: {
     },
   };
 </script>
@@ -36,7 +51,6 @@
   .input-container {
     position: relative;
     height: 8rem;
-    min-width: 10rem;
     margin: 0.5rem;
   }
 
@@ -80,6 +94,18 @@
 
   input:checked+.radio-tile label {
     color: white;
+  }
+
+  @media screen and (max-width: 575px) {
+    .input-container {
+      min-width: 10rem;
+    }
+  }
+
+  @media screen and (min-width: 576px) {
+    .input-container {
+      width: 10rem;
+    }
   }
 </style>
   

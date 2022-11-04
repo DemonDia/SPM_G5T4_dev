@@ -88,13 +88,13 @@
   export default {
     name: "UpdateRole",
     components: {
-    DashboardLayout,
-    FormComponent,
-    ModalComponent,
-    PillSearchComponent,
-    PillComponent,
-    SpinnerComponent
-},
+      DashboardLayout,
+      FormComponent,
+      ModalComponent,
+      PillSearchComponent,
+      PillComponent,
+      SpinnerComponent
+    },
     data() {
       return {
         role_name: {
