@@ -1,5 +1,5 @@
 from fastapi.exceptions import RequestValidationError
-from pydantic import BaseModel, ValidationError
+# from pydantic import BaseModel, ValidationError
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 

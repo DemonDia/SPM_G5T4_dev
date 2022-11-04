@@ -1,5 +1,4 @@
 from typing import List, Optional
-from datetime import datetime
 from sqlmodel import Field, SQLModel,Relationship
 from Models.DependentModels import *
 
@@ -30,3 +29,9 @@ class RoleModel(SQLModel,table=True):
     Role_Description:str
     Active:bool
     Skills: List['SkillModel'] = Relationship(back_populates="Roles", link_model=RoleSkillRelationModel)
+
+
+class UserRoleModel(SQLModel,table=True):
+    __tablename__: "userrolemodel"
+    Role_ID: Optional[int] = Field(default=None, primary_key=True)
+    Role_Name:str
