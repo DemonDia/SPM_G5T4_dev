@@ -5,7 +5,7 @@
       <SpinnerComponent v-if="LJ.length < 1 && noLJFound == false" />
 
       <!-- Dashboard -->
-      <div v-else class="">
+      <div v-else>
 
          <!-- Create Role -->
          <div class="row mt-3 mx-auto">
@@ -19,7 +19,7 @@
           <LongCardComponent 
             :cardValue="value" 
             :indx="key" 
-            v-if="this.pillItemsFromComponent.length == 0 || this.isFound(value.Skills)">
+            v-if="value.Courses.length > 0">
           </LongCardComponent>
         </div>
       </div>
@@ -54,44 +54,9 @@
         LJ: [], // courses from database
         numLJFound: 0, 
         noLJFound: false,
-        availSkills: ['Select skills:'],
-        noSkillFound: false,
-        pillItemsFromComponent: [],
-        selectedSkills: [],
       };
     },
-    methods: {
-      getPill(item) {
-        // emit content to be passed into the selectedList
-        this.pillItemsFromComponent = item;
-        this.selectedSkills = item.map(course => {
-          return course.Skill_Name
-        });
-        this.numCoursesFound = 0
-      },
-
-      reload() {
-        this.pillItemsFromComponent = [];
-      },
-
-      isFound(arr1) {
-        // show courses that include SOME of the skills selected
-        // return (this.selectedSkills.some( x => arr1.includes(x) ));
-
-        // show courses that include ALL of the skills selected
-        if (this.selectedSkills.every( x => arr1.includes(x) )) {
-          this.numCoursesFound += 1;
-          if (this.noCourseFound) {
-            this.noCourseFound = false;
-          }
-          return true;
-        }
-        if (this.numCoursesFound == 0) {
-          this.noCourseFound = true;
-        }
-        return false;
-      },
-    },
+    methods: {},
     mounted() {
       document.title = "LJMS - Learning Journey";
       var getLJ = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/learningjourney/staff/" + this.user.StaffID;
@@ -99,7 +64,6 @@
       axios.get(getLJ).then((response) => {
         let result = response.data.data;
         this.LJ = result;
-        console.log(result)
         this.LJ.length == 0 ? (this.noLJFound = true) : null;
       });
       
