@@ -1,4 +1,5 @@
 from fastapi import Response, Depends
+from Schema.IndependentSchema import Skill
 from database import *
 from sqlmodel import Session, select, delete, join
 from config import app
@@ -7,12 +8,12 @@ from HelperFunctions import *
 
 # ===========================test functions===========================
 
-@app.delete("/skills/deleteall",tags=["Skills","DeleteAll"])
+@app.delete("/skills/deleteall")
 def deleteAll():
     return deleteAllData(SkillModel)
 
 
-@app.post("/skills/seedall",tags=["Skills","SeedAll"])
+@app.post("/skills/seedall")
 def addSeedData():
     return seedInitialData("skill", SkillModel)
 
@@ -106,7 +107,7 @@ def getAllRelatedSkills():
 # ===========================actual CRUD functions===========================
 
 
-@app.get('/skills/',tags=["Skills"])
+@app.get('/skills/')
 def getSkills(session: Session = Depends(get_session)):
     errors = []
     try:
@@ -143,7 +144,7 @@ def getSkills(session: Session = Depends(get_session)):
             "message": errors
         }
 
-@app.get('/skills/available/',tags=["Skills"])
+@app.get('/skills/available/')
 def getAvailableSkills(session: Session = Depends(get_session)):
     errors = []
     try:
@@ -181,7 +182,7 @@ def getAvailableSkills(session: Session = Depends(get_session)):
             "message": errors
         }
 
-@app.get("/skills/{Skill_ID}/",tags=["Skills"])
+@app.get("/skills/{Skill_ID}/")
 def getSkillById(Skill_ID: int, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -215,7 +216,7 @@ def getSkillById(Skill_ID: int, session: Session = Depends(get_session)):
             "message": errors
         }
 
-@app.post('/skills/',tags=["Skills"])
+@app.post('/skills/')
 def createSkills(skill: SkillModel, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -269,7 +270,7 @@ def createSkills(skill: SkillModel, session: Session = Depends(get_session)):
         }
 
 #update skill
-@app.put("/skills/{Skill_ID}/",tags=["Skills"])
+@app.put("/skills/{Skill_ID}/")
 def updateSkill(Skill_ID: int, updated_skill: SkillModel, session: Session = Depends(get_session)):
     #skill = session.get(SkillModel, Skill_ID)
     errors = []
@@ -334,7 +335,7 @@ def updateSkill(Skill_ID: int, updated_skill: SkillModel, session: Session = Dep
         "message":errors
         }
 # soft delete
-@app.put("/skills/delete/{Skill_ID}/",tags=["Skills"])
+@app.put("/skills/delete/{Skill_ID}/")
 def softDeleteSkill(Skill_ID: int,session: Session = Depends(get_session)):
     #skill = session.get(SkillModel).where(SkillModel.Skill_Name == Skill_Name)
     statement = select(SkillModel).where(SkillModel.Skill_ID == Skill_ID)

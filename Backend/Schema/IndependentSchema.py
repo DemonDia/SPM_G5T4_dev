@@ -29,7 +29,3 @@ class Course(BaseModel):
     Course_Type: str
     Course_Category: str
     Skills: List[Skill]
-
-class UserRole(BaseModel):
-    Role_ID: Optional[int] = None
-    Role_Name: str

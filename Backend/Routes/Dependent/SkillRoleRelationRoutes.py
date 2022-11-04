@@ -11,7 +11,7 @@ from fastapi import Request
 # ===========================actual CRUD functions===========================
 # input should be an array
 # requests contains "Skill_ID" and a list "skills" which contains the Role_ID of the skills to add
-@app.post('/skillrolerelations/',tags=["SkillRoleRelations"])
+@app.post('/skillrolerelations/')
 async def addRelatedRoles(request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -58,7 +58,7 @@ async def addRelatedRoles(request: Request, session: Session = Depends(get_sessi
             "message": errors
         }
 
-@app.get('/skillrolerelations/{Skill_ID}',tags=["SkillRoleRelations"])
+@app.get('/skillrolerelations/{Skill_ID}')
 async def addRolesToSkill(Skill_ID: int, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -92,7 +92,7 @@ async def addRolesToSkill(Skill_ID: int, session: Session = Depends(get_session)
         }
 
 # request{skills; collect skillID}
-@app.put('/skillrolerelations/{Skill_ID}',tags=["SkillRoleRelations"])
+@app.put('/skillrolerelations/{Skill_ID}')
 async def updateRelatedRolesOfSkill(Skill_ID: int, request: Request, session: Session = Depends(get_session)):
     errors = []
     try:

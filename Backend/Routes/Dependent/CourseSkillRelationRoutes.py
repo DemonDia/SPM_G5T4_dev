@@ -8,7 +8,7 @@ from HelperFunctions import *
 # ===========================test functions===========================
 
 
-@app.delete("/courseskillrelations/deleteall",tags=["CourseSkillRelation","DeleteAll"])
+@app.delete("/courseskillrelations/deleteall")
 def deleteAll():
     return deleteAllData(CourseSkillRelationModel)
 
@@ -16,7 +16,7 @@ def deleteAll():
 # ===========================actual CRUD functions===========================
 # input should be an array
 # requests contains "CourseId" and a list "skills" which contains the Skill_ID of the skills to add
-@app.post('/courseskillrelations/',tags=["CourseSkillRelation"])
+@app.post('/courseskillrelations/')
 async def addSkillsToCourses(request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -52,13 +52,14 @@ async def addSkillsToCourses(request: Request, session: Session = Depends(get_se
             "message": errors
         }
 
-@app.get('/courseskillrelations/{Course_ID}',tags=["CourseSkillRelation"])
+@app.get('/courseskillrelations/{Course_ID}')
 async def addRoleSkillRelation(Course_ID: str, session: Session = Depends(get_session)):
     errors = []
     try:
-        course = session.get(CourseModel, Course_ID)
-        if course == None:
-            errors.append("Course does not exist!")
+        role = session.get(CourseModel, Course_ID)
+        if role == None:
+            errors.append("Role does not exist!")
+            errors.append(str(e))
             return {
                 "success": False,
                 "message": errors
@@ -86,7 +87,7 @@ async def addRoleSkillRelation(Course_ID: str, session: Session = Depends(get_se
         }
 
 
-@app.put('/courseskillrelations/{Course_ID}',tags=["CourseSkillRelation"])
+@app.put('/courseskillrelations/{Course_ID}')
 async def updateCourseSkillRelations(Course_ID: str, request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -102,6 +103,7 @@ async def updateCourseSkillRelations(Course_ID: str, request: Request, session: 
             role = chosenRoleResult[0]
         if role == None:
             errors.append("Role does not exist!")
+            errors.append(str(e))
             return {
                 "success": False,
                 "message": errors
