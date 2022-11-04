@@ -11,7 +11,7 @@ from fastapi import Request
 # ===========================test functions===========================
 
 
-@app.delete("/roleskillrelations/deleteall")
+@app.delete("/roleskillrelations/deleteall",tags=["RoleSkillRelations"])
 def deleteAll():
     return deleteAllData(RoleSkillRelationModel)
 
@@ -19,7 +19,7 @@ def deleteAll():
 # ===========================actual CRUD functions===========================
 # input should be an array
 # requests contains "Role_ID" and a list "skills" which contains the Skill_ID of the skills to add
-@app.post('/roleskillrelations/')
+@app.post('/roleskillrelations/',tags=["RoleSkillRelations"])
 async def addRelatedSkills(request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -67,7 +67,7 @@ async def addRelatedSkills(request: Request, session: Session = Depends(get_sess
         }
 
 
-@app.get('/roleskillrelations/{Role_ID}')
+@app.get('/roleskillrelations/{Role_ID}',tags=["RoleSkillRelations"])
 async def addSkillToRoles(Role_ID: int, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -102,7 +102,7 @@ async def addSkillToRoles(Role_ID: int, session: Session = Depends(get_session))
         }
 
 # request{skills; collect skillID}
-@app.put('/roleskillrelations/{Role_ID}')
+@app.put('/roleskillrelations/{Role_ID}',tags=["RoleSkillRelations"])
 async def updateRelatedSkillsOfRole(Role_ID: int, request: Request, session: Session = Depends(get_session)):
     errors = []
     try:

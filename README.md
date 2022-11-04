@@ -12,14 +12,23 @@
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
+      <a href="#frontend">Frontend</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#frontend-folder-structure">Frontend Folder Structure</a></li>
+        <li><a href="#frontend-prerequisites">Frontend Prerequisites</a></li>
+        <li><a href="#running-frontend">Running Frontend</a></li>
       </ul>
     </li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li>
+    <a href="#backend">Backend</a>
+    <ul>
+        <li><a href="#backend-folder-structure">Backend Folder Structure</a></li>
+        <li><a href="#backend-prerequisites">Backend Prerequisites</a></li>
+        <li><a href="#running-backend">Running Backend</a></li>
+      </ul>
+    </li>
+    <li><a href="#database">Database</a></li>
+    <li><a href="#continuous-integration">Continuous Integration</a></li>
   </ol>
 </details>
 
@@ -30,6 +39,11 @@
 LJP system to have a personal learning journey tracker that could guide them on the courses they could take either from the LMS or in physical classes to prepare them for the next position or in a different area within the organisation.
 The system would allow staff to set their learning goal by setting on a position that they are working towards. The system will then list out the skills required for those positions and the courses (internal/external) that correspond to those skills. They are then able to view the details of those courses. They are then able to register for those courses. Upon completion of the courses, HR would be able to update the skillset of the staff. The Learning Journey of the staff would also then reflect so.
 
+Our project is hosted live at:
+* [Frontend Web Application](http://spm-smallbucket.s3-website-us-east-1.amazonaws.com/)
+* [Backend API Documentations](https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/docs)
+* [C4 Diagram](https://www.figma.com/file/6mlZ08E8T49QoVSF3Op89G/SPM-Group-2?node-id=0%3A1)
+* [ERD Diagram](https://lucid.app/lucidchart/4d0a5710-dff1-4924-a95c-e0c342fc66af/edit?viewport_loc=-239%2C51%2C1125%2C1031%2C0_0&invitationId=inv_3dafcc49-9a87-4aa9-afd1-25f656fc8152#)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -37,12 +51,12 @@ The system would allow staff to set their learning goal by setting on a position
 
 ### Built With
 
-[![Vue][Vue.js]][Vue-url] [![FastAPI][FastAPI]][FastAPI-url]
-
+[![Vue][Vue.js]][Vue-url] [![FastAPI][FastAPI]][FastAPI-url] [![MYSQL][MYSQL]][MYSQL-url]
 
 ## Frontend
+Our Vue development/production application is hosted in Amazon S3 buckets.
 
-#### Folder structure
+#### Frontend Folder structure
 ```bash 
 frontend
 |   
@@ -97,13 +111,14 @@ frontend
 ├── App.vue
 
 ```
-### Frontend Prerequisites:
+### Frontend Prerequisites
 * Node.JS installed on your computer
 
 
-### Running frontend (for testing):
+### Running frontend
 To run the frontend UI, type the following in your terminal:
 ```
+cd frontend
 npm i 
 npm run serve
 ```
@@ -111,15 +126,7 @@ Note:
 - Make sure you are in the Frontend folder before you do any of the above in the CLI
 - npm i installs all the required dependencies 
 
-## Backend
-### IMPORTANT: 
-1. For entity column names, use underscore case (eg: column_name) 
-2. For variable names, use camel case (eg: variableName)
-3. For primary keys of entities with ONLY 1 primary key, that column should be 'id'
-
-
-
-### To run the test cases, type the following in your terminal:
+### To run the test cases, type the following in your terminal
 ```
 cd Tests
 python3 RunTest.py
@@ -129,8 +136,10 @@ Note:
 - cd Tests: you go to the path of the Tests folder
 - IMPORTANT: before you run your test file inside the 'Tests' folder
 
+## Backend 
+Our FastAPI backend development/production application is hosted in Amazon Lambda services.
 
-#### Folder structure
+#### Backend Folder structure
 
 ```bash 
 Backend
@@ -200,7 +209,7 @@ NOTE:
 - this downloads the dependencies stated in the requirements.txt
 
 
-### Running backend (for testing):
+### Running backend
 To run the main API, type the following in your terminal:
 ```console
 $ uvicorn main:app --reload
@@ -223,7 +232,7 @@ The command `uvicorn main:app` refers to:
 
 </details>
 
-### To run the test cases, type the following in your terminal:
+### To run the test cases, type the following in your terminal
 ```
 cd Tests
 python MainTest.py
@@ -234,9 +243,20 @@ Note:
 - IMPORTANT: before you run your test file inside the 'Tests' folder, ensure your main.py is running
 
 
+## Database
+Development/Production database is a hosted MySQL AWS RDS instance. 
+
+## Continuous Integration
+Continuous Integration is enabled for this repository via CircleCI. Deployment to the development server is handled when a PR merge to main is successful.
+
+Refer the CI pipeline scripts in `/.circleci/config.yml`.
+
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 [Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
 [Vue-url]: https://vuejs.org/
 [FastAPI]: https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi
 [FastAPI-url]: https://fastapi.tiangolo.com/
+[MYSQL]: https://img.shields.io/badge/mysql-205571.svg?style=for-the-badge&logo=mysql&logoColor=white
+[MYSQL-url]: https://www.sqlalchemy.org/
