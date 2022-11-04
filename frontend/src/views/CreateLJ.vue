@@ -13,7 +13,7 @@
         <!-- Popup -->
         <div v-show="checked">
           <ModalComponent
-            type="role"
+            type="learning journey"
             :isSuccess="isSuccess"
             func="create"
             @clicked="onClickModal"
@@ -102,9 +102,18 @@
                 </div>
               </div>
             </div>
+            
             <!-- No Role Found -->
-            <div v-show="noRoleFound" class="fs-3 fw-bold text-center align-middle pt-5 my-5">
+            <div v-show="noRoleFound" class="fs-3 fw-bold text-center align-middle pt-5 my-4">
               Sorry! No role found!
+            </div>
+
+            <!-- Role Error -->
+            <div 
+              v-show="this.roles.errorMsg != ''" 
+              class="text-sm-start text-md-center text-danger fw-bold my-3 fs-5"
+            >
+              {{this.roles.errorMsg}}
             </div>
           </div>
 
@@ -148,9 +157,18 @@
                 </div>
               </div>
             </div>
+            
             <!-- No Course Found -->
-            <div v-show="noCourseFound" class="fs-3 fw-bold text-center align-middle pt-5 my-5">
+            <div v-show="noCourseFound" class="fs-3 fw-bold text-center align-middle pt-5 my-4">
               Sorry! No course found!
+            </div>
+
+            <!-- Course Error -->
+            <div 
+              v-show="this.courses.errorMsg != ''" 
+              class="text-sm-start text-md-center text-danger fw-bold my-3 fs-5"
+            >
+              {{this.courses.errorMsg}}
             </div>
           </div>
 
@@ -160,7 +178,7 @@
             v-show="this.currFormPg == 3"  
             class="my-4 mx-auto formPage"
           >
-            <p class="fw-bold mt-1 mb-0">Selected Role</p>
+            <p class="fw-bold mt-1 mb-0">Role Name</p>
             <p class="text-break">{{selectedRname}}</p>
             <p class="fw-bold mb-0">Selected Courses</p>
             <p class="text-break">{{selectedCname.join(', ')}}</p>
@@ -177,7 +195,7 @@
               this.currFormPg == 1
                 ? 'btn-outline-secondary disabled'
                 : 'btn-primary',
-              this.disableBtn && this.isSuccess && this.isSubmitted ? 'disabled' : '',
+              this.disableBtn && this.isSuccess ? 'disabled' : '',
             ]"
             @click="goToPrevPg"
           >
@@ -227,16 +245,17 @@ import { createToast } from 'mosha-vue-toastify';
       return {
         roles: {
           roles: [],
-          // errors: [],
+          errorMsg: "",
         },
         courses: {
           courses: [],
-          // errors: [],
+          errorMsg: "",
         },
         // LJRoleErrors: [],
         noRoleFound: false,
         noCourseFound: false,
         selectedR: "",
+        lastSavedR: NaN,
         selectedRname: "",
         selectedC: [],
         selectedCname: [],
@@ -301,15 +320,14 @@ import { createToast } from 'mosha-vue-toastify';
       },
 
       handleSubmit() {
+        console.log('form submitted')
         this.isSubmitted = true;
         this.createLJ().then((res) => {
           var LJStatus = res.data;
-          this.resetErrors();
           if (LJStatus.success) {
             this.resetForm();
             this.isSuccess = true;
           } else {
-            // should be skipped
             this.isSuccess = false;
             this.currFormPg = 1;
           }
@@ -324,7 +342,7 @@ import { createToast } from 'mosha-vue-toastify';
         return new Promise((resolve, reject) => {
           axios
             .post(createLJUrl, {
-              StaffID: this.user.StaffID,
+              Staff_ID: this.user.StaffID,
               Courses: this.selectedC,
               Role_ID: this.selectedR,
             })
@@ -337,7 +355,7 @@ import { createToast } from 'mosha-vue-toastify';
       
       onClickModal(value) {
         this.checked = value;
-        if (this.isSubmitted && this.isSuccess) {
+        if (this.isSuccess) {
           this.disableBtn = true;
           this.$router.replace({ name: "learningjourney" });
         }
@@ -368,10 +386,14 @@ import { createToast } from 'mosha-vue-toastify';
 
       goToPrevPg() {
         this.currFormPg -= 1;
-      },
-
-      goToPg(x) {
-        this.currFormPg = x;
+        // if go back to change role (pg 1), reset noCourseFound to false
+        if (this.currFormPg == 1) {
+          if (this.lastSavedR != this.selectedR) {
+            this.courses.courses = [];
+            this.loadCourses();
+          }
+        }
+        this.checkForm();
       },
 
       goToNextPg() {
@@ -380,6 +402,10 @@ import { createToast } from 'mosha-vue-toastify';
         if (status) {
           if (this.currFormPg < 3) {
             this.currFormPg += 1;
+            if (this.lastSavedR == NaN) {
+              // save role
+              this.lastSavedR = this.selectedR;
+            }
           } else {
             this.handleSubmit();
           }
@@ -389,33 +415,43 @@ import { createToast } from 'mosha-vue-toastify';
       checkForm() {
         let cond1 = this.selectedR == "";
         let cond2 = (this.selectedC).length < 1;
+        // validation
         if ((this.currFormPg == 1 && cond1)  ||  (this.currFormPg == 2 && cond2)  || (this.currFormPg == 3 && (cond1 || cond2)) ){
-          this.sendToaster(cond1, cond2);
+          this.createErrorMsg(cond1, cond2);
           this.disableBtn = true;
           return false;
         }
+        // no problemo
+        this.resetErrors();
         this.disableBtn = false;
         return true;
       },
 
       resetErrors() {
-        // this.roles.errors = [];
-        // this.courses.errors = [];
+        this.roles.errorMsg = "";
+        this.courses.errorMsg = "";
+      },
+
+      resetForm() {
         this.isSubmitted = NaN;
         this.isSuccess = NaN;
         this.checked = NaN;
       },
 
-      sendToaster(cond1, cond2) {
-        let msg = ""
-        if (!cond1 && !cond2) {
-          msg = "Please select a role and a course"
-        } else if (!cond1) {
-          msg = "Please select a role to begin"
-        } else if (!cond2) {
-          msg = "You need at least one course to create a learning journey"
+      createErrorMsg(cond1, cond2) {
+        if (cond1) {
+          this.roles.errorMsg = "Please select a role to begin";
+        } else if (cond2 && this.noCourseFound) {
+          this.courses.errorMsg = "Please go back and choose a role with at least one course available"
+        } else if (cond2) {
+          this.courses.errorMsg = "You need at least one course to create a learning journey";
         }
-        // error msg
+        
+        else {
+          // no error
+          this.roles.errorMsg = "";
+          this.courses.errorMsg = "";
+        }
       }
     },
     
