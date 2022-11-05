@@ -1,25 +1,25 @@
 <template>
   <DashboardLayout>
-    <div class="container-fluid" id="LJMain" @reload="reload()">
+    <div class="container-fluid" id="LJMain">
       <!-- Spinner -->
       <SpinnerComponent v-if="LJ.length < 1 && noLJFound == false" />
 
       <!-- Dashboard -->
       <div v-else>
-
-         <!-- Create Role -->
+         <!-- View Learning Journey -->
          <div class="row mt-3 mx-auto">
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <router-link to="/create-journey" tag="button" class="btn btn-dark btn-lg mx-3">Create Learning Journey</router-link>
           </div>
         </div>
 
-        <!-- Course Card -->
+        <!-- Journey Card -->
         <div v-for="(value, key) in LJ" v-bind:key="key">
           <LongCardComponent 
             :cardValue="value" 
             :indx="key" 
-            v-if="value.Courses.length > 0">
+            v-if="value.Courses.length > 0"
+            @reload="reload()">
           </LongCardComponent>
         </div>
       </div>
@@ -38,7 +38,6 @@
   import LongCardComponent from "@/components/LongCardComponent.vue";
   import axios from "axios";
   import { mapGetters } from "vuex";
-  import PillSearchComponent from '@/components/PillSearchComponent.vue'
   import SpinnerComponent from "@/components/SpinnerComponent.vue";
 
   export default {
@@ -46,7 +45,6 @@
     components: {
       DashboardLayout,
       LongCardComponent,
-      PillSearchComponent,
       SpinnerComponent
   },
     data() {
@@ -56,17 +54,19 @@
         noLJFound: false,
       };
     },
-    methods: {},
+    methods: {
+      async reload() {
+        var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/learningjourney/staff/" + this.user.StaffID;
+        await axios.get(url).then((response) => {
+          let result = response.data.data;
+          this.LJ = result;
+          this.LJ.length == 0 ? (this.noLJFound = true) : null;
+        });
+      },
+    },
     mounted() {
       document.title = "LJMS - Learning Journey";
-      var getLJ = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/learningjourney/staff/" + this.user.StaffID;
-    
-      axios.get(getLJ).then((response) => {
-        let result = response.data.data;
-        this.LJ = result;
-        this.LJ.length == 0 ? (this.noLJFound = true) : null;
-      });
-      
+      this.reload()
     },
     computed: {
       ...mapGetters({
