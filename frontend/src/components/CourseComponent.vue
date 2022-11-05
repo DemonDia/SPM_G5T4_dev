@@ -39,7 +39,6 @@
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           <li><a class="dropdown-item" @click="updateItem(this.courseID,'course')" v-if="authenticated && (user.Role == 1)">Update</a></li>
           <!-- <li><a class="dropdown-item" href="#">Delete</a></li> -->
-          <li><a class="dropdown-item" href="#">Add to Learning Journey</a></li>
         </ul>
       </div>
     </div>

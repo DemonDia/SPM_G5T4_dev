@@ -17,9 +17,9 @@
   
 <style scoped>
     #rippleP {
-        position: absolute;
-        top: 45%;
-        left: 47%;
+        position: relative;
+        top: 5rem;
+        text-align: center;
     }
 
     .lds-ripple {

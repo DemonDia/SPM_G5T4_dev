@@ -9,7 +9,11 @@
         
         <!-- Search by Skills -->
         <div class="container-sm my-5 mb-3 text-start">
-          <PillSearchComponent ctype="skill" @pillItems="getPill"></PillSearchComponent>
+          <PillSearchComponent 
+            ctype="skill" 
+            @pillItems="getPill"
+            func="filter"
+          ></PillSearchComponent>
         </div>
 
         <!-- Course Card -->
