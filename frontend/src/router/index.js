@@ -23,7 +23,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView,
+    component: LJView,
     beforeEnter: (to, from, next) => {
       if (!store.getters['auth/authenticated']) {
         
@@ -103,9 +103,6 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
-      }
-      if (store.getters['auth/user'].Role != 1) {
-        return next({ name: 'home' })
       }
       next()
     },

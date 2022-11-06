@@ -96,8 +96,8 @@ async def AddCourseLearningJourney(request: Request, session: Session = Depends(
             "message": errors
         }
 
-@app.delete("/courselearningjourney/")
-async def deleteLearningJourney(request: Request, session: Session = Depends(get_session)):
+@app.delete("/courselearningjourney/", tags=["CourseLearningJourney"])
+async def deleteCourseLearningJourney(request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
         # find the course

@@ -20,44 +20,10 @@
 
         <div class="collapse navbar-collapse" id="navbarText">
           <!-- HR Menu Links-->
-          <template v-if="authenticated && user.Role == 1">
+          <template v-if="authenticated">
             <ul
               class="navbar-nav mx-auto mb-2 mb-lg-0"
-              v-for="(link, index) in HRMenuLinks"
-              :key="link.name + index"
-              :to="link.path"
-              :link="link"
-            >
-              <li class="nav-item">
-                <router-link class="nav-link" :to="link.path">{{
-                  link.name
-                }}</router-link>
-              </li>
-            </ul>
-          </template>
-
-          <!-- Staff Menu Links-->
-          <template v-if="authenticated && user.Role == 2">
-            <ul
-              class="navbar-nav mx-auto mb-2 mb-lg-0"
-              v-for="(link, index) in StaffMenuLinks"
-              :key="link.name + index"
-              :to="link.path"
-              :link="link"
-            >
-              <li class="nav-item">
-                <router-link class="nav-link" :to="link.path">{{
-                  link.name
-                }}</router-link>
-              </li>
-            </ul>
-          </template>
-
-          <!-- Manager Menu Links-->
-          <template v-if="authenticated && (user.Role == 3 || user.Role == 4)">
-            <ul
-              class="navbar-nav mx-auto mb-2 mb-lg-0"
-              v-for="(link, index) in ManagerMenuLinks"
+              v-for="(link, index) in MenuLinks"
               :key="link.name + index"
               :to="link.path"
               :link="link"
@@ -112,31 +78,11 @@ export default {
       type: String,
       default: "LJMS",
     },
-    HRMenuLinks: {
+    MenuLinks: {
       type: Array,
       default: () => [
-        { name: "Home", path: "/" },
         { name: "Roles", path: "/roles" },
         { name: "Skills", path: "/skills" },
-        { name: "Courses", path: "/courses" },
-        { name: "Learning Journey", path: "/learningjourney" },
-      ],
-    },
-    ManagerMenuLinks: {
-      type: Array,
-      default: () => [
-        { name: "Home", path: "/" },
-        { name: "Roles", path: "/roles" },
-        { name: "Skills", path: "/skills" },
-        { name: "Courses", path: "/courses" },
-        { name: "Learning Journey", path: "/learningjourney" },
-      ],
-    },
-    StaffMenuLinks: {
-      type: Array,
-      default: () => [
-        { name: "Home", path: "/" },
-        { name: "Roles", path: "/roles" },
         { name: "Courses", path: "/courses" },
         { name: "Learning Journey", path: "/learningjourney" },
       ],
