@@ -11,7 +11,7 @@
         <button class="ph-dots-three menu-dot mx-auto pt-0" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" @click="createLJ(id)">Create Learning Journey</a></li>
+          <li><a class="dropdown-item" v-if="this.$route.name === 'roles'" @click="createLJ(id)">Create Learning Journey</a></li>
           <li v-if="authenticated && (user.Role == 1)"><a class="dropdown-item" @click="updateItem(id, ctype)">Update</a></li>
           <li v-if="authenticated && (user.Role == 1)"><a class="dropdown-item" @click="deleteItem(id, ctype)">Delete</a></li>
         </ul>
