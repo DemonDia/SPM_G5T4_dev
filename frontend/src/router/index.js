@@ -12,6 +12,7 @@ import store from '@/store'
 import UpdateRole from '../views/UpdateRole.vue'
 import UpdateCourse from '../views/UpdateCourse.vue'
 import UpdateSkill from '../views/UpdateSkill.vue'
+import UpdateLJ from '../views/UpdateLJ.vue'
 
 const routes = [
   {
@@ -50,11 +51,9 @@ const routes = [
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
       }
-
       if (store.getters['auth/user'].Role != 1) {
         return next({ name: 'home' })
       }
-
       next()
     },
   },
@@ -66,11 +65,9 @@ const routes = [
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
       }
-
       if (store.getters['auth/user'].Role != 1) {
         return next({ name: 'home' })
       }
-
       next()
     },
   },
@@ -93,11 +90,9 @@ const routes = [
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
       }
-
       if (store.getters['auth/user'].Role != 1) {
         return next({ name: 'home' })
       }
-
       next()
     },
   },
@@ -109,11 +104,9 @@ const routes = [
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
       }
-      
       if (store.getters['auth/user'].Role != 1) {
         return next({ name: 'home' })
       }
-      
       next()
     },
   },
@@ -125,11 +118,9 @@ const routes = [
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
       }
-
       if (store.getters['auth/user'].Role != 1) {
         return next({ name: 'home' })
       }
-      
       next()
     },
   },
@@ -141,11 +132,9 @@ const routes = [
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
       }
-
       if (store.getters['auth/user'].Role != 1) {
         return next({ name: 'home' })
       }
-
       next()
     },
   },
@@ -168,7 +157,17 @@ const routes = [
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
       }
-      
+      next()
+    },
+  },
+  {
+    path: '/update-journey/:lj_id',
+    name: 'update-journey',
+    component: UpdateLJ,
+    beforeEnter: (to, from, next) => {
+      if (!store.getters['auth/authenticated']) {
+        return next({ name: 'login' })
+      }
       next()
     },
   },
