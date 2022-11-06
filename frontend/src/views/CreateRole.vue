@@ -219,8 +219,8 @@
           var roleStatus = res.data;
           this.assignSkills(roleStatus.data).then((result) => {
             var assignSkillStatus = result.data;
-            
             this.resetErrors();
+            this.isSubmitted = true;
             if (roleStatus.success || assignSkillStatus.success) {
               this.resetForm();
               this.isSuccess = true;
@@ -286,7 +286,7 @@
         // modal is closed
         // reset checked value:
         this.checked = value;
-        if (this.isSubmitted && this.isSuccess) {
+        if (this.isSuccess) {
           // go back to View All
           this.$router.replace({ name: "roles" });
         }
@@ -303,10 +303,6 @@
         } else {
           this.currFormPg += 1;
         }
-      },
-
-      goToPg(x) {
-        this.currFormPg = x;
       },
 
       getPill(item) {

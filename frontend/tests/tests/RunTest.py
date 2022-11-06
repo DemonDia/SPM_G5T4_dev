@@ -1,15 +1,21 @@
+import os
+import sys
 import unittest
 import argparse
-import os, sys
 
-# Set path to the directory 
+# Set path to the directory
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR))
 
-from driverutil.Browser import Browser
-from pageobjects.LoginPage import LoginLJMS
 from pageobjects.Roles import Roles
+from pageobjects.LoginPage import LoginLJMS
+from driverutil.Browser import Browser
 
+
+
+
+
+print("Current directory is: " + CURRENT_DIR)
 
 class RunTest(unittest.TestCase):
 
@@ -18,22 +24,21 @@ class RunTest(unittest.TestCase):
         prodUrl = "http://spm-smallbucket.s3-website-us-east-1.amazonaws.com/login"
 
         self.driver = Browser().getbrowser(browsername)
-        self.driver.get(localUrl)
-        # self.LoginLJMS = LoginLJMS(self.driver)
+        self.driver.get(prodUrl)
+        self.LoginLJMS = LoginLJMS(self.driver)
         self.Roles = Roles(self.driver)
 
     def testRoles(self):
-        self.Roles.createRole()
+        self.LoginLJMS.login("Admin")
+        params = {"Role_Name": "Product Manager4", 
+        "Role_Description": "Product Manager needs to collaborate effectively with cross-functional stakeholders from Product, Design, Engineering",
+        "Skills": ["Scrum", "Agile methodology", "Adaptable"]}
+        self.Roles.createRole(params)
 
-    # def testLogin(self):
-    #     self.LoginLJMS.login("Admin") 
-
-    # def testLoginWrongID(self):
-    #     self.LoginLJMS.loginWrongID("190001")
 
     def tearDown(self):
         self.driver.quit()
-        
+
 
 if __name__ == "__main__":
     browser = argparse.ArgumentParser()
