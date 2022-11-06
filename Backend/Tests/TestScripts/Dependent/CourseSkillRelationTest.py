@@ -2,6 +2,7 @@ from HelperFunctionForTest import *
 
 # ======================Test cases======================
 courseToSkill = "courseskillrelations"
+skillToCourse = "skillcourserelations"
 
 
 def addSkillsToCourse():
@@ -12,19 +13,29 @@ def addSkillsToCourse():
                         "Skills": [1, 2, 3]
                     }, "addRelation"
                     )
+
+
 def updateSkillsOfCourse():
     print("Update skills of role")
     triggerTestCase("Update skills of role,", True, courseToSkill,
                     {
-                        "Skills": [10,11,12]
-                    }, "updateById","FIN001"
+                        "Skills": [10, 11, 12]
+                    }, "updateById", "FIN001"
                     )
 
 
 def viewSkillsRelatedToCourse():
     print("View skills related to course")
     triggerTestCase("View skills related to course", True, courseToSkill,
-                    None, "readById","COR001")
+                    None, "readById", "COR001")
+
+
+def viewCoursesBySkillIds():
+    print("View courses with given skill ID")
+    triggerTestCase("View courses related to Skill IDs", True, skillToCourse,
+                    {
+                        "Skills": [1, 2, 3]
+                    }, "getAllByIds")
 
 
 def testAllCourseSkillRelationCases():
