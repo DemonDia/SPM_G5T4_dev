@@ -66,7 +66,6 @@ async def AddCourseLearningJourney(request: Request, session: Session = Depends(
             learningJourney = chosenLearningJourney[0]
         if learningJourney == None:
             errors.append("learningJourney does not exist!")
-            errors.append(str(e))
             return {
                 "success": False,
                 "message": errors
@@ -86,9 +85,9 @@ async def AddCourseLearningJourney(request: Request, session: Session = Depends(
         session.commit()
         session.close()
         return {
-            "success": True,
-            "message": "Course(s) assigned to Learning Journey"
-        }
+                "success": True,
+                "message": "Course(s) assigned to Learning Journey"
+            }
 
     except Exception as e:
         errors.append(str(e))
@@ -137,7 +136,7 @@ async def deleteCourseLearningJourney(request: Request, session: Session = Depen
             "message": "Course Learning journey deleted"
         }
     except Exception as e:
-        errors.append(str(e))
+        errors.append(e)
         return {
             "success": False,
             "message": errors

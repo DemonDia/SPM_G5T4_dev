@@ -8,7 +8,7 @@ entities = ["roles","skills","course","userroles","roleskillrelations","coursesk
 # create --> create new entity
 # readAll --> read all existing rows
 # readById --> read by specific Id
-operationTypes = ["create","readAll","readAllAvailable","readById","updateById","softDelete","hardDelete","addRelation","readByStaffId","readByStaffIDorEmail","getAllByIds"]
+operationTypes = ["create","readAll","readAllAvailable","readById","updateById","softDelete","hardDelete","addRelation","readByStaffId","readByStaffIDorEmail","getAllByIds","deleteRelation"]
 
 # base URL
 BASE = "http://127.0.0.1:8000/"
