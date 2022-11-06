@@ -78,13 +78,13 @@
             </div>
             <!-- Role Selection -->
             <div v-else v-if="!noRoleFound">
-              <div class="text-sm-start text-md-center fw-bold my-2">
+              <div class="text-sm-start text-md-center fw-bold my-2 px-3">
                 You have selected: 
                 <span id="selected">{{this.selectedRname}}</span>
               </div>
               <div 
                 id="tiles" 
-                class="d-sm-inline-flex d-md-flex flex-wrap justify-content-around"
+                class="d-sm-inline-flex d-md-flex flex-wrap justify-content-sm-start justify-content-md-center"
               >
                 <div 
                   v-for="(value, key) in this.roles.roles" 
@@ -129,7 +129,7 @@
             </div>
             <!-- Course Selection -->
             <div v-else v-if="!noCourseFound">
-              <div class="text-sm-start text-md-center fw-bold my-2">
+              <div class="text-sm-start text-md-center fw-bold my-2 px-3">
                 You have selected: 
                 <span 
                   id="selected" 
@@ -139,7 +139,7 @@
               </div>
               <div 
                 id="tiles"
-                class="d-sm-inline-flex d-md-flex flex-wrap justify-content-around"
+                class="d-sm-inline-flex d-md-flex flex-wrap justify-content-sm-start justify-content-md-center"
               >
                 <div 
                   v-for="(value, key) in this.courses.courses" 
@@ -320,10 +320,11 @@ import { createToast } from 'mosha-vue-toastify';
       },
 
       handleSubmit() {
-        console.log('form submitted')
         this.isSubmitted = true;
         this.createLJ().then((res) => {
           var LJStatus = res.data;
+          console.log(LJStatus);
+          console.log(this.user.StaffID)
           if (LJStatus.success) {
             this.resetForm();
             this.isSuccess = true;
