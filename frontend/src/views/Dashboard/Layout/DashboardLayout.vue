@@ -87,11 +87,11 @@
               }}</span>
               <span class="fw-bold text-secondary text-start">{{ user.Dept }}</span>
             </div>
-            <div class="header-navigation-dropdown">
+            <!-- <div class="header-navigation-dropdown">
               <a href="#" class="icon-button icon-dropdown">
                 <i class="ph-caret-down-bold"></i>
               </a>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

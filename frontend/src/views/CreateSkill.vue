@@ -23,7 +23,7 @@
           <!-- Progress Tracker -->
           <div class="row gx-4 progress p-0">
             <div
-              class="col-12 col-md-4"
+              class="col-12 col-sm-4"
               v-for="(value, key) in progress"
               :key="key"
             >
@@ -94,6 +94,7 @@
                 class="my-5"
                 ctype="role"
                 @pillItems="getPill"
+                func="search"
               ></PillSearchComponent>
             </div>
 
@@ -200,12 +201,12 @@
               bg: "#c86bfa",
               description: "Assign roles (optional)",
               button1: "Back to Step 1",
-              button2: "Next: Confirm summary",
+              button2: "Next: Confirm choices",
             },
             {
               title: "STEP 3",
               bg: "#2d0f51",
-              description: "Confirm summary",
+              description: "Summary",
               button1: "Back to Step 2",
               button2: "Submit",
             },
@@ -216,20 +217,19 @@
       methods: {
         handleSubmit() {
           this.createSkill().then((res) => {
-            var roleStatus = res.data;
-            console.log(roleStatus.data)
-            this.assignSkills(roleStatus.data).then((result) => {
-              var assignSkillStatus = result.data;
+            var skillStatus = res.data;
+            this.assignRoles(skillStatus.data).then((result) => {
+              var assignRoleStatus = result.data;
               
               this.resetErrors();
-              if (roleStatus.success || assignSkillStatus.success) {
+              if (skillStatus.success || assignRoleStatus.success) {
                 this.resetForm(); // throw error message if role is duplicated
                 this.isSuccess = true;
               } else {
                 // failure case
                 this.isSuccess = false;
-                for (let err in roleStatus.message) {
-                  let msg = roleStatus.message[err];
+                for (let err in skillStatus.message) {
+                  let msg = skillStatus.message[err];
                   if (this.SNerrors.includes(msg)) {
                     this.skill_name.errors.push(msg);
                   } else {
@@ -246,10 +246,10 @@
         },
 
         createSkill() {
-          var createRoleUrl = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/"
+          var createSkillUrl = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skills/"
           return new Promise((resolve, reject) => {
           axios
-            .post(createRoleUrl, {
+            .post(createSkillUrl, {
               Skill_Name: this.skill_name.skill_name,
               Skill_Description: this.skill_description.skill_description,
               Active: true,
@@ -261,7 +261,7 @@
           });
         },
 
-        assignSkills(skill_id) {
+        assignRoles(skill_id) {
           var assignRolesUrl =
             "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skillrolerelations/";
           return new Promise((resolve, reject) => {
