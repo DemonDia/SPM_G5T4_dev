@@ -49,7 +49,7 @@
   },
     data() {
       return {
-        LJ: [], // courses from database
+        LJ: [], // journeys from database
         numLJFound: 0, 
         noLJFound: false,
       };
