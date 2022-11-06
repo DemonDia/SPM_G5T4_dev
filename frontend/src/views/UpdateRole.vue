@@ -54,6 +54,7 @@
             ctype="skill"
             :skills="skills_array"
             @pillItems="getPill"
+            func="search"
           ></PillSearchComponent>
         </form>
 
@@ -87,13 +88,13 @@
   export default {
     name: "UpdateRole",
     components: {
-    DashboardLayout,
-    FormComponent,
-    ModalComponent,
-    PillSearchComponent,
-    PillComponent,
-    SpinnerComponent
-},
+      DashboardLayout,
+      FormComponent,
+      ModalComponent,
+      PillSearchComponent,
+      PillComponent,
+      SpinnerComponent
+    },
     data() {
       return {
         role_name: {

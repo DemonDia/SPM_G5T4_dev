@@ -23,7 +23,7 @@
         <!-- Progress Tracker -->
         <div class="row gx-4 progress p-0">
           <div
-            class="col-12 col-md-4"
+            class="col-12 col-sm-4"
             v-for="(value, key) in progress"
             :key="key"
           >
@@ -93,6 +93,7 @@
               class="my-5"
               ctype="skill"
               @pillItems="getPill"
+              func="search"
             ></PillSearchComponent>
           </div>
 
@@ -199,12 +200,12 @@
             bg: "#c86bfa",
             description: "Assign skills (optional)",
             button1: "Back to Step 1",
-            button2: "Next: Confirm summary",
+            button2: "Next: Confirm choices",
           },
           {
             title: "STEP 3",
             bg: "#2d0f51",
-            description: "Confirm summary",
+            description: "Summary",
             button1: "Back to Step 2",
             button2: "Submit",
           },
@@ -221,7 +222,7 @@
             
             this.resetErrors();
             if (roleStatus.success || assignSkillStatus.success) {
-              this.resetForm(); // throw error message if role is duplicated
+              this.resetForm();
               this.isSuccess = true;
             } else {
               // failure case
@@ -347,7 +348,7 @@
     },
     
     mounted() {
-        document.title = "LJMS - Create Roles";
+      document.title = "LJMS - Create Role";
     },
   };
 </script>

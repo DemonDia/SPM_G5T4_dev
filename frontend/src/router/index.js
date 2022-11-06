@@ -6,6 +6,7 @@ import SkillView from '../views/SkillView.vue'
 import LJView from '../views/LJView.vue'
 import CreateRole from '../views/CreateRole.vue'
 import CreateSkill from '../views/CreateSkill.vue'
+import CreateLJ from '../views/CreateLJ.vue'
 import Login from '../views/Login.vue'
 import store from '@/store'
 import UpdateRole from '../views/UpdateRole.vue'
@@ -25,6 +26,17 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if (!store.getters['auth/authenticated']) {
         
+        return next({ name: 'login' })
+      }
+      next()
+    },
+  },
+  {
+    path: '/roles',
+    name: 'roles',
+    component: RoleView,
+    beforeEnter: (to, from, next) => {
+      if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
       }
       next()
@@ -63,18 +75,13 @@ const routes = [
     },
   },
   {
-    path: '/update-skill/:skill_id',
-    name: 'update-skill',
-    component: UpdateSkill,
+    path: '/courses',
+    name: 'courses',
+    component: CourseView,
     beforeEnter: (to, from, next) => {
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
       }
-
-      if (store.getters['auth/user'].Role != 1) {
-        return next({ name: 'home' })
-      }
-
       next()
     },
   },
@@ -95,44 +102,6 @@ const routes = [
     },
   },
   {
-    path: '/create-skill',
-    name: 'create-skill',
-    component: CreateSkill,
-    beforeEnter: (to, from, next) => {
-      if (!store.getters['auth/authenticated']) {
-        return next({ name: 'login' })
-      }
-
-      if (store.getters['auth/user'].Role != 1) {
-        return next({ name: 'home' })
-      }
-      
-      next()
-    },
-  },
-  {
-    path: '/roles',
-    name: 'roles',
-    component: RoleView,
-    beforeEnter: (to, from, next) => {
-      if (!store.getters['auth/authenticated']) {
-        return next({ name: 'login' })
-      }
-      next()
-    },
-  },
-  {
-    path: '/courses',
-    name: 'courses',
-    component: CourseView,
-    beforeEnter: (to, from, next) => {
-      if (!store.getters['auth/authenticated']) {
-        return next({ name: 'login' })
-      }
-      next()
-    },
-  },
-  {
     path: '/skills',
     name: 'skills',
     component: SkillView,
@@ -149,6 +118,38 @@ const routes = [
     },
   },
   {
+    path: '/create-skill',
+    name: 'create-skill',
+    component: CreateSkill,
+    beforeEnter: (to, from, next) => {
+      if (!store.getters['auth/authenticated']) {
+        return next({ name: 'login' })
+      }
+
+      if (store.getters['auth/user'].Role != 1) {
+        return next({ name: 'home' })
+      }
+      
+      next()
+    },
+  },
+  {
+    path: '/update-skill/:skill_id',
+    name: 'update-skill',
+    component: UpdateSkill,
+    beforeEnter: (to, from, next) => {
+      if (!store.getters['auth/authenticated']) {
+        return next({ name: 'login' })
+      }
+
+      if (store.getters['auth/user'].Role != 1) {
+        return next({ name: 'home' })
+      }
+
+      next()
+    },
+  },
+  {
     path: '/learningjourney',
     name: 'learningjourney',
     component: LJView,
@@ -156,6 +157,18 @@ const routes = [
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
       }
+      next()
+    },
+  },
+  {
+    path: '/create-journey/:role_id?',
+    name: 'create-journey',
+    component: CreateLJ,
+    beforeEnter: (to, from, next) => {
+      if (!store.getters['auth/authenticated']) {
+        return next({ name: 'login' })
+      }
+      
       next()
     },
   },
