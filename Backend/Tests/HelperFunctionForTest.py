@@ -115,7 +115,7 @@ def getByStaffEmailOrID(url,jsonObject):
     return obtainedRow.json()
 
 def getByIDs(url,jsonObject):
-    obtainedRows = requests.get(url, json=jsonObject)
+    obtainedRows = requests.get(url+"/byid", json=jsonObject)
     return obtainedRows.json()
 
 # Gets all rows
