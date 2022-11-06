@@ -41,15 +41,17 @@
           </div>
 
           <!-- Courses -->
-          <div id="courseDetails" class="mb-5 rounded">
-            <p class="fs-5 fw-bold my-1">
+          <div id="courseDetails" class="mb-5 rounded text-center">
+            <p class="fs-5 fw-bold my-1 text-start">
               Your Courses
             </p>
             <!-- Add a new course -->
-
+            <button type="button" class="btn" id="addBtn" @click="addCourse()">
+              + Add a new course
+            </button>
             <!-- See existing courses -->
-            <div v-for="(value, key) in courses" v-bind:key="key" class="card-component">
-              <div class="flex-grow-1 card-content p-1 px-4">
+            <div v-for="(value, key) in courses" v-bind:key="key" class="card-component row mx-1 my-3">
+              <div class="flex-grow-1 card-content p-1 px-4 my-1 col-auto">
                 <div class="tags text-start p-2 ps-0 my-0">
                   <span class="badge text-dark me-2" id="typeBadge">
                     <p class="m-0">{{ getCourseInfo(value.Course_ID, "type") }}</p>
@@ -64,6 +66,11 @@
                 <div class="card-body mb-2">
                   <p class="card-text text-start">{{ getCourseInfo(value.Course_ID, "desc") }}</p>
                 </div>
+              </div>
+              <div class="col-auto p-4 pt-0 m-sm-0 m-md-2 pt-md-2 pe-md-2">
+                <button type="button" class="btn mx-auto" id="removeBtn" @click="removeCourse()">
+                  Remove
+                </button>
               </div>
             </div>
           </div>
@@ -247,19 +254,18 @@ export default {
 
   .card-title {
     display: -webkit-box;
-    overflow: hidden;
+    /* overflow: hidden; */
     word-wrap: break-word;
   }
 
   .card-body {
-    max-height: 85px;
-    overflow: hidden;
+    /* max-height: 85px; */
+    /* overflow: scroll; */
     display: block;
   }
 
   .card-text {
     display: -webkit-box;
-    overflow: hidden;
     word-wrap: break-word;
   }
 
@@ -271,5 +277,27 @@ export default {
   #catBadge {
     border: 2px solid #b43e8f;
     color: #b43e8f;
+  }
+
+  #addBtn, #removeBtn {
+    border: #434ce8 1px solid;
+    color: #434ce8;
+  }
+
+  #addBtn:hover, #removeBtn:hover {
+    background-color: #434ce8;
+    color: #fbfbfb;
+    transition: 0.2s ease-in-out;
+  }
+
+  #removeBtn {
+    background-color: #434ce8;
+    border: none;
+    color: #fbfbfb;
+  }
+
+  #removeBtn:hover {
+    background-color: #404089;
+    transition: 0.2s ease-in-out;
   }
 </style>

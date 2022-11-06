@@ -252,6 +252,7 @@ export default {
   #submitBtn {
     background-color: #434ce8;
     color: #fbfbfb;
+    border: none;
   }
 
   #submitBtn:hover {
