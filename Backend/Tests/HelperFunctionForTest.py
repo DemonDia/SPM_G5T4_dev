@@ -1,14 +1,14 @@
 import requests
 # =====================Universal variables=====================
-# name of entities 
-entities = ["roles","skills"] 
+# name of entities
+entities = ["roles","skills","course","userroles","roleskillrelations","courseskillrelations","staff","learningjourney","courselearningjourney","courselearningjourney"]
 
 # name of operations (based on CRUD)
 # Names:
 # create --> create new entity
 # readAll --> read all existing rows
 # readById --> read by specific Id
-operationTypes = ["create","readAll","readById"]
+operationTypes = ["create","readAll","readAllAvailable","readById","updateById","softDelete","hardDelete","addRelation","readByStaffId","readByStaffIDorEmail"]
 
 # base URL
 BASE = "http://127.0.0.1:8000/"
@@ -22,32 +22,36 @@ BASE = "http://127.0.0.1:8000/"
 # operationType (str) --> CRUD; from 'operationTypes' list
 # fieldValue (any) --> value of given field; default is None
 def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,operationType = "readAll",fieldValue = None):
-    try:
-        if entityName not in entities:
-             print(entityName+" not found. Unable to test")
-             print("Interrupted")
-        print("============================================")
-        print(testCaseName)
-        print("Input:",inputJson)
-        if operationType == "create":
-            triggeredTestCase = addRow(BASE+entityName, inputJson)
-        if operationType == "readAll":
-            triggeredTestCase = getAllRows(BASE+entityName)
-        if operationType == "readById":
-            triggeredTestCase = getSingleRow(BASE+entityName+"/", fieldValue)
-        print(triggeredTestCase)
-        getErrorMessage(triggeredTestCase)
-        validateOutcome(triggeredTestCase, expectedResult)
-        print("Complete")
-    except Exception as e:
-        print("Issue: ",str(e))
-        print("Interrupted")
+    # assert entityName in entities,"Entity name '"+ entityName+"' not found. Unable to test"
+    assert operationType in operationTypes, "Operation type '"+operationType+"' not found. Unable to test"
+    print("============================================")
+    print(testCaseName)
+    print("Input:",inputJson)
+    if operationType == "create":
+        triggeredTestCase = addRow(BASE+entityName+"/", inputJson)
+    if operationType == "readAll":
+        triggeredTestCase = getAllRows(BASE+entityName)
+    if operationType == "readAllAvailable":
+        triggeredTestCase = getAllRows(BASE+entityName+"/available")
+    if operationType == "readById":
+        triggeredTestCase = getSingleRow(BASE+entityName, fieldValue)
+    if operationType == "readByStaffId":
+        triggeredTestCase = getByStaffId(BASE+entityName,fieldValue)
+    if operationType == "updateById":
+        triggeredTestCase = updateRow(BASE+entityName,fieldValue,inputJson)
+    if operationType == "softDelete":
+        triggeredTestCase = softDeleteRow(BASE+entityName,fieldValue)
+    if operationType == "addRelation":
+        triggeredTestCase = addRelation(BASE+entityName,inputJson)
+    if operationType == "hardDelete":
+        triggeredTestCase = deleteRow(BASE+entityName,fieldValue)
+    if operationType == "deleteRelation":
+        triggeredTestCase = deleteRelation(BASE+entityName,inputJson)
+    if operationType == "readByStaffIDorEmail":
+        triggeredTestCase = getByStaffEmailOrID(BASE+entityName,inputJson)
+    validateOutcome(triggeredTestCase, expectedResult,testCaseName)
+    print("Complete")
 
-# to get error msg
-def getErrorMessage(testCaseResult):
-    if testCaseResult["success"] == True:
-        return "N/A"
-    return testCaseResult["message"]
 
 # setup data
 def seedAllData():
@@ -56,18 +60,16 @@ def seedAllData():
 
 # delete ALL the testing data
 def cleanUp():
-    for entity in entities:
-        deleteAll(BASE+entity+"/")
+    for entity in range(len(entities)-1,-1,-1):
+        print("entities[entity]",entities[entity])
+        deleteAll(BASE+entities[entity]+"/")
 
 # check if test case pass
-def validateOutcome(actualResult, expectedResult):
-    try:
-        if actualResult["success"] == expectedResult:
-            print("Test case passed")
-        else:
-            print("Test case failed")
-    except:
-        print("Test case failed")
+def validateOutcome(actualResult, expectedResult,testCaseName):
+    if(actualResult["success"] != expectedResult):
+        print(actualResult["message"])
+    assert actualResult["success"] == expectedResult, "Test case '"+testCaseName+"' failed"
+
 # delete all data
 def deleteAll(url):
     results = requests.delete(url+"deleteall")
@@ -83,7 +85,7 @@ def seedData(url):
 def resetDataToDefaults(url):
     deleteResults = deleteAll(url)
     seedResults = seedData(url)
-    
+
     returningResult = deleteResults["success"] == seedResults["success"]
     message = ""
     if(returningResult):
@@ -99,7 +101,17 @@ def resetDataToDefaults(url):
 # =====================CRUD functions=====================
 # Gets single row based on its ID
 def getSingleRow(url,rowId):
-    obtainedRow = requests.get(url+"{rowId}".format(rowId=rowId))
+    obtainedRow = requests.get(url+"/{rowId}".format(rowId=rowId))
+    return obtainedRow.json()
+
+def getByStaffId(url,staffId):
+    obtainedRow = requests.get(url+"/staff/{staffId}".format(staffId=staffId))
+    return obtainedRow.json()
+
+def getByStaffEmailOrID(url,jsonObject):
+    print("URL")
+    print(url+"/staff/one",)
+    obtainedRow = requests.get(url+"/one", json=jsonObject)
     return obtainedRow.json()
 
 # Gets all rows
@@ -111,11 +123,26 @@ def getAllRows(url):
 def addRow(url,jsonObject):
     addedRow = requests.post(url, json=jsonObject)
     return addedRow.json()
+
+# Add many to many relation
+def addRelation(url,jsonObject):
+    addedRelation = requests.post(url+"/", json=jsonObject)
+    return addedRelation.json()
+
+def deleteRelation(url,jsonObject):
+    deletedRelation = requests.delete(url+"/", json=jsonObject)
+    return deletedRelation.json()
 # Update rows
 def updateRow(url, rowId,jsonObject):
-    updatedRow = requests.put(url+"{rowId}".format(rowId=rowId),json = jsonObject)
+    print(url+"/"+str(rowId))
+    updatedRow = requests.put(url+"/{rowId}/".format(rowId=rowId),json = jsonObject)
     return updatedRow.json()
+
+def softDeleteRow(url,rowId):
+    softDeleted = requests.put(url+"/delete/{rowId}/".format(rowId=rowId))
+    return softDeleted.json()
+
 # Delete rows
 def deleteRow(url, rowId):
-    deletedRow = requests.delete(url+"{rowId}".format(rowId=rowId))
+    deletedRow = requests.delete(url+"/{rowId}/".format(rowId=rowId))
     return deletedRow.json()

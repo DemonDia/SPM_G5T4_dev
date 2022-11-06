@@ -9,11 +9,11 @@
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="onClickButton()"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body text-center">
                 <div>
                     <i :class="icon" style="font-size: 5rem" :style="{ 'color': isSuccess ? '#87C60A' : '#F19104'}"></i>
                 </div>
-                <div>
+                <div class="msg">
                     {{this.message}}
                 </div>
             </div>
@@ -28,7 +28,7 @@
 <script>
     export default {
     name: "ModalComponent",
-    props: ["type", "isSuccess"],
+    props: ["type", "isSuccess", "func"],
     data() {
         return {
             header: "",
@@ -41,12 +41,12 @@
             if (this.isSuccess) {
                 this.header = "Success!"
                 this.icon = "bi bi-emoji-smile-fill icon-green"
-                this.message = this.type + " created successfully."
+                this.message = this.type + " " + this.func + "d successfully."
             }
             else {
                 this.header = "Try again!"
                 this.icon = "bi bi-emoji-frown-fill icon-red"
-                this.message = this.type + " is unsuccessfully created. Please fix the errors."
+                this.message = this.type + " is unsuccessfully " + this.func + "d. Please fix the errors."
             }
         },
         onClickButton(event) {
@@ -59,7 +59,11 @@
 </script>
   
 <style scoped>
-  i {
-    width: 30px;
-  }
+    i {
+        width: 30px;
+    }
+
+    .msg:first-letter{
+        text-transform: capitalize
+    }
 </style>  

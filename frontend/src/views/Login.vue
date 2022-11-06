@@ -28,7 +28,8 @@
                 v-model="form.staffID"
                 type="text"
                 class="form-control"
-                placeholder="Email"
+                name="staffID"
+                placeholder="Email/Staff ID"
               />
             </div>
             <div class="form-group">
@@ -36,6 +37,7 @@
               <input
                 v-model="form.password"
                 type="password"
+                name="password"
                 class="form-control"
                 placeholder="Password"
               />
@@ -117,6 +119,7 @@ export default {
 
 .main {
   padding: 0px 20px;
+  background: #fff;
 }
 
 @media screen and (max-height: 450px) {

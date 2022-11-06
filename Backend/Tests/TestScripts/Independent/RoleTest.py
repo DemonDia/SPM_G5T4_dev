@@ -48,7 +48,31 @@ def viewExistingRoleTest():
     print("No of all rows: "+str(len(afterNoOfAllRoles["data"])))
     print("No of available rows: "+str(len(afterNoOfAvailableRoles["data"])))
 
+def updatingRoleTest():
+    print("User Story: Update Role")
+    #before = getSingleRow(BASE+entityName, 1)
+    #print("before",before)
+    triggerTestCase("Update role fields",
+                    True, entityName, {
+                        "Role_Name": "Cleaner",
+                        "Role_Description": "Clean common areas, toilets",
+                        "Active": True
+                    }, "updateById", 1)
+    return
+
+def deleteRoleTest():
+    print("User Story: Soft Delete Role")
+
+    triggerTestCase("soft Delete role fields",
+                    True, entityName, {
+                    }, "softDelete", 1)
+
+    return
+    
+
 
 def testAllRoleCases():
     addRoleTest()
     viewExistingRoleTest()
+    updatingRoleTest()
+    deleteRoleTest()
