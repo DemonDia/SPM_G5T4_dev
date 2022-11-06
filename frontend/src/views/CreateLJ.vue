@@ -452,7 +452,13 @@ import { createToast } from 'mosha-vue-toastify';
           this.roles.errorMsg = "";
           this.courses.errorMsg = "";
         }
-      }
+      },
+
+      getRoleInfo(role_id) {
+        var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/" + role_id;
+        return new Promise((resolve, reject) => {
+          axios.get(url).then((response) => { resolve(response.data.data); }).catch((err) => reject(err)); });
+      },
     },
     
     computed: {
@@ -462,9 +468,19 @@ import { createToast } from 'mosha-vue-toastify';
       }),
     },
     
-    mounted() {
+    async mounted() {
       document.title = "LJMS - Create Learning Journey";
       this.reload();
+      if (this.$route.params.role_id) {
+        var roleInfo = await this.getRoleInfo(this.$route.params.role_id);
+        if (roleInfo) {
+          this.selectedR = roleInfo.Role_ID;
+          this.lastSavedR = roleInfo.Role_ID;
+          this.selectedRname = roleInfo.Role_Name;
+          this.loadCourses();
+          this.currFormPg = 2;
+        }
+      }
     },
   };
 </script>
