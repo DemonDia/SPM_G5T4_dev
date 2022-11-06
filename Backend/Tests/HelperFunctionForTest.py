@@ -146,4 +146,3 @@ def softDeleteRow(url,rowId):
 def deleteRow(url, rowId):
     deletedRow = requests.delete(url+"/{rowId}/".format(rowId=rowId))
     return deletedRow.json()
-

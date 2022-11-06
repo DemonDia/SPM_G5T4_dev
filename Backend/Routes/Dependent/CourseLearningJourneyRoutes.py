@@ -1,9 +1,10 @@
 from imp import reload
 from fastapi import Response, Depends
+from Schema.IndependentSchema import Skill
 from database import *
 from sqlmodel import Session, select, delete, join
 from config import app
-from Models.DependentModels import CourseLearningJourneyModel
+from Models.DependentModels import LearningJourneyModel
 from HelperFunctions import *
 from fastapi import Request
 from random import randint
@@ -62,9 +63,9 @@ async def AddCourseLearningJourney(request: Request, session: Session = Depends(
             learningJourney = None
         else:
             learningJourney = chosenLearningJourney[0]
-
-        if not learningJourney:
+        if learningJourney == None:
             errors.append("learningJourney does not exist!")
+            errors.append(str(e))
             return {
                 "success": False,
                 "message": errors
@@ -88,6 +89,44 @@ async def AddCourseLearningJourney(request: Request, session: Session = Depends(
             "message": "Course(s) assigned to Learning Journey"
         }
 
+    except Exception as e:
+        errors.append(str(e))
+        return {
+            "success": False,
+            "message": errors
+        }
+
+@app.delete("/courselearningjourney/")
+async def deleteLearningJourney(request: Request, session: Session = Depends(get_session)):
+    errors = []
+    try:
+        # find the course
+        requestData = await request.json()
+        selectedCourseStatement = select(CourseModel).where(CourseModel.Course_ID == requestData["Course_ID"])
+        selectedCourse = session.exec(selectedCourseStatement).all()
+        if(len(selectedCourse) == 0):
+            errors.append("Couse does not exist!")
+        elif(len(selectedCourse) == 1):
+            errors.append("Only one course left cannot delete!")
+        else:
+            selectedCourse = selectedCourse[0]
+
+
+        # delete all the relations
+        # hard delete the relations
+        allRelatedRelationStatement = select(CourseLearningJourneyModel).where(
+            CourseLearningJourneyModel.Course_ID == requestData["Course_ID"])
+        relationResults = session.exec(allRelatedRelationStatement)
+        allRelations = relationResults.all()
+        for relation in allRelations:
+            session.delete(relation)
+            
+        session.commit()
+        session.close()
+        return {
+            "success": True,
+            "message": "Course Learning journey deleted"
+        }
     except Exception as e:
         errors.append(str(e))
         return {
