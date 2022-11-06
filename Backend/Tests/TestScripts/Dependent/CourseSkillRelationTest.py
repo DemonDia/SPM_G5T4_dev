@@ -42,3 +42,4 @@ def testAllCourseSkillRelationCases():
     addSkillsToCourse()
     viewSkillsRelatedToCourse()
     updateSkillsOfCourse()
+    viewCoursesBySkillIds()
