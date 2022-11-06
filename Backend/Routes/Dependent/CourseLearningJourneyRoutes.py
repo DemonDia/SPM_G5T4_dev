@@ -60,7 +60,7 @@ async def AddCourseLearningJourney(request: Request, session: Session = Depends(
 
         chosenLearningJourney = result.all()
         if len(chosenLearningJourney) == 0:
-            return "testnull" # yes this returns the success = false json
+            learningJourney = None
         else:
             learningJourney = chosenLearningJourney[0]
         if learningJourney == None:
