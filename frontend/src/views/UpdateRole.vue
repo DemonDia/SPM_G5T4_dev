@@ -77,9 +77,9 @@
 </template>
 
 <script>
-  import DashboardLayout from "./Dashboard/Layout/DashboardLayout.vue";
-  import FormComponent from "../components/FormComponent.vue";
-  import ModalComponent from "../components/ModalComponent.vue";
+  import DashboardLayout from "@/views/Dashboard/Layout/DashboardLayout.vue";
+  import FormComponent from "@/components/FormComponent.vue";
+  import ModalComponent from "@/components/ModalComponent.vue";
   import axios from "axios";
   import PillSearchComponent from "@/components/PillSearchComponent.vue";
   import PillComponent from "@/components/PillComponent.vue";
@@ -319,6 +319,7 @@
   #submitBtn {
     background-color: #434ce8;
     color: #fbfbfb;
+    border: none;
   }
 
   #submitBtn:hover {
