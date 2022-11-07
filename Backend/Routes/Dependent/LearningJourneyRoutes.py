@@ -40,6 +40,23 @@ def getRelatedCourses(targetModelIdValue):
             "data": []
         }
 # returns json
+def getRelatedSkills(targetModelIdValue):
+    try:
+        session = Session(engine)
+        statement = select(SkillModel.Skill_ID, SkillModel.Skill_Name).select_from(join(SkillModel, LearningJourneySkillRelationModel)).where(
+            LearningJourneySkillRelationModel.LearningJourney_ID == targetModelIdValue)
+        results = session.exec(statement).all()
+        return {
+            "success": True,
+            "data": results
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "messaage": e,
+            "data": []
+        }
+# returns json
 
 
 def getAllRelatedCourses():
@@ -148,7 +165,6 @@ def getLearningJourney(session: Session = Depends(get_session)):
             for columnName, columnValue in learningJourney:
                 learningJourneyDict[columnName] = columnValue
                 if learningJourney.LearningJourney_ID in allCourses.keys():
-
                     learningJourneyDict["Courses"] = allCourses[learningJourney.LearningJourney_ID]
                 else:
                     learningJourneyDict["Courses"] = []
@@ -185,7 +201,9 @@ def getLearningJourneyById(LearningJourney_ID: int, session: Session = Depends(g
         for columnName, columnValue in learningJourney:
             learningJourneyDict[columnName] = columnValue
         relatedCourses = getRelatedCourses(learningJourney.LearningJourney_ID)
+        relatedSkills = getRelatedSkills(learningJourney.LearningJourney_ID)
         learningJourneyDict["Courses"] = relatedCourses["data"]
+        learningJourneyDict["Skills"] = relatedSkills["data"]
         # return role
         return {
             "success": True,
