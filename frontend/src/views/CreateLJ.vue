@@ -4,6 +4,9 @@
       <div
         class="col-sm-12 col-xl-8 mx-auto my-3 p-5 text-start rounded rounded-4 shadow-lg mb-5 bg-body"
       >
+        <button @click="goBack" class="ph-arrow-left back-btn mb-3">
+          Back
+        </button>
         <!-- Header -->
         <h3>Create a Learning Journey</h3>
         <h6 class="text-secondary mt-3 mb-3">
@@ -398,10 +401,11 @@
       },
 
       loadCourses() {
-        console.log("loading courses...")
+        // console.log("loading courses...")
         var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skillcourserelations/byid";
-        axios.get(url, this.selectedS).then((response) => {
-          console.log(response)
+
+        axios.post(url, {"Skills": this.selectedS}).then((response) => {
+          // console.log(response)
           var result = response.data.data;
           if (result.length == 0) {
             this.noCourseFound = true;
@@ -502,13 +506,19 @@
         if (this.currFormPg == 1 && this.lastSavedR !== this.selectedR) {
           // reset skills
           this.skills.skills = [];
+          this.selectedS = [];
+          this.selectedSname = [];
           // reset courses
           this.courses.courses = [];
+          this.selectedC = [];
+          this.selectedCname = [];
           // reload skills
           this.loadSkills();
         } else if (this.currFormPg == 2 && this.lastSavedS !== this.selectedS) {
           // reset courses
           this.courses.courses = [];
+          this.selectedC = [];
+          this.selectedCname = [];
           // reload courses
           this.loadCourses();
         }
@@ -527,7 +537,18 @@
             } else if (this.lastSavedS === NaN || isNaN(this.lastSavedS)) {
               // save skills
               this.lastSavedS = this.selectedS;
-            }
+            } else if (this.currFormPg == 2 && this.lastSavedR !== this.selectedR) {
+              // reset skills
+              this.skills.skills = [];
+              this.selectedS = [];
+              this.selectedSname = [];
+              // reset courses
+              this.courses.courses = [];
+              this.selectedC = [];
+              this.selectedCname = [];
+              // reload skills
+              this.loadSkills();
+            } 
           } else {
             this.handleSubmit();
           }
@@ -560,6 +581,10 @@
         this.isSubmitted = NaN;
         this.isSuccess = NaN;
         this.checked = NaN;
+      },
+
+      goBack() {
+        this.$router.replace({ name: "learningjourney" });
       },
 
       createErrorMsg(cond1, cond2, cond3) {
@@ -664,5 +689,19 @@
 
   #selected {
     color: #404089;
+  }
+
+  .back-btn {
+    border: none;
+    background: none;
+    line-height: 1;
+    font-weight: 500;
+    color: #434ce8;
+    font-size: 18px;
+  }
+
+  .back-btn:hover {
+    color: #404089;
+    transition: 0.2s ease-in-out;
   }
 </style>
