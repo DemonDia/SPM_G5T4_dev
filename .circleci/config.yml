@@ -57,10 +57,10 @@ jobs:
           name: Run Test File
           # command: uvicorn Backend.main:app --reload
           command: python ./Backend/testrun.py
-      - run:
-          name: Run test scripts
+      # - run:
+      #     name: Run test scripts
 
-          command: python ./Backend/Tests/main_test.py
+      #     command: python ./Backend/Tests/main_test.py
 
       # - run:
       #     name: Run the API

@@ -101,6 +101,8 @@ import asyncio
 import aiohttp
 import uvicorn
 
+from Tests.main_test import mainTest
+
 class TestApp(asynctest.TestCase):
     """ Test the app class. """
 
@@ -111,7 +113,7 @@ class TestApp(asynctest.TestCase):
                             args=(app.api,),
                             kwargs={
                                 "host": "127.0.0.1",
-                                "port": 5000,
+                                "port": 8000,
                                 "log_level": "info"},
                             daemon=True)
         self.proc.start()
@@ -124,6 +126,7 @@ class TestApp(asynctest.TestCase):
     async def test_read_root(self):
         """ Fetch an endpoint from the app. """
         async with aiohttp.ClientSession() as session:
-            async with session.get("http://127.0.0.1:5000/") as resp:
+            async with session.get("http://127.0.0.1:8000/") as resp:
                 data = await resp.json()
+            mainTest()
         self.assertEqual(data, {"Hello": "World"})
