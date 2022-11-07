@@ -98,6 +98,8 @@ jobs:
   frontend_build_and_test: # this can be any name you choose
     executor: node/default # use the default executor defined within the orb
     working_directory: ~/project/Frontend/frontend
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.27.1-focal
     steps:
       - checkout:
           path: ~/project/Frontend
@@ -107,8 +109,11 @@ jobs:
           command: npm install 
           name: Import Frontend Dependencies
       - run:
-          command: npm run serve
-          name: Run localhost on the Circleci
+          name: Download dependency
+          command: npm ci
+      # - run:
+      #     command: npm run serve
+      #     name: Run localhost on the Circleci
       - run:
           command: npm run test
           name: Run playwright test on localhost
