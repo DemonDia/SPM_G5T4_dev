@@ -324,6 +324,7 @@
         lastSavedR: NaN,
         selectedRname: "",
         selectedS: [],
+        lastSavedS: [],
         selectedSname: [],
         selectedC: [],
         selectedCname: [],
@@ -357,7 +358,7 @@
             title: "STEP 4",
             bg: "#2d0f51",
             description: "Summary",
-            button1: "Back to Step 2",
+            button1: "Back to Step 3",
             button2: "Submit",
           },
         ],
@@ -391,13 +392,16 @@
             this.noSkillFound = false;
             this.skills.skills = result;
           }
+        }).catch((error) => {
+          this.noSkillFound = true;
         });
       },
 
       loadCourses() {
+        console.log("loading courses...")
         var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skillcourserelations/byid";
-        console.log(this.selectedS)
         axios.get(url, this.selectedS).then((response) => {
+          console.log(response)
           var result = response.data.data;
           if (result.length == 0) {
             this.noCourseFound = true;
@@ -406,11 +410,13 @@
             this.noCourseFound = false;
             this.courses.courses = result;
           }
+        }).catch((error) => {
+          console.log(error)
+          this.noCourseFound = true;
         });
       },
 
       handleSubmit() {
-        console.log('form submitted')
         this.isSubmitted = true;
         this.createLJ().then((res) => {
           var LJStatus = res.data;
@@ -459,6 +465,7 @@
           this.loadSkills();
         } else if (value.type == 'checkbox') {
           if(value.itemType == "course") {
+            // selecting course
             if (this.selectedC.includes(value.id)) {
               let indexC = this.selectedC.indexOf(value.id);
               let indexCname = this.selectedCname.indexOf(value.name);
@@ -469,6 +476,7 @@
               this.selectedCname.push(value.name);
             }
           } else if (value.itemType == "skill") {
+            // selecting skill
             if (this.selectedS.includes(value.id)) {
               let indexS = this.selectedS.indexOf(value.id);
               let indexSname = this.selectedSname.indexOf(value.name);
@@ -491,16 +499,18 @@
       goToPrevPg() {
         this.currFormPg -= 1;
         // if go back to change role (pg 1), reset noCourseFound to false
-        if (this.currFormPg == 1) {
-          if (this.lastSavedR !== this.selectedR) {
-            this.courses.courses = [];
-            this.skills.skills = []
-            this.selectedSname = [];
-            this.selectedCname = []
-            this.selectedS = [];
-            this.selectedC = [];
-            this.loadSkills();
-          }
+        if (this.currFormPg == 1 && this.lastSavedR !== this.selectedR) {
+          // reset skills
+          this.skills.skills = [];
+          // reset courses
+          this.courses.courses = [];
+          // reload skills
+          this.loadSkills();
+        } else if (this.currFormPg == 2 && this.lastSavedS !== this.selectedS) {
+          // reset courses
+          this.courses.courses = [];
+          // reload courses
+          this.loadCourses();
         }
         this.checkForm();
       },
@@ -514,9 +524,10 @@
             if (this.lastSavedR === NaN || isNaN(this.lastSavedR)) {
               // save role
               this.lastSavedR = this.selectedR;
-            } 
-          } else if(this.currFormPg == 3) {
-            this.loadCourses();
+            } else if (this.lastSavedS === NaN || isNaN(this.lastSavedS)) {
+              // save skills
+              this.lastSavedS = this.selectedS;
+            }
           } else {
             this.handleSubmit();
           }
@@ -528,7 +539,7 @@
         let cond2 = (this.selectedS).length < 1;
         let cond3 = (this.selectedC).length < 1;
         // validation
-        if ((this.currFormPg == 1 && cond1) ||  (this.currFormPg == 2 && cond2) ||  (this.currFormPg == 3 && cond3)  || (this.currFormPg == 3 && (cond1 || cond2 || cond3)) ){
+        if ((this.currFormPg == 1 && cond1) ||  (this.currFormPg == 2 && cond2) ||  (this.currFormPg == 3 && cond3)  || (this.currFormPg == 4 && (cond1 || cond2 || cond3)) ){
           this.createErrorMsg(cond1, cond2, cond3);
           this.disableBtn = true;
           return false;
@@ -542,6 +553,7 @@
       resetErrors() {
         this.roles.errorMsg = "";
         this.courses.errorMsg = "";
+        this.skills.errorMsg = "";
       },
 
       resetForm() {
@@ -567,6 +579,7 @@
           // no error
           this.roles.errorMsg = "";
           this.courses.errorMsg = "";
+          this.skills.errorMsg = "";
         }
       },
 
