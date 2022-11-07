@@ -25,21 +25,59 @@
           tabindex="-1" 
           aria-labelledby="addCourseModalLabel" 
           aria-hidden="true" 
-          @click="onClickModal"
         >
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="addCourseModalLabel">{{addCourseModalContent[modalPg].modalTitle}}</h5>
+                <h5 class="modal-title" id="addCourseModalLabel"> {{addCourseModalContent[1].modalTitle}} </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <p class="">{{addCourseModalContent[modalPg].modalDesc}}</p>
-                
+                {{addCourseModalContent[1].modalDesc}}
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn" id="nextBtnModal" @click="nextModalPg">Next: Select courses</button>
+                <button 
+                  class="btn" 
+                  data-bs-target="#addCourseModal2" 
+                  data-bs-toggle="modal" 
+                  data-bs-dismiss="modal"
+                  id="nextBtnModal"
+                >
+                  {{modalBtnText}}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="addCourseModal2" aria-hidden="true" aria-labelledby="addCourseModalLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="addCourseModalLabel2"> {{addCourseModalContent[2].modalTitle}} </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                {{addCourseModalContent[2].modalDesc}}
+              </div>
+              <div class="modal-footer">
+                <button 
+                  class="btn" 
+                  id="backBtnModal"
+                  data-bs-target="#addCourseModal" 
+                  data-bs-toggle="modal" 
+                  data-bs-dismiss="modal"
+                >
+                  Back to first
+                </button>
+                <button 
+                  class="btn" 
+                  id="submitBtnModal"
+                  data-bs-target="#addCourseModal" 
+                  data-bs-toggle="modal" 
+                  data-bs-dismiss="modal"
+                >
+                  Submit
+                </button>
               </div>
             </div>
           </div>
@@ -54,8 +92,26 @@
             <p class="fs-5 fw-bold my-0">
               Your Goal
             </p>
-            <p class="m-1 ms-0">{{this.role.role_name}}</p>
-            <p class="m-1 ms-0 fst-italic">{{this.role.role_description}}</p>
+            <table class="table p-1">
+              <tr class="row">
+                <th class="col-sm-6 col-md-3">
+                  <p class="m-0 pb-0">Selected Role</p>
+                </th>
+                <td class="col">
+                  <p class="m-1 my-0 p-1 fw-bold">{{this.role.role_name}}</p>
+                  <p class="m-1 my-0 p-1 fst-italic">{{this.role.role_description}}</p>
+                </td>
+              </tr>
+              <tr class="row">
+                <th class="col-sm-6 col-md-3">
+                  <p class="m-0 pb-0">Selected Skills</p>
+                </th>
+                <td class="col">
+                  <p class="m-1 my-0 p-1 fw-bold">CHANGE THIS SKILL NAME</p>
+                  <p class="m-1 my-0 p-1 fst-italic">CHANGE THIS SKILL DESC</p>
+                </td>
+              </tr>
+            </table>
           </div>
 
           <!-- Courses -->
@@ -132,7 +188,6 @@ export default {
       allCourses: [],
       isSuccess: false,
       isSubmitted: false,
-      checked: false,
       noLJFound: false,
       noCourseFound: false,
       noSkillFound: false,
@@ -150,6 +205,7 @@ export default {
       },
       hoverText: '+',
       modalPg: 1,
+      modalBtnText: "Next: Select Courses",
     };
   },
   methods: {
@@ -215,29 +271,36 @@ export default {
       }
     },
 
-    onClickModal(value) {
+    onClickModal() {
       // modal is closed
-      // reset checked value:
-      this.checked = value;
+      // reset modal page number
+      this.modalPg = 1;
       if (this.isSuccess) {
         // go back to View All
         this.$router.replace({ name: "learningjourney" });
       }
+      console.log(this.modalPg)
     },
 
     resetErrors() {
       // reset fields
       this.isSubmitted = NaN;
-      this.checked = NaN;
       this.isSuccess = NaN;
     },
 
     addCourse() {
       this.addCourseActive = true;
+      this.modalPg = 1;
+      console.log(this.modalPg)
     },
 
     nextModalPg() {
       this.modalPg += 1;
+      if (this.modalPg == 2) {
+        this.modalBtnText = "Submit";
+      } else {
+        this.modalBtnText = "Next: Select Courses";
+      }
     }
   },
   computed: {
@@ -249,9 +312,12 @@ export default {
     document.title = "LJMS - Update Learning Journey";
     // get LJ information from backend
     var LJInfo = await this.getLJInfo(this.currentLJ_ID);
-    
+    console.log(LJInfo)
+
     // load data into the v-model and array
     this.courses = LJInfo.data.data.Courses;
+    // this.skills = LJInfo.datad.data.Skills;
+    this.skills = ['egsg']
 
     // get role info
     var roleInfo = await this.getRoleInfo(LJInfo.data.data.Role_ID);
@@ -260,8 +326,8 @@ export default {
 
     // get skills info
     var skillInfo = await this.getSkillInfo(LJInfo.data.data.Role_ID);
-    this.skills = skillInfo.data.data;
-    this.skills.length == 0 ? (this.noSkillFound = true) : null;
+    // this.skills = skillInfo.data.data;
+    // this.skills.length == 0 ? (this.noSkillFound = true) : null;
 
     // get courses info
     var courseInfo = await this.getCourses();
@@ -294,7 +360,7 @@ export default {
     transition: 0.2s ease-in-out;
   }
 
-  #roleDetails {
+  #roleDetails, #roleDetails > table{
     background-color: #404089;
     color: white;
   }
@@ -343,13 +409,13 @@ export default {
     color: #b43e8f;
   }
 
-  #addBtn {
+  #addBtn, #backBtnModal {
     border: #434ce8 1px solid;
     color: #434ce8;
     transition: ease-in-out 0.5s;
   }
 
-  #addBtn:hover{
+  #addBtn:hover, #backBtnModal:hover{
     background-color: #434ce8;
     color: #fbfbfb;
     transition: 0.2s ease-in-out;
@@ -363,6 +429,17 @@ export default {
 
   #removeBtn:hover, #nextBtnModal:hover  {
     background-color: #404089;
+    transition: 0.2s ease-in-out;
+  }
+
+  #submitBtnModal {
+    background-color: #b43e8f;
+    border: none;
+    color: #fbfbfb;
+  }
+
+  #submitBtnModal {
+    background-color: #732173;
     transition: 0.2s ease-in-out;
   }
 </style>
