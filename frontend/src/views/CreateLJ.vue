@@ -400,7 +400,8 @@
       loadCourses() {
         console.log("loading courses...")
         var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skillcourserelations/byid";
-        axios.get(url, this.selectedS).then((response) => {
+        // var url = "http://127.0.0.1:8000/skillcourserelations/byid"
+        axios.post(url, {"Skills":Object.values(this.selectedS)}).then((response) => {
           console.log(response)
           var result = response.data.data;
           if (result.length == 0) {
