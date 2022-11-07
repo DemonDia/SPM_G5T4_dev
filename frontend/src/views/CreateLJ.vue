@@ -401,12 +401,9 @@
       },
 
       loadCourses() {
-        // console.log("loading courses...")
         var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skillcourserelations/byid";
 
         axios.post(url, {"Skills": this.selectedS}).then((response) => {
-          // console.log(response)
-
           var result = response.data.data;
           if (result.length == 0) {
             this.noCourseFound = true;
@@ -416,7 +413,6 @@
             this.courses.courses = result;
           }
         }).catch((error) => {
-          console.log(error)
           this.noCourseFound = true;
         });
       },
@@ -425,8 +421,6 @@
         this.isSubmitted = true;
         this.createLJ().then((res) => {
           var LJStatus = res.data;
-          console.log(LJStatus);
-          console.log(this.user.StaffID)
           if (LJStatus.success) {
             this.resetForm();
             this.isSuccess = true;
@@ -448,6 +442,7 @@
               Staff_ID: this.user.StaffID,
               Courses: this.selectedC,
               Role_ID: this.selectedR,
+              Skills: this.selectedS
             })
             .then((response) => {
               resolve(response);
