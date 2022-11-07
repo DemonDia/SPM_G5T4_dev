@@ -56,6 +56,7 @@
     },
     methods: {
       async reload() {
+        this.LJ = [];
         var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/learningjourney/staff/" + this.user.StaffID;
         await axios.get(url).then((response) => {
           let result = response.data.data;
