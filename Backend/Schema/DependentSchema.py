@@ -1,6 +1,6 @@
 from typing import Optional, List
 from pydantic import BaseModel
-from IndependentSchema import *
+from Schema.IndependentSchema import *
 
 class CourseSkillRelation(BaseModel):
     Course_ID: Optional[str] = None
