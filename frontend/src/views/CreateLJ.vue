@@ -486,7 +486,7 @@
             } else {
               this.selectedS.push(value.id);
               this.selectedSname.push(value.name);
-              this.loadCourses()
+              this.loadCourses();
             }
           }
 
