@@ -198,9 +198,23 @@ workflows:
           context:
             - Deployment
           requires:
-            - frontend_build_and_test
+            - frontend_build
             - backend-build-and-test
             - backend-deploy-dev
+          filters:        
+            branches:
+              only:
+                - "circleci-testing"
+                - "main"
+                - "frontend-testing"
+      - frontend-integration-test:
+          context:
+            - Deployment
+          requires:
+            - frontend_build
+            - backend-build-and-test
+            - backend-deploy-dev
+            - frontend-deploy-dev
           filters:        
             branches:
               only:
