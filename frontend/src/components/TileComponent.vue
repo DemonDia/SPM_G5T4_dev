@@ -17,10 +17,10 @@
         checked: false
       }
     },
-    props: ["name", "id", "type", "selected"],
+    props: ["name", "id", "type", "selected", "itemType"],
     methods: {
       onClickButton(event) {
-        this.$emit('clicked', {id: this.id, name: this.name, type: this.type});
+        this.$emit('clicked', {id: this.id, name: this.name, type: this.type, itemType: this.itemType});
       },
 
       isSelected() {

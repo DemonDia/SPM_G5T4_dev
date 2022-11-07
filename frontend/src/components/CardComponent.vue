@@ -7,12 +7,13 @@
       </div>
 
       <!-- Menu Button -->
-      <div class="menu-frame col-3 d-flex flex-wrap justify-content-center"  v-if="authenticated && (user.Role == 1)">
+      <div class="menu-frame col-3 d-flex flex-wrap justify-content-center">
         <button class="ph-dots-three menu-dot mx-auto pt-0" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" @click="updateItem(id, ctype)">Update</a></li>
-          <li><a class="dropdown-item" @click="deleteItem(id, ctype)">Delete</a></li>
+          <li><a class="dropdown-item" v-if="this.$route.name === 'roles'" @click="createLJ(id)">Create Learning Journey</a></li>
+          <li v-if="authenticated && (user.Role == 1)"><a class="dropdown-item" @click="updateItem(id, ctype)">Update</a></li>
+          <li v-if="authenticated && (user.Role == 1)"><a class="dropdown-item" @click="deleteItem(id, ctype)">Delete</a></li>
         </ul>
       </div>
 
@@ -123,13 +124,19 @@ export default {
         });
       }
     },
+
     updateItem(id, ctype) {
       if(ctype == "skill") {
         router.push({ name: 'update-skill', params: { skill_id: id } });
       } else if (ctype == 'role') {
         router.push({ name: 'update-role', params: { role_id: id } });
       } 
-    }
+    },
+
+    createLJ(id) {
+      if(id) {
+        router.push({ name: 'create-journey', params: { role_id: id } });
+    }},
   },
   computed: {
     ...mapGetters({

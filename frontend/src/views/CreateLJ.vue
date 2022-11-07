@@ -23,7 +23,7 @@
         <!-- Progress Tracker -->
         <div class="row gx-4 progress p-0">
           <div
-            class="col-12 col-sm-4"
+            class="col-12 col-sm-3"
             v-for="(value, key) in progress"
             :key="key"
           >
@@ -95,6 +95,7 @@
                     :id="value.Role_ID"
                     :name="value.Role_Name"
                     type="radio"
+                    itemType="role"
                     @clicked="onClickTile"
                     :selected="this.selectedR"
                   >
@@ -117,10 +118,67 @@
             </div>
           </div>
 
+
           <!-- Page 2 -->
           <div 
             id="formPg2"
             v-if="this.currFormPg == 2"
+            class="my-4 mx-auto formPage"
+          >
+            <!-- Spinner -->
+            <div v-if="this.skills.skills.length < 1 && noSkillFound==false">
+              <SpinnerComponent/>
+            </div>
+            <!-- Course Selection -->
+            <div v-else v-if="!noSkillFound">
+              <div class="text-sm-start text-md-center fw-bold my-2">
+                You have selected: 
+                <span 
+                  id="selected" 
+                >
+                  {{this.selectedSname.join(', ')}}
+                </span>
+              </div>
+              <div 
+                id="tiles"
+                class="d-sm-inline-flex d-md-flex flex-wrap justify-content-around"
+              >
+                <div 
+                  v-for="(value, key) in this.skills.skills" 
+                  :key="key"
+                  class="p-1 overflow-scroll d-sm-block d-md-inline-block"
+                >
+                  <TileComponent 
+                    :id="value.Skill_ID"
+                    :name="value.Skill_Name"
+                    type="checkbox"
+                    itemType="skill"
+                    @clicked="onClickTile"
+                    :selected="this.selectedS"
+                  >
+                  </TileComponent>
+                </div>
+              </div>
+            </div>
+            
+            <!-- No skill Found -->
+            <div v-show="noSkillFound" class="fs-3 fw-bold text-center align-middle pt-5 my-4">
+              Sorry! No skill found!
+            </div>
+
+            <!-- Skill Error -->
+            <div 
+              v-show="this.skills.errorMsg != ''" 
+              class="text-sm-start text-md-center text-danger fw-bold my-3 fs-5"
+            >
+              {{this.skills.errorMsg}}
+            </div>
+          </div>
+
+          <!-- Page 3 -->
+          <div 
+            id="formPg2"
+            v-if="this.currFormPg == 3"
             class="my-4 mx-auto formPage"
           >
             <!-- Spinner -->
@@ -150,6 +208,7 @@
                     :id="value.Course_ID"
                     :name="value.Course_Name"
                     type="checkbox"
+                    itemType="course"
                     @clicked="onClickTile"
                     :selected="this.selectedC"
                   >
@@ -172,14 +231,16 @@
             </div>
           </div>
 
-          <!-- Page 3 -->
+          <!-- Page 4 -->
           <div 
             id="formPg3"
-            v-show="this.currFormPg == 3"  
+            v-show="this.currFormPg == 4"  
             class="my-4 mx-auto formPage"
           >
             <p class="fw-bold mt-1 mb-0">Role Name</p>
             <p class="text-break">{{selectedRname}}</p>
+            <p class="fw-bold mb-0">Selected Skills</p>
+            <p class="text-break">{{selectedSname.join(', ')}}</p>
             <p class="fw-bold mb-0">Selected Courses</p>
             <p class="text-break">{{selectedCname.join(', ')}}</p>
           </div>
@@ -207,12 +268,12 @@
             type="button"
             class="btn col-md-4 col-sm-5 m-2 order-sm-last order-first"
             :class="[
-              this.currFormPg == 3 ? 'btn-warning' : 'btn-primary',
+              this.currFormPg == 4 ? 'btn-warning' : 'btn-primary',
               this.disableBtn ? 'disabled' : '',
             ]"
             @click="goToNextPg"
-            :data-bs-toggle="this.currFormPg == 3 ? 'modal' : ''"
-            :data-bs-target="this.currFormPg == 3 ? '#submitModal' : ''"
+            :data-bs-toggle="this.currFormPg == 4 ? 'modal' : ''"
+            :data-bs-target="this.currFormPg == 4 ? '#submitModal' : ''"
           >
             {{ this.progress[currFormPg - 1].button2 }}
           </button>
@@ -230,7 +291,7 @@
   import SpinnerComponent from "@/components/SpinnerComponent.vue";
   import TileComponent from "@/components/TileComponent.vue";
   import { mapGetters } from "vuex";
-import { createToast } from 'mosha-vue-toastify';
+
   
   export default {
     name: "LJView",
@@ -247,6 +308,10 @@ import { createToast } from 'mosha-vue-toastify';
           roles: [],
           errorMsg: "",
         },
+        skills: {
+          skills: [],
+          errorMsg: "",
+        },
         courses: {
           courses: [],
           errorMsg: "",
@@ -254,9 +319,13 @@ import { createToast } from 'mosha-vue-toastify';
         // LJRoleErrors: [],
         noRoleFound: false,
         noCourseFound: false,
+        noSkillFound: false,
         selectedR: "",
         lastSavedR: NaN,
         selectedRname: "",
+        selectedS: [],
+        lastSavedS: [],
+        selectedSname: [],
         selectedC: [],
         selectedCname: [],
         isSuccess: false,
@@ -269,20 +338,27 @@ import { createToast } from 'mosha-vue-toastify';
             bg: "#e4afff",
             description: "Select a role",
             button1: "Back to Step 1",
-            button2: "Next: Select Courses",
+            button2: "Next: Select skills",
           },
           {
             title: "STEP 2",
             bg: "#c86bfa",
-            description: "Select courses",
+            description: "Select skills",
             button1: "Back to Step 1",
-            button2: "Next: Confirm choices",
+            button2: "Next: Select courses",
           },
           {
             title: "STEP 3",
+            bg: "#a055c8",
+            description: "Select courses",
+            button1: "Back to Step 2",
+            button2: "Next: Confirm choices",
+          },
+          {
+            title: "STEP 4",
             bg: "#2d0f51",
             description: "Summary",
-            button1: "Back to Step 2",
+            button1: "Back to Step 3",
             button2: "Submit",
           },
         ],
@@ -305,9 +381,27 @@ import { createToast } from 'mosha-vue-toastify';
         });
       },
 
-      loadCourses() {
-        var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/courses/" + this.selectedR;
+      loadSkills() {
+        var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/" + this.selectedR;
         axios.get(url).then((response) => {
+          var result = response.data.data;
+          if (result.length == 0) {
+            this.noSkillFound = true;
+          }
+          else {
+            this.noSkillFound = false;
+            this.skills.skills = result;
+          }
+        }).catch((error) => {
+          this.noSkillFound = true;
+        });
+      },
+
+      loadCourses() {
+        console.log("loading courses...")
+        var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skillcourserelations/byid";
+        axios.get(url, this.selectedS).then((response) => {
+          console.log(response)
           var result = response.data.data;
           if (result.length == 0) {
             this.noCourseFound = true;
@@ -316,6 +410,9 @@ import { createToast } from 'mosha-vue-toastify';
             this.noCourseFound = false;
             this.courses.courses = result;
           }
+        }).catch((error) => {
+          console.log(error)
+          this.noCourseFound = true;
         });
       },
 
@@ -367,17 +464,33 @@ import { createToast } from 'mosha-vue-toastify';
         if (value.type == 'radio') {
           this.selectedR = value.id;
           this.selectedRname = value.name;
-          this.loadCourses();
+          this.loadSkills();
         } else if (value.type == 'checkbox') {
-          if (this.selectedC.includes(value.id)) {
-            let indexC = this.selectedC.indexOf(value.id);
-            let indexCname = this.selectedCname.indexOf(value.name);
-            this.selectedC.splice(indexC, 1);
-            this.selectedCname.splice(indexCname, 1);
-          } else {
-            this.selectedC.push(value.id);
-            this.selectedCname.push(value.name);
+          if(value.itemType == "course") {
+            // selecting course
+            if (this.selectedC.includes(value.id)) {
+              let indexC = this.selectedC.indexOf(value.id);
+              let indexCname = this.selectedCname.indexOf(value.name);
+              this.selectedC.splice(indexC, 1);
+              this.selectedCname.splice(indexCname, 1);
+            } else {
+              this.selectedC.push(value.id);
+              this.selectedCname.push(value.name);
+            }
+          } else if (value.itemType == "skill") {
+            // selecting skill
+            if (this.selectedS.includes(value.id)) {
+              let indexS = this.selectedS.indexOf(value.id);
+              let indexSname = this.selectedSname.indexOf(value.name);
+              this.selectedS.splice(indexS, 1);
+              this.selectedSname.splice(indexSname, 1);
+            } else {
+              this.selectedS.push(value.id);
+              this.selectedSname.push(value.name);
+              this.loadCourses()
+            }
           }
+
         }
         // update disabled button property
         if (this.disableBtn) {
@@ -388,11 +501,18 @@ import { createToast } from 'mosha-vue-toastify';
       goToPrevPg() {
         this.currFormPg -= 1;
         // if go back to change role (pg 1), reset noCourseFound to false
-        if (this.currFormPg == 1) {
-          if (this.lastSavedR != this.selectedR) {
-            this.courses.courses = [];
-            this.loadCourses();
-          }
+        if (this.currFormPg == 1 && this.lastSavedR !== this.selectedR) {
+          // reset skills
+          this.skills.skills = [];
+          // reset courses
+          this.courses.courses = [];
+          // reload skills
+          this.loadSkills();
+        } else if (this.currFormPg == 2 && this.lastSavedS !== this.selectedS) {
+          // reset courses
+          this.courses.courses = [];
+          // reload courses
+          this.loadCourses();
         }
         this.checkForm();
       },
@@ -401,11 +521,14 @@ import { createToast } from 'mosha-vue-toastify';
         // form validation
         let status = this.checkForm();
         if (status) {
-          if (this.currFormPg < 3) {
+          if (this.currFormPg < 4) {
             this.currFormPg += 1;
-            if (this.lastSavedR == NaN) {
+            if (this.lastSavedR === NaN || isNaN(this.lastSavedR)) {
               // save role
               this.lastSavedR = this.selectedR;
+            } else if (this.lastSavedS === NaN || isNaN(this.lastSavedS)) {
+              // save skills
+              this.lastSavedS = this.selectedS;
             }
           } else {
             this.handleSubmit();
@@ -415,10 +538,11 @@ import { createToast } from 'mosha-vue-toastify';
 
       checkForm() {
         let cond1 = this.selectedR == "";
-        let cond2 = (this.selectedC).length < 1;
+        let cond2 = (this.selectedS).length < 1;
+        let cond3 = (this.selectedC).length < 1;
         // validation
-        if ((this.currFormPg == 1 && cond1)  ||  (this.currFormPg == 2 && cond2)  || (this.currFormPg == 3 && (cond1 || cond2)) ){
-          this.createErrorMsg(cond1, cond2);
+        if ((this.currFormPg == 1 && cond1) ||  (this.currFormPg == 2 && cond2) ||  (this.currFormPg == 3 && cond3)  || (this.currFormPg == 4 && (cond1 || cond2 || cond3)) ){
+          this.createErrorMsg(cond1, cond2, cond3);
           this.disableBtn = true;
           return false;
         }
@@ -431,6 +555,7 @@ import { createToast } from 'mosha-vue-toastify';
       resetErrors() {
         this.roles.errorMsg = "";
         this.courses.errorMsg = "";
+        this.skills.errorMsg = "";
       },
 
       resetForm() {
@@ -439,12 +564,16 @@ import { createToast } from 'mosha-vue-toastify';
         this.checked = NaN;
       },
 
-      createErrorMsg(cond1, cond2) {
+      createErrorMsg(cond1, cond2, cond3) {
         if (cond1) {
           this.roles.errorMsg = "Please select a role to begin";
-        } else if (cond2 && this.noCourseFound) {
-          this.courses.errorMsg = "Please go back and choose a role with at least one course available"
+        } else if (cond2 && this.noSkillFound) {
+          this.skills.errorMsg = "Please go back and choose a role with at least one skill available"
         } else if (cond2) {
+          this.skills.errorMsg = "You need at least one skill to create a learning journey";
+        } else if (cond3 && this.noCourseFound) {
+          this.courses.errorMsg = "Please go back and choose a skill with at least one course available"
+        } else if (cond3) {
           this.courses.errorMsg = "You need at least one course to create a learning journey";
         }
         
@@ -452,8 +581,15 @@ import { createToast } from 'mosha-vue-toastify';
           // no error
           this.roles.errorMsg = "";
           this.courses.errorMsg = "";
+          this.skills.errorMsg = "";
         }
-      }
+      },
+
+      getRoleInfo(role_id) {
+        var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/" + role_id;
+        return new Promise((resolve, reject) => {
+          axios.get(url).then((response) => { resolve(response.data.data); }).catch((err) => reject(err)); });
+      },
     },
     
     computed: {
@@ -463,9 +599,19 @@ import { createToast } from 'mosha-vue-toastify';
       }),
     },
     
-    mounted() {
+    async mounted() {
       document.title = "LJMS - Create Learning Journey";
       this.reload();
+      if (this.$route.params.role_id) {
+        var roleInfo = await this.getRoleInfo(this.$route.params.role_id);
+        if (roleInfo) {
+          this.selectedR = roleInfo.Role_ID;
+          this.lastSavedR = roleInfo.Role_ID;
+          this.selectedRname = roleInfo.Role_Name;
+          this.loadSkills();
+          this.currFormPg = 2;
+        }
+      }
     },
   };
 </script>
