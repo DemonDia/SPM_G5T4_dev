@@ -263,7 +263,7 @@ export default {
     this.role.role_description = roleInfo.data.data.Role_Description;
 
     // get skills info
-    var skillInfo = await this.getRoleInfo(LJInfo.data.data.skillInfo);
+    var skillInfo = await this.getSkillInfo(LJInfo.data.data.Role_ID);
     this.skills = skillInfo.data.data;
     this.skills.length == 0 ? (this.noSkillFound = true) : null;
 
