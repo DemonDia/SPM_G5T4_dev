@@ -1,7 +1,7 @@
 import requests
 # =====================Universal variables=====================
 # name of entities
-entities = ["roles","skills","course","userroles","roleskillrelations","courseskillrelations","staff","learningjourney","courselearningjourney","courselearningjourney"]
+entities = ["roles","skills","course","userroles","roleskillrelations","courseskillrelations","staff","learningjourney","courselearningjourney","learningjourneyskillrelation"]
 
 # name of operations (based on CRUD)
 # Names:
@@ -115,7 +115,7 @@ def getByStaffEmailOrID(url,jsonObject):
     return obtainedRow.json()
 
 def getByIDs(url,jsonObject):
-    obtainedRows = requests.get(url+"/byid", json=jsonObject)
+    obtainedRows = requests.post(url+"/byid", json=jsonObject)
     return obtainedRows.json()
 
 # Gets all rows

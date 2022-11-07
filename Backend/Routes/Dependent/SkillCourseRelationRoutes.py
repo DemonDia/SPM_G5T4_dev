@@ -9,7 +9,7 @@ from Models.IndependentModels import *
 from HelperFunctions import *
 
 
-@app.get("/skillcourserelations/byid", tags=["CourseSkillRelation"])
+@app.post("/skillcourserelations/byid", tags=["CourseSkillRelation"])
 async def getCoursesbySkills(request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -23,7 +23,7 @@ async def getCoursesbySkills(request: Request, session: Session = Depends(get_se
             Curr_Skill_ID = skill.Skill_ID
             Curr_Skill_Name = skill.Skill_Name
             skillDict[Curr_Skill_ID] = Curr_Skill_Name
-            
+
         for Skill_ID in requestData["Skills"]:
             # compare, if not found, just break
             if Skill_ID not in skillDict.keys():
@@ -40,7 +40,6 @@ async def getCoursesbySkills(request: Request, session: Session = Depends(get_se
             Curr_Course_ID = course.Course_ID
             Curr_Course_Name = course.Course_Name
             courseDict[Curr_Course_ID] = Curr_Course_Name
-
         # get all the relations
         print(skillDict.keys())
 
@@ -52,7 +51,7 @@ async def getCoursesbySkills(request: Request, session: Session = Depends(get_se
         # courses and skills to be returned
         selectedRelations = []
         for relation in allCourseSkillRelations:
-            print("relation.Skill_ID",relation.Skill_ID)
+            print("relation.Skill_ID", relation.Skill_ID)
             if relation.Skill_ID in requestData["Skills"]:
                 newRelationRow = {}
                 newRelationRow["Skill_ID"] = relation.Skill_ID
@@ -61,6 +60,35 @@ async def getCoursesbySkills(request: Request, session: Session = Depends(get_se
                 newRelationRow["Course_Name"] = courseDict[relation.Course_ID]
                 selectedRelations.append(newRelationRow)
 
+        unprocessedResults = {}
+        # process them based on unique ID
+        for relation in selectedRelations:
+            if relation["Course_ID"] not in unprocessedResults.keys():
+                unprocessedResults[relation["Course_ID"]] = {
+                    "Course_Name": relation["Course_Name"],
+                    "Skills": [
+                        {
+                            "Skill_ID": relation["Skill_ID"],
+                            "Skill_Name":relation["Skill_Name"]
+                        }
+                    ]
+                }
+            else:
+                unprocessedResults[relation["Course_ID"]]["Skills"].append({
+                    "Skill_ID": relation["Skill_ID"],
+                    "Skill_Name": relation["Skill_Name"]
+                })
+
+        processedResults = []
+        # process them in the proper format
+        for relation in unprocessedResults:
+            print("relation",relation)
+            processedRelationRow = {}
+            processedRelationRow["Course_ID"] = relation
+            processedRelationRow.update(unprocessedResults[relation])
+            print("processedRelationRow",processedRelationRow)
+            processedResults.append(processedRelationRow)
+
         if len(errors) > 0:
             return {
                 "success": False,
@@ -68,7 +96,7 @@ async def getCoursesbySkills(request: Request, session: Session = Depends(get_se
             }
         return {
             "success": True,
-            "data": selectedRelations
+            "data": processedResults
         }
     except Exception as e:
         errors.append(str(e))
