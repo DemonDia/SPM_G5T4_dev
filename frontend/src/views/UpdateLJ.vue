@@ -181,10 +181,10 @@ export default {
     },
 
     getSkillInfo(skill_id) {
-      var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/" + skill_id;
+      var getSkillUrl = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/" + 1;
       return new Promise((resolve, reject) => {
         axios
-          .get(getRoleUrl)
+          .get(getSkillUrl)
           .then((response) => {
             resolve(response);
           })
@@ -193,7 +193,6 @@ export default {
     },
 
     getCourses() {
-      console.log()
       var getCoursesUrl = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/course/"
       return new Promise((resolve, reject) => {
         axios
@@ -250,7 +249,6 @@ export default {
     document.title = "LJMS - Update Learning Journey";
     // get LJ information from backend
     var LJInfo = await this.getLJInfo(this.currentLJ_ID);
-    console.log(LJInfo)
     
     // load data into the v-model and array
     this.courses = LJInfo.data.data.Courses;
