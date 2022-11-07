@@ -9,7 +9,7 @@ from Models.IndependentModels import *
 from HelperFunctions import *
 
 
-@app.get("/skillcourserelations/byid", tags=["CourseSkillRelation"])
+@app.post("/skillcourserelations/byid", tags=["CourseSkillRelation"])
 async def getCoursesbySkills(request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -40,7 +40,6 @@ async def getCoursesbySkills(request: Request, session: Session = Depends(get_se
             Curr_Course_ID = course.Course_ID
             Curr_Course_Name = course.Course_Name
             courseDict[Curr_Course_ID] = Curr_Course_Name
-
         # get all the relations
         print(skillDict.keys())
 
