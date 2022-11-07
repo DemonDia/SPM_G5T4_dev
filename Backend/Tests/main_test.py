@@ -31,5 +31,5 @@ def mainTest():
 if __name__ == "__main__":
     cleanUp()
     seedAllData()
-    # mainTest()
-    # cleanUp()
+    mainTest()
+    cleanUp()

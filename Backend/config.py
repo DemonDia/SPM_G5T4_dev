@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
 from os import getenv
 from dotenv import load_dotenv
 # ============this loads the environment variables from .env============
@@ -66,6 +66,10 @@ database_route = getenv("DATABASE_URL")
 app = FastAPI(
     title="SPM G5T4 Backend",
     openapi_tags=tags_metadata,
-    root_path="/dev/"   # when making pushes nid this line
+    root_path="/dev/"
+      # when making pushes nid this line
 )
 # adding of middleware
+temp = APIRouter()
+app = FastAPI()
+# app.include_router(temp, prefix='/dev')  
