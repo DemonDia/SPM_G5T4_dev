@@ -18,13 +18,31 @@
         </h6>
 
         <!-- Popup -->
-        <div v-show="checked">
-          <ModalComponent
-            type="Learning Journey"
-            func="update"
-            :isSuccess="isSuccess"
-            @clicked="onClickModal"
-          />
+        <div 
+          v-show="addCourseActive"
+          id="addCourseModal"
+          class="modal fade" 
+          tabindex="-1" 
+          aria-labelledby="addCourseModalLabel" 
+          aria-hidden="true" 
+          @click="onClickModal"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="addCourseModalLabel">{{addCourseModalContent[modalPg].modalTitle}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p class="">{{addCourseModalContent[modalPg].modalDesc}}</p>
+                
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn" id="nextBtnModal" @click="nextModalPg">Next: Select courses</button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Spinner -->
@@ -46,12 +64,21 @@
               Your Courses
             </p>
             <!-- Add a new course -->
-            <button type="button" class="btn" id="addBtn" @click="addCourse()">
-              + Add a new course
+            <button 
+              type="button" 
+              class="btn" 
+              id="addBtn" 
+              @click="addCourse()" 
+              data-bs-toggle="modal" 
+              data-bs-target="#addCourseModal"
+              @mouseover="hoverText='+ Add a new course'" 
+              @mouseleave="hoverText='+'"
+            >
+              {{hoverText}}
             </button>
             <!-- See existing courses -->
             <div v-for="(value, key) in courses" v-bind:key="key" class="card-component row mx-1 my-3">
-              <div class="flex-grow-1 card-content p-1 px-4 my-1 col-auto">
+              <div class="flex-grow-1 card-content p-1 px-4 my-1 col-sm-12 col-md-7">
                 <div class="tags text-start p-2 ps-0 my-0">
                   <span class="badge text-dark me-2" id="typeBadge">
                     <p class="m-0">{{ getCourseInfo(value.Course_ID, "type") }}</p>
@@ -83,7 +110,6 @@
 <script>
 import DashboardLayout from "@/views/Dashboard/Layout/DashboardLayout.vue";
 import FormComponent from "@/components/FormComponent.vue";
-import ModalComponent from "@/components/ModalComponent.vue";
 import axios from "axios";
 import SpinnerComponent from "@/components/SpinnerComponent.vue";
 
@@ -92,7 +118,6 @@ export default {
   components: {
     DashboardLayout,
     FormComponent,
-    ModalComponent,
     SpinnerComponent,
   },
   data() {
@@ -103,13 +128,28 @@ export default {
         role_description: "",
       },
       courses: [],
+      skills: [],
       allCourses: [],
       isSuccess: false,
       isSubmitted: false,
       checked: false,
       noLJFound: false,
       noCourseFound: false,
+      noSkillFound: false,
       currentLJ_ID: this.$route.params.lj_id,
+      addCourseActive: false,
+      addCourseModalContent: {
+        1: {
+          modalTitle: "Change skills (optional)",
+          modalDesc: "You may change the skills selected for this learning journey"
+        },
+        2: {
+          modalTitle: "Select new courses",
+          modalDesc: "Select courses you wish to add to this learning journey"
+        }
+      },
+      hoverText: '+',
+      modalPg: 1,
     };
   },
   methods: {
@@ -127,6 +167,20 @@ export default {
     },
 
     getRoleInfo(role_id) {
+      var getRoleUrl =
+        "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/" +
+        role_id;
+      return new Promise((resolve, reject) => {
+        axios
+          .get(getRoleUrl)
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((err) => reject(err));
+      });
+    },
+
+    getSkillInfo(skill_id) {
       var getRoleUrl =
         "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/" +
         role_id;
@@ -180,6 +234,14 @@ export default {
       this.checked = NaN;
       this.isSuccess = NaN;
     },
+
+    addCourse() {
+      this.addCourseActive = true;
+    },
+
+    nextModalPg() {
+      this.modalPg += 1;
+    }
   },
   computed: {
     goBack() {
@@ -190,6 +252,7 @@ export default {
     document.title = "LJMS - Update Learning Journey";
     // get LJ information from backend
     var LJInfo = await this.getLJInfo(this.currentLJ_ID);
+    console.log(LJInfo)
     
     // load data into the v-model and array
     this.courses = LJInfo.data.data.Courses;
@@ -198,6 +261,11 @@ export default {
     var roleInfo = await this.getRoleInfo(LJInfo.data.data.Role_ID);
     this.role.role_name = roleInfo.data.data.Role_Name;
     this.role.role_description = roleInfo.data.data.Role_Description;
+
+    // get skills info
+    var skillInfo = await this.getRoleInfo(LJInfo.data.data.skillInfo);
+    this.skills = skillInfo.data.data;
+    this.skills.length == 0 ? (this.noSkillFound = true) : null;
 
     // get courses info
     var courseInfo = await this.getCourses();
@@ -279,24 +347,25 @@ export default {
     color: #b43e8f;
   }
 
-  #addBtn, #removeBtn {
+  #addBtn {
     border: #434ce8 1px solid;
     color: #434ce8;
+    transition: ease-in-out 0.5s;
   }
 
-  #addBtn:hover, #removeBtn:hover {
+  #addBtn:hover{
     background-color: #434ce8;
     color: #fbfbfb;
     transition: 0.2s ease-in-out;
   }
 
-  #removeBtn {
+  #removeBtn, #nextBtnModal {
     background-color: #434ce8;
     border: none;
     color: #fbfbfb;
   }
 
-  #removeBtn:hover {
+  #removeBtn:hover, #nextBtnModal:hover  {
     background-color: #404089;
     transition: 0.2s ease-in-out;
   }
