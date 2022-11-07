@@ -8,7 +8,7 @@ entities = ["roles","skills","course","userroles","roleskillrelations","coursesk
 # create --> create new entity
 # readAll --> read all existing rows
 # readById --> read by specific Id
-operationTypes = ["create","readAll","readAllAvailable","readById","updateById","softDelete","hardDelete","addRelation","readByStaffId","readByStaffIDorEmail"]
+operationTypes = ["create","readAll","readAllAvailable","readById","updateById","softDelete","hardDelete","addRelation","readByStaffId","readByStaffIDorEmail","getAllByIds","deleteRelation"]
 
 # base URL
 BASE = "http://127.0.0.1:8000/"
@@ -49,6 +49,8 @@ def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,oper
         triggeredTestCase = deleteRelation(BASE+entityName,inputJson)
     if operationType == "readByStaffIDorEmail":
         triggeredTestCase = getByStaffEmailOrID(BASE+entityName,inputJson)
+    if operationType == "getAllByIds":
+        triggeredTestCase = getByIDs(BASE+entityName,inputJson)
     validateOutcome(triggeredTestCase, expectedResult,testCaseName)
     print("Complete")
 
@@ -109,10 +111,12 @@ def getByStaffId(url,staffId):
     return obtainedRow.json()
 
 def getByStaffEmailOrID(url,jsonObject):
-    print("URL")
-    print(url+"/staff/one",)
     obtainedRow = requests.get(url+"/one", json=jsonObject)
     return obtainedRow.json()
+
+def getByIDs(url,jsonObject):
+    obtainedRows = requests.post(url+"/byid", json=jsonObject)
+    return obtainedRows.json()
 
 # Gets all rows
 def getAllRows(url):

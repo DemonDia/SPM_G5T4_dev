@@ -13,6 +13,7 @@ from Routes.Dependent.SkillRoleRelationRoutes import *
 from Routes.Dependent.StaffRoutes import *
 from Routes.Dependent.LearningJourneyRoutes import *
 from Routes.Dependent.CourseLearningJourneyRoutes import *
+from Routes.Dependent.SkillCourseRelationRoutes import *
 
 from HelperFunctions import *
 from ErrorHandler import *

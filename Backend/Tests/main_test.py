@@ -13,7 +13,7 @@ def start():
     cleanUp()
     seedAllData()
     yield
-    cleanUp()
+    # cleanUp()
 
 
 def mainTest():
