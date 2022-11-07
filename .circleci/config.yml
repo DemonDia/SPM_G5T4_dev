@@ -143,14 +143,11 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          command: npm install 
-          name: Import Frontend Dependencies
-      - run:
-          name: Download dependency
+          name: Download playwright dependencies
           command: npm ci
       - run:
           command: npm run test
-          name: Run playwright test on localhost
+          name: Run playwright dev servers
       
 workflows:
   build-test-and-deploy:
