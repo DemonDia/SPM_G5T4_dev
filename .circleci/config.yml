@@ -98,8 +98,6 @@ jobs:
   frontend_build: # this can be any name you choose
     executor: node/default # use the default executor defined within the orb
     working_directory: ~/project/Frontend/frontend
-    docker:
-      - image: mcr.microsoft.com/playwright:v1.27.1-focal
     steps:
       - checkout:
           path: ~/project/Frontend
