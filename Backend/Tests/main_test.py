@@ -6,6 +6,7 @@ from TestScripts.Independent.SkillTest import testAllSkillCases
 from TestScripts.Dependent.StaffTest import testAllStaffCases
 from TestScripts.Dependent.LearningJourneyTest import testAllLearningJourneyCases
 from TestScripts.Dependent.CourseLearningJourneyTest import testAllCourseLearningJourneyCases
+from TestScripts.Dependent.LearningJourneySkillTest import testAllLearningJourneySkillRelationCases
 import pytest
 
 @pytest.fixture(autouse=True)
@@ -24,6 +25,7 @@ def mainTest():
     testAllCourseSkillRelationCases()
     testAllLearningJourneyCases()
     testAllCourseLearningJourneyCases()
+    testAllLearningJourneySkillRelationCases()
     # remove all the test data after testing is complete
 
 if __name__ == "__main__":
