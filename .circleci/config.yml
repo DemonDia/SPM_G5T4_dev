@@ -95,7 +95,7 @@ jobs:
           command: aws lambda update-function-code --function-name spm_fastapi --s3-bucket spm-bigbucket --s3-key function.zip
       
 
-  frontend_build_and_test: # this can be any name you choose
+  frontend_build: # this can be any name you choose
     executor: node/default # use the default executor defined within the orb
     working_directory: ~/project/Frontend/frontend
     docker:
@@ -108,15 +108,6 @@ jobs:
       - run:
           command: npm install 
           name: Import Frontend Dependencies
-      - run:
-          name: Download dependency
-          command: npm ci
-      # - run:
-      #     command: npm run serve
-      #     name: Run localhost on the Circleci
-      - run:
-          command: npm run test
-          name: Run playwright test on localhost
       - run:
           command: npm run build
           name: Build Frontend into Production
@@ -142,6 +133,26 @@ jobs:
       - run:
           name: Deploy on S3 
           command: aws s3 sync ./dist s3://spm-smallbucket
+
+  frontend-integration-test:
+    executor: node/default # use the default executor defined within the orb
+    working_directory: ~/project/Frontend/frontend
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.27.1-focal
+    steps:
+      - checkout:
+          path: ~/project/Frontend
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          command: npm install 
+          name: Import Frontend Dependencies
+      - run:
+          name: Download dependency
+          command: npm ci
+      - run:
+          command: npm run test
+          name: Run playwright test on localhost
       
 workflows:
   build-test-and-deploy:
@@ -171,7 +182,7 @@ workflows:
                 - "refactoring-test-case"
                 - "main"
                 - "frontend-testing"
-      - frontend_build_and_test:
+      - frontend_build:
           context:
             - Deployment
           requires:
