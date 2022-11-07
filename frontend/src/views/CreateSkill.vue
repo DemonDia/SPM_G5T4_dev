@@ -220,8 +220,8 @@
             var skillStatus = res.data;
             this.assignRoles(skillStatus.data).then((result) => {
               var assignRoleStatus = result.data;
-              
               this.resetErrors();
+              this.isSubmitted = true;
               if (skillStatus.success || assignRoleStatus.success) {
                 this.resetForm(); // throw error message if role is duplicated
                 this.isSuccess = true;
@@ -303,10 +303,6 @@
           } else {
             this.currFormPg += 1;
           }
-        },
-
-        goToPg(x) {
-          this.currFormPg = x;
         },
 
         getPill(item) {

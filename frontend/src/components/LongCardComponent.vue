@@ -31,9 +31,8 @@
                 aria-expanded="false"
           ></button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <!-- <li><a class="dropdown-item" @click="updateItem(this.courseID,'course')" v-if="authenticated && (user.Role == 1)">Update</a></li> -->
-            <li><a class="dropdown-item" href="#">Edit</a></li>
-            <li><a class="dropdown-item" href="#">Delete</a></li>
+            <li><a class="dropdown-item" @click="updateItem(this.LJ_ID)">Update</a></li>
+            <li><a class="dropdown-item" @click="deleteItem(this.LJ_ID)">Delete</a></li>
           </ul>
         </div>
       </div>
@@ -42,6 +41,8 @@
   
   <script>
   import PillComponent from "@/components/PillComponent.vue";
+  import axios from "axios";
+  import { createToast } from 'mosha-vue-toastify';
   import router from "../router";
   import { mapGetters } from "vuex";
   
@@ -73,10 +74,46 @@
       }
     },
     methods: {
-      updateItem(id, ctype) {
-        if(ctype == "course") {
-          router.push({ name: 'update-course', params: { course_id: id } });
-        } 
+      deleteItem(id) {
+        var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/learningjourney/" + id;
+        axios.delete(url, {
+          headers: {
+            'Content-Type': 'application/json'
+        }}).then((response) => {
+          var result = response.data.success
+          if (result) {
+            createToast('Learning Journey deleted successfully!', {
+              type: 'success',
+              position: 'top-center',
+              timeout: 3000,
+              dismissible: true,
+              pauseOnFocusLoss: true,
+              pauseOnHover: true,
+              closeOnClick: true,
+              closeButton: true,
+              icon: true,
+              rtl: false,
+            });
+            this.$emit('reload');
+          } else {
+            createToast('Learning Journey deletion failed!', {
+              type: 'error',
+              position: 'top-center',
+              timeout: 3000,
+              dismissible: true,
+              pauseOnFocusLoss: true,
+              pauseOnHover: true,
+              closeOnClick: true,
+              closeButton: true,
+              icon: true,
+              rtl: false,
+            });
+            this.$emit('reload');
+          }
+        });
+      },
+      updateItem(id) {
+        router.push({ name: 'update-journey', params: { lj_id: id } });
       }
     },
   };

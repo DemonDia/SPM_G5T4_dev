@@ -28,7 +28,7 @@
       </div>
 
       <!-- Menu Button -->
-      <div class="col-1 menu-frame d-flex flex-wrap">
+      <div class="col-1 menu-frame d-flex flex-wrap" v-if="authenticated && (user.Role == 1)">
         <button
               class="ph-dots-three-vertical menu-dot"
               type="button"
@@ -37,7 +37,7 @@
               aria-expanded="false"
         ></button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" @click="updateItem(this.courseID,'course')" v-if="authenticated && (user.Role == 1)">Update</a></li>
+          <li><a class="dropdown-item" @click="updateItem(this.courseID,'course')">Update</a></li>
           <!-- <li><a class="dropdown-item" href="#">Delete</a></li> -->
         </ul>
       </div>

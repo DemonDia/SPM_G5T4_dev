@@ -8,6 +8,7 @@
         type="text"
         :placeholder="this.placeholder"
         v-model="search"
+        name="pillSearch"
         v-on:keyup="searchItem"
       />
       <div class="autocomplete-box">

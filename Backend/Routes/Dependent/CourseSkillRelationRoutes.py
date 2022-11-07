@@ -1,14 +1,14 @@
 from fastapi import Response, Depends, Request
 from Models.DependentModels import CourseSkillRelationModel
 from database import *
-from sqlmodel import Session, select, delete,join
+from sqlmodel import Session, select, delete, join
 from config import app
 from Models.IndependentModels import *
 from HelperFunctions import *
 # ===========================test functions===========================
 
 
-@app.delete("/courseskillrelations/deleteall",tags=["CourseSkillRelation","DeleteAll"])
+@app.delete("/courseskillrelations/deleteall", tags=["CourseSkillRelation", "DeleteAll"])
 def deleteAll():
     return deleteAllData(CourseSkillRelationModel)
 
@@ -16,7 +16,7 @@ def deleteAll():
 # ===========================actual CRUD functions===========================
 # input should be an array
 # requests contains "CourseId" and a list "skills" which contains the Skill_ID of the skills to add
-@app.post('/courseskillrelations/',tags=["CourseSkillRelation"])
+@app.post('/courseskillrelations/', tags=["CourseSkillRelation"])
 async def addSkillsToCourses(request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -52,7 +52,8 @@ async def addSkillsToCourses(request: Request, session: Session = Depends(get_se
             "message": errors
         }
 
-@app.get('/courseskillrelations/{Course_ID}',tags=["CourseSkillRelation"])
+
+@app.get('/courseskillrelations/{Course_ID}', tags=["CourseSkillRelation"])
 async def addRoleSkillRelation(Course_ID: str, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -85,8 +86,7 @@ async def addRoleSkillRelation(Course_ID: str, session: Session = Depends(get_se
             "message": errors
         }
 
-
-@app.put('/courseskillrelations/{Course_ID}',tags=["CourseSkillRelation"])
+@app.put('/courseskillrelations/{Course_ID}', tags=["CourseSkillRelation"])
 async def updateCourseSkillRelations(Course_ID: str, request: Request, session: Session = Depends(get_session)):
     errors = []
     try:

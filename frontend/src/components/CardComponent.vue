@@ -160,7 +160,7 @@ export default {
     border-radius: 15px;
     cursor: pointer;
     transition: 0.2s;
-    height: 170px;
+    height: 185px;
     /* min-height: 160px; */
     /* height: min-content; */
     box-shadow: 0 3px 3px 0 rgb(0 0 0 / 4%), 0 5px 15px 0 rgb(0 0 0 / 4%);
