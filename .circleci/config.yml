@@ -103,6 +103,12 @@ jobs:
           command: npm install 
           name: Import Frontend Dependencies
       - run:
+          command: npm run serve
+          name: Run localhost on the Circleci
+      - run:
+          command: npm run test
+          name: Run playwright test on localhost
+      - run:
           command: npm run build
           name: Build Frontend into Production
       # - run:
@@ -138,6 +144,7 @@ workflows:
                 - "circleci-testing"
                 - "refactoring-test-case"
                 - "main"
+                - "frontend-testing"
           context:
             - Database
             - Deployment
@@ -154,6 +161,7 @@ workflows:
                 - "circleci-testing"
                 - "refactoring-test-case"
                 - "main"
+                - "frontend-testing"
       - frontend_build_and_test:
           context:
             - Deployment
@@ -165,6 +173,7 @@ workflows:
               only:
                 - "circleci-testing"
                 - "main"
+                - "frontend-testing"
       - frontend-deploy-dev:
           context:
             - Deployment
@@ -177,4 +186,5 @@ workflows:
               only:
                 - "circleci-testing"
                 - "main"
+                - "frontend-testing"
                 
