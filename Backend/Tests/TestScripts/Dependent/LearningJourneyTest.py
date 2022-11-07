@@ -10,7 +10,6 @@ def createLearningJourney():
                     {
                         "Staff_ID": 130001,
                         "Courses": ["COR001", "COR002"],
-                        "Skills":[1,2,3,4],
                         "Role_ID": 1
                     }, "addRelation"
                     )
