@@ -72,4 +72,3 @@ app = FastAPI(
 # adding of middleware
 temp = APIRouter()
 # app = FastAPI()
-# app.include_router(temp, prefix='/dev')  

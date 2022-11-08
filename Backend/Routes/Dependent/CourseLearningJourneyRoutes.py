@@ -1,4 +1,3 @@
-from imp import reload
 from fastapi import Response, Depends
 from Schema.IndependentSchema import Skill
 from database import *

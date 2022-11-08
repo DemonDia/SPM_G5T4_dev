@@ -3,14 +3,14 @@ import requests
 # name of entities
 entities = ["roles","skills","course","userroles","roleskillrelations","courseskillrelations","staff","learningjourney","courselearningjourney","learningjourneyskillrelation"]
 
-# name of operations (based on CRUD)
+# name of operations (d on CRUD)
 # Names:
 # create --> create new entity
 # readAll --> read all existing rows
 # readById --> read by specific Id
 operationTypes = ["create","readAll","readAllAvailable","readById","updateById","softDelete","hardDelete","addRelation","readByStaffId","readByStaffIDorEmail","getAllByIds","deleteRelation"]
-
-# base URL
+from main_ci_test import client;
+#  URL
 BASE = "http://127.0.0.1:8000/"
 # =====================Other helper functions=====================
 # for testing ONLY
@@ -28,29 +28,29 @@ def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,oper
     print(testCaseName)
     print("Input:",inputJson)
     if operationType == "create":
-        triggeredTestCase = addRow(BASE+entityName+"/", inputJson)
+        triggeredTestCase = addRow(entityName+"/", inputJson)
     if operationType == "readAll":
-        triggeredTestCase = getAllRows(BASE+entityName)
+        triggeredTestCase = getAllRows(entityName)
     if operationType == "readAllAvailable":
-        triggeredTestCase = getAllRows(BASE+entityName+"/available")
+        triggeredTestCase = getAllRows(entityName+"/available")
     if operationType == "readById":
-        triggeredTestCase = getSingleRow(BASE+entityName, fieldValue)
+        triggeredTestCase = getSingleRow(entityName, fieldValue)
     if operationType == "readByStaffId":
-        triggeredTestCase = getByStaffId(BASE+entityName,fieldValue)
+        triggeredTestCase = getByStaffId(+entityName,fieldValue)
     if operationType == "updateById":
-        triggeredTestCase = updateRow(BASE+entityName,fieldValue,inputJson)
+        triggeredTestCase = updateRow(entityName,fieldValue,inputJson)
     if operationType == "softDelete":
-        triggeredTestCase = softDeleteRow(BASE+entityName,fieldValue)
+        triggeredTestCase = softDeleteRow(entityName,fieldValue)
     if operationType == "addRelation":
-        triggeredTestCase = addRelation(BASE+entityName,inputJson)
+        triggeredTestCase = addRelation(entityName,inputJson)
     if operationType == "hardDelete":
-        triggeredTestCase = deleteRow(BASE+entityName,fieldValue)
+        triggeredTestCase = deleteRow(entityName,fieldValue)
     if operationType == "deleteRelation":
-        triggeredTestCase = deleteRelation(BASE+entityName,inputJson)
+        triggeredTestCase = deleteRelation(+entityName,inputJson)
     if operationType == "readByStaffIDorEmail":
-        triggeredTestCase = getByStaffEmailOrID(BASE+entityName,inputJson)
+        triggeredTestCase = getByStaffEmailOrID(+entityName,inputJson)
     if operationType == "getAllByIds":
-        triggeredTestCase = getByIDs(BASE+entityName,inputJson)
+        triggeredTestCase = getByIDs(+entityName,inputJson)
     validateOutcome(triggeredTestCase, expectedResult,testCaseName)
     print("Complete")
 
@@ -58,13 +58,13 @@ def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,oper
 # setup data
 def seedAllData():
     for entity in entities:
-        seedData(BASE+entity+"/")
+        seedData(+entity+"/")
 
 # delete ALL the testing data
 def cleanUp():
     for entity in range(len(entities)-1,-1,-1):
         print("entities[entity]",entities[entity])
-        deleteAll(BASE+entities[entity]+"/")
+        deleteAll(+entities[entity]+"/")
 
 # check if test case pass
 def validateOutcome(actualResult, expectedResult,testCaseName):
@@ -101,52 +101,52 @@ def resetDataToDefaults(url):
 
 
 # =====================CRUD functions=====================
-# Gets single row based on its ID
+# Gets single row d on its ID
 def getSingleRow(url,rowId):
-    obtainedRow = requests.get(url+"/{rowId}".format(rowId=rowId))
+    obtainedRow = client.get(url+"/{rowId}".format(rowId=rowId))
     return obtainedRow.json()
 
 def getByStaffId(url,staffId):
-    obtainedRow = requests.get(url+"/staff/{staffId}".format(staffId=staffId))
+    obtainedRow = client.get(url+"/staff/{staffId}".format(staffId=staffId))
     return obtainedRow.json()
 
 def getByStaffEmailOrID(url,jsonObject):
-    obtainedRow = requests.get(url+"/one", json=jsonObject)
+    obtainedRow = client.get(url+"/one", json=jsonObject)
     return obtainedRow.json()
 
 def getByIDs(url,jsonObject):
-    obtainedRows = requests.post(url+"/byid", json=jsonObject)
+    obtainedRows = client.post(url+"/byid", json=jsonObject)
     return obtainedRows.json()
 
 # Gets all rows
 def getAllRows(url):
-    rows = requests.get(url)
+    rows = client.get(url)
     return rows.json()
 
 # Add row
 def addRow(url,jsonObject):
-    addedRow = requests.post(url, json=jsonObject)
+    addedRow = client.post(url, json=jsonObject)
     return addedRow.json()
 
 # Add many to many relation
 def addRelation(url,jsonObject):
-    addedRelation = requests.post(url+"/", json=jsonObject)
+    addedRelation = client.post(url+"/", json=jsonObject)
     return addedRelation.json()
 
 def deleteRelation(url,jsonObject):
-    deletedRelation = requests.delete(url+"/", json=jsonObject)
+    deletedRelation = client.delete(url+"/", json=jsonObject)
     return deletedRelation.json()
 # Update rows
 def updateRow(url, rowId,jsonObject):
     print(url+"/"+str(rowId))
-    updatedRow = requests.put(url+"/{rowId}/".format(rowId=rowId),json = jsonObject)
+    updatedRow = client.put(url+"/{rowId}/".format(rowId=rowId),json = jsonObject)
     return updatedRow.json()
 
 def softDeleteRow(url,rowId):
-    softDeleted = requests.put(url+"/delete/{rowId}/".format(rowId=rowId))
+    softDeleted = client.put(url+"/delete/{rowId}/".format(rowId=rowId))
     return softDeleted.json()
 
 # Delete rows
 def deleteRow(url, rowId):
-    deletedRow = requests.delete(url+"/{rowId}/".format(rowId=rowId))
+    deletedRow = client.delete(url+"/{rowId}/".format(rowId=rowId))
     return deletedRow.json()

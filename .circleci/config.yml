@@ -59,8 +59,8 @@ jobs:
           command: python ./Backend/testrun.py
       - run:
           name: Run test scripts
-
-          command: python ./Backend/Tests/main_test.py
+          # command: python ./Backend/Tests/main_test.py
+          command: pytest
 
       # - run:
       #     name: Run the API
