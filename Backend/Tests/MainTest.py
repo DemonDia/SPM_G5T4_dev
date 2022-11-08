@@ -14,10 +14,10 @@ def mainTest():
     seedAllData()
 
     #testAllRoleCases()
-    testAllSkillCases()
+    # testAllSkillCases()
     # testAllRoleSkillRelationCases()
     #testAllCourseSkillRelationCases()
-    testAllCourseLearningJourneyCases()
+    # testAllCourseLearningJourneyCases()
 
     # remove all the test data after testing is complete
     #cleanUp()

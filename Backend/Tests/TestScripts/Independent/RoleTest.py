@@ -72,7 +72,7 @@ def deleteRoleTest():
 
 
 def testAllRoleCases():
-    addRoleTest()
-    viewExistingRoleTest()
-    updatingRoleTest()
-    deleteRoleTest()
+    # addRoleTest()
+    # viewExistingRoleTest()
+    # updatingRoleTest()
+    # deleteRoleTest()

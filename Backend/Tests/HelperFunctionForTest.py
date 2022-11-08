@@ -9,7 +9,6 @@ entities = ["roles","skills","course","userroles","roleskillrelations","coursesk
 # readAll --> read all existing rows
 # readById --> read by specific Id
 operationTypes = ["create","readAll","readAllAvailable","readById","updateById","softDelete","hardDelete","addRelation","readByStaffId","readByStaffIDorEmail","getAllByIds","deleteRelation"]
-from main_ci_test import client;
 #  URL
 BASE = "http://127.0.0.1:8000/"
 # =====================Other helper functions=====================
@@ -58,13 +57,13 @@ def triggerTestCase(testCaseName,expectedResult,entityName,inputJson = None,oper
 # setup data
 def seedAllData():
     for entity in entities:
-        seedData(+entity+"/")
+        seedData(BASE+entity+"/")
 
 # delete ALL the testing data
 def cleanUp():
     for entity in range(len(entities)-1,-1,-1):
         print("entities[entity]",entities[entity])
-        deleteAll(+entities[entity]+"/")
+        deleteAll(BASE+entities[entity]+"/")
 
 # check if test case pass
 def validateOutcome(actualResult, expectedResult,testCaseName):
@@ -103,50 +102,50 @@ def resetDataToDefaults(url):
 # =====================CRUD functions=====================
 # Gets single row d on its ID
 def getSingleRow(url,rowId):
-    obtainedRow = client.get(url+"/{rowId}".format(rowId=rowId))
+    obtainedRow = requests.get(url+"/{rowId}".format(rowId=rowId))
     return obtainedRow.json()
 
 def getByStaffId(url,staffId):
-    obtainedRow = client.get(url+"/staff/{staffId}".format(staffId=staffId))
+    obtainedRow = requests.get(url+"/staff/{staffId}".format(staffId=staffId))
     return obtainedRow.json()
 
 def getByStaffEmailOrID(url,jsonObject):
-    obtainedRow = client.get(url+"/one", json=jsonObject)
+    obtainedRow = requests.get(url+"/one", json=jsonObject)
     return obtainedRow.json()
 
 def getByIDs(url,jsonObject):
-    obtainedRows = client.post(url+"/byid", json=jsonObject)
+    obtainedRows = requests.post(url+"/byid", json=jsonObject)
     return obtainedRows.json()
 
 # Gets all rows
 def getAllRows(url):
-    rows = client.get(url)
+    rows = requests.get(url)
     return rows.json()
 
 # Add row
 def addRow(url,jsonObject):
-    addedRow = client.post(url, json=jsonObject)
+    addedRow = requests.post(url, json=jsonObject)
     return addedRow.json()
 
 # Add many to many relation
 def addRelation(url,jsonObject):
-    addedRelation = client.post(url+"/", json=jsonObject)
+    addedRelation = requests.post(url+"/", json=jsonObject)
     return addedRelation.json()
 
 def deleteRelation(url,jsonObject):
-    deletedRelation = client.delete(url+"/", json=jsonObject)
+    deletedRelation = requests.delete(url+"/", json=jsonObject)
     return deletedRelation.json()
 # Update rows
 def updateRow(url, rowId,jsonObject):
     print(url+"/"+str(rowId))
-    updatedRow = client.put(url+"/{rowId}/".format(rowId=rowId),json = jsonObject)
+    updatedRow = requests.put(url+"/{rowId}/".format(rowId=rowId),json = jsonObject)
     return updatedRow.json()
 
 def softDeleteRow(url,rowId):
-    softDeleted = client.put(url+"/delete/{rowId}/".format(rowId=rowId))
+    softDeleted = requests.put(url+"/delete/{rowId}/".format(rowId=rowId))
     return softDeleted.json()
 
 # Delete rows
 def deleteRow(url, rowId):
-    deletedRow = client.delete(url+"/{rowId}/".format(rowId=rowId))
+    deletedRow = requests.delete(url+"/{rowId}/".format(rowId=rowId))
     return deletedRow.json()
