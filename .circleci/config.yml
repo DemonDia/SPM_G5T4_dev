@@ -13,6 +13,7 @@ jobs:
       name: python/default
       tag: '3.9'
     working_directory: ~/project/Backend
+    runs-on: ubuntu-latest
     steps:
   
       - checkout:
