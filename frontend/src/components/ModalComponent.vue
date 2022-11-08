@@ -38,23 +38,28 @@
     },
     methods: {
         checkSuccess() {
+            var splitStr = this.type
+            splitStr = splitStr.toLowerCase().split(' ');
+            for (var i = 0; i < splitStr.length; i++) {
+                splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+            }
+            var newType = splitStr.join(' '); 
             if (this.isSuccess) {
                 this.header = "Success!"
                 this.icon = "bi bi-emoji-smile-fill icon-green"
-                this.message = this.type + " " + this.func + "d successfully."
+                this.message = "Yay! " + newType + " is " + this.func + "d successfully."
             }
             else {
                 this.header = "Try again!"
                 this.icon = "bi bi-emoji-frown-fill icon-red"
-                this.message = this.type + " is unsuccessfully " + this.func + "d. Please fix the errors."
+                this.message = "Oops, " + newType + " is unsuccessfully " + this.func + "d. Please fix the errors and try again!"
             }
         },
         onClickButton(event) {
-            // console.log("clicked modal close button");
             this.$emit('clicked', false);
         }
-    }
-    };
+    },
+};
 
 </script>
   

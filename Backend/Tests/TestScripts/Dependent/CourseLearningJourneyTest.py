@@ -11,6 +11,7 @@ def AddCourseLearningJourney():
                     {
                         "LearningJourney_ID": 1,
                         "Courses": ["COR001", "COR002", "COR006"]
+                        
                     }, "addRelation"
                     )
 
@@ -32,8 +33,10 @@ def DeleteCourseLearningJourney():
     addedRow = requests.post(BASE+"learningjourney/", json={
         "Staff_ID": 130001,
         "Courses": coursesToAdd,
-        "Role_ID": 21
+        "Role_ID": 21,
+        "Skills":[]
     })
+    print("addedRow",addedRow)
     addedRowJson = addedRow.json()
     triggerTestCase("Delete Courses from learning journey - more than one course left", False, courselearningJourney,
                     {
