@@ -97,7 +97,7 @@ async def AddCourseLearningJourney(request: Request, session: Session = Depends(
         }
 
 
-@app.delete("/courselearningjourney/", tags=["CourseLearningJourney"])
+@app.post("/courselearningjourney/delete", tags=["CourseLearningJourney"])
 async def deleteCourseLearningJourney(request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
