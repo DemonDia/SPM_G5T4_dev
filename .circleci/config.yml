@@ -160,6 +160,7 @@ workflows:
                 - "refactoring-test-case"
                 - "main"
                 - "frontend-testing"
+                - "backend-testing"
           context:
             - Database
             - Deployment
@@ -177,6 +178,7 @@ workflows:
                 - "refactoring-test-case"
                 - "main"
                 - "frontend-testing"
+                - "backend-testing"
       - frontend_build:
           context:
             - Deployment
@@ -189,6 +191,7 @@ workflows:
                 - "circleci-testing"
                 - "main"
                 - "frontend-testing"
+                - "backend-testing"
       - frontend-deploy-dev:
           context:
             - Deployment
@@ -202,6 +205,7 @@ workflows:
                 - "circleci-testing"
                 - "main"
                 - "frontend-testing"
+                - "backend-testing"
       - frontend-integration-test:
           context:
             - Deployment
@@ -216,4 +220,5 @@ workflows:
                 - "circleci-testing"
                 - "main"
                 - "frontend-testing"
+                - "backend-testing"
                 

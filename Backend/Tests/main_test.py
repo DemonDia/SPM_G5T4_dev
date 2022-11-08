@@ -85,9 +85,7 @@ class TestScriptApp(asynctest.TestCase):
     async def test_read_root(self):
         """ Fetch an endpoint from the app. """
         async with aiohttp.ClientSession() as session:
-            print("TEST START")
             cleanUp()
             seedAllData()
             mainTest()
             cleanUp()
-            print("TEST COMPLETE")
