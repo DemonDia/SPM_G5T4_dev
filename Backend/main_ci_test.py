@@ -4,6 +4,8 @@
 from fastapi.testclient import TestClient
 import pytest
 from main import app
+from random import randint
+
 # ============================Helper functions/variables============================
 entities = ["roles", "skills", "course", "userroles", "roleskillrelations", "courseskillrelations",
             "staff", "learningjourney", "courselearningjourney", "learningjourneyskillrelation"]
@@ -288,6 +290,8 @@ def delete_lj():
     assert deleteNonExistingLJ.json()["success"] == False
 
 # ======================================== Learning Journey Skill Relation Tests ========================================
+
+
 def test_skill_to_lj():
     request = client.post("/learningjourneyskillrelation/",
                           json={
@@ -295,3 +299,85 @@ def test_skill_to_lj():
                               "Skills": [1, 2, 3]
                           })
     assert request.json()["success"] == True
+
+# ======================================== Course Skill Relation Tests ========================================
+
+
+def test_add_skill_to_course():
+    request = client.post("/courseskillrelations/", json={
+        "Course_ID": "COR001",
+        "Skills": [1, 2, 3]
+    })
+    assert request.json()["success"] == True
+
+
+def test_update_skill_of_course():
+    request = client.put("/courseskillrelations/{Course_ID}".format(Course_ID="FIN001"), json={
+        "Skills": [10, 11, 12]
+    })
+    assert request.json()["success"] == True
+
+
+def test_view_skills_of_course():
+    request = client.get(
+        "/courseskillrelations/{Course_ID}".format(Course_ID="FIN001"))
+    assert request.json()["success"] == True
+
+
+def test_view_course_by_skill_ids():
+    request = client.post("/skillcourserelations/byid", json={
+        "Skills": [1, 2, 3]
+    })
+    assert request.json()["success"] == True
+
+# ======================================== Course Learning Journey Relation Tests ========================================
+
+
+def test_add_course_lj():
+    request = client.post("/courselearningjourney/",
+                          json={
+                              "LearningJourney_ID": 1,
+                              "Courses": ["COR001", "COR002", "COR006"]
+                          })
+    assert request.json()["success"] == True
+
+
+def test_delete_course_lj():
+    allCourses = client.get("/course/").json()["data"]
+    courseToAdd = allCourses[0]["Course_ID"]
+    addedRowReq = client.post("/learningjourney/",
+                              json={
+                                  "Staff_ID": 130001,
+                                  "Courses": [courseToAdd],
+                                  "Role_ID": 21,
+                                  "Skills": []}
+                              )
+    addedRow = addedRowReq.json()["data"]
+    
+
+    deleteWhenOneLeft = client.post("/courselearningjourney/delete",
+                                    json={
+                                        "LearningJourney_ID": addedRow,
+                                        "Course_ID": courseToAdd
+                                    })
+    assert deleteWhenOneLeft.json()["success"] == False
+
+    
+    coursesToAdd = []
+    for course in allCourses:
+        coursesToAdd.append(course["Course_ID"])
+    addedRowReq = client.post("/learningjourney/",
+                              json={
+                                  "Staff_ID": 130001,
+                                  "Courses": coursesToAdd,
+                                  "Role_ID": 21,
+                                  "Skills": []}
+                              )
+    addedRow = addedRowReq.json()["data"]
+    
+    deleteWhenMoreThanOneLeft = client.post("/courselearningjourney/delete",
+                                            json={
+                                                "LearningJourney_ID": addedRow,
+                                                "Course_ID": "COR001"
+                                            })
+    assert deleteWhenMoreThanOneLeft.json()["success"] == True
