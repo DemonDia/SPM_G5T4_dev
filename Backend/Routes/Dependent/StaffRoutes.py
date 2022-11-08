@@ -20,7 +20,7 @@ def addSeedData():
     return seedInitialData("staff", StaffModel, 25, False, "staff")
 
 
-@app.get("/staff/one",tags=["Staff"])
+@app.post("/staff/one",tags=["Staff"])
 async def getStaffInfo(request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -38,12 +38,14 @@ async def getStaffInfo(request: Request, session: Session = Depends(get_session)
             getStaffStatement = select(StaffModel).where(
                 StaffModel.Staff_ID == Staff_ID)
             getStaffInfo = session.exec(getStaffStatement).all()
-            getStaffInfo = getStaffInfo[0]
+            if (len(getStaffInfo) > 0):
+                getStaffInfo = getStaffInfo[0]
         elif Email and not Staff_ID:
             getStaffStatement = select(StaffModel).where(
                 StaffModel.Email == Email)
             getStaffInfo = session.exec(getStaffStatement).all()
-            getStaffInfo = getStaffInfo[0]
+            if (len(getStaffInfo) > 0):
+                getStaffInfo = getStaffInfo[0]
         else:
             errors.append("Choose either Staff_ID or Email!")
 
@@ -53,7 +55,7 @@ async def getStaffInfo(request: Request, session: Session = Depends(get_session)
         if len(errors) > 0:
             return {
                 "success": False,
-                "message": errors
+                "message": errors,
             }
         return {
             "success": True,

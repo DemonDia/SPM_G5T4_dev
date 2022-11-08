@@ -3,6 +3,7 @@ from fastapi import Response, Depends
 from database import *
 from sqlmodel import Session, select, delete, join
 from config import app
+from main import prefix_router
 from Models.IndependentModels import RoleModel, SkillModel, CourseModel
 from Models.DependentModels import RoleSkillRelationModel, CourseSkillRelationModel
 from HelperFunctions import *

@@ -36,7 +36,6 @@ async def addRelatedSkills(request: Request, session: Session = Depends(get_sess
             role = chosenRoleResult[0]
         if role == None:
             errors.append("Role does not exist!")
-            errors.append(str(e))
             return {
                 "success": False,
                 "message": errors
@@ -74,7 +73,6 @@ async def addSkillToRoles(Role_ID: int, session: Session = Depends(get_session))
         role = session.get(RoleModel, Role_ID)
         if role == None:
             errors.append("Role does not exist!")
-            errors.append(str(e))
             return {
                 "success": False,
                 "message": errors
@@ -118,7 +116,6 @@ async def updateRelatedSkillsOfRole(Role_ID: int, request: Request, session: Ses
             role = chosenRoleResult[0]
         if role == None:
             errors.append("Role does not exist!")
-            errors.append(str(e))
             return {
                 "success": False,
                 "message": errors

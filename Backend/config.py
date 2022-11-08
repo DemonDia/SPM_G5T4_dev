@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter, Request
 from os import getenv
 from dotenv import load_dotenv
 # ============this loads the environment variables from .env============
@@ -66,6 +66,17 @@ database_route = getenv("DATABASE_URL")
 app = FastAPI(
     title="SPM G5T4 Backend",
     openapi_tags=tags_metadata,
-    root_path="/dev/"   # when making pushes nid this line
+    root_path="/dev/"
+      # when making pushes nid this line
 )
 # adding of middleware
+temp = APIRouter()
+prefix_router = APIRouter(prefix="/dev")
+# Add the paths to the router instead
+@prefix_router.get("/paths")
+def service( request : Request ):
+    return { "message" : request.scope.get("root_path")}
+
+# Now add the router to the app
+app.include_router(prefix_router)
+# app = FastAPI()

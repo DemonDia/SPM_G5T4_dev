@@ -57,6 +57,10 @@ jobs:
           name: Run Test File
           # command: uvicorn Backend.main:app --reload
           command: python ./Backend/testrun.py
+      - run:
+          name: Run test scripts
+          # command: python ./Backend/Tests/main_test.py
+          command: pytest
 
       # - run:
       #     name: Run the API
@@ -91,7 +95,7 @@ jobs:
           command: aws lambda update-function-code --function-name spm_fastapi --s3-bucket spm-bigbucket --s3-key function.zip
       
 
-  frontend_build_and_test: # this can be any name you choose
+  frontend_build: # this can be any name you choose
     executor: node/default # use the default executor defined within the orb
     working_directory: ~/project/Frontend/frontend
     steps:
@@ -127,6 +131,23 @@ jobs:
       - run:
           name: Deploy on S3 
           command: aws s3 sync ./dist s3://spm-smallbucket
+
+  frontend-integration-test:
+    executor: node/default # use the default executor defined within the orb
+    working_directory: ~/project/Frontend/frontend
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.27.1-focal
+    steps:
+      - checkout:
+          path: ~/project/Frontend
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          name: Download playwright dependencies
+          command: npm ci
+      - run:
+          command: npm run test
+          name: Run playwright dev servers
       
 workflows:
   build-test-and-deploy:
@@ -138,6 +159,8 @@ workflows:
                 - "circleci-testing"
                 - "refactoring-test-case"
                 - "main"
+                - "frontend-testing"
+                - "backend-testing"
           context:
             - Database
             - Deployment
@@ -154,7 +177,9 @@ workflows:
                 - "circleci-testing"
                 - "refactoring-test-case"
                 - "main"
-      - frontend_build_and_test:
+                - "frontend-testing"
+                - "backend-testing"
+      - frontend_build:
           context:
             - Deployment
           requires:
@@ -165,11 +190,13 @@ workflows:
               only:
                 - "circleci-testing"
                 - "main"
+                - "frontend-testing"
+                - "backend-testing"
       - frontend-deploy-dev:
           context:
             - Deployment
           requires:
-            - frontend_build_and_test
+            - frontend_build
             - backend-build-and-test
             - backend-deploy-dev
           filters:        
@@ -177,4 +204,21 @@ workflows:
               only:
                 - "circleci-testing"
                 - "main"
+                - "frontend-testing"
+                - "backend-testing"
+      - frontend-integration-test:
+          context:
+            - Deployment
+          requires:
+            - frontend_build
+            - backend-build-and-test
+            - backend-deploy-dev
+            - frontend-deploy-dev
+          filters:        
+            branches:
+              only:
+                - "circleci-testing"
+                - "main"
+                - "frontend-testing"
+                - "backend-testing"
                 
