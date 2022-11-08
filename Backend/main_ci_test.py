@@ -148,13 +148,13 @@ def test_get_roles():
     response = client.get("/roles/")
     assert response.status_code == 200
 
-# def test_post_roles():
-#     createRole = client.post("/dev/roles/",
-#                              {
-#                                  "Role_Name": "Product Manager",
-#                                  "Role_Description": "Product Manager needs to collaborate effectively with cross-functional stakeholders to create a smooth user experience for job seekers and employers",
-#                                  "Active": True
-#                              })
-#     print(createRole)
-#     assert createRole.status_code == 200
+def test_post_roles():
+    createRole = client.post("/roles/",
+                             {
+                                 "Role_Name": "Product Manager",
+                                 "Role_Description": "Product Manager needs to collaborate effectively with cross-functional stakeholders to create a smooth user experience for job seekers and employers",
+                                 "Active": True
+                             })
+    print(createRole)
+    assert createRole.status_code == 200
 

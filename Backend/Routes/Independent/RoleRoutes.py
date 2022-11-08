@@ -201,7 +201,7 @@ def getCoursesByRole(Role_ID: int, session: Session = Depends(get_session)):
         }
 
 
-@prefix_router.post("/roles/",tags=["Roles"])
+@app.post("/roles/",tags=["Roles"])
 def createRoles(role: RoleModel, session: Session = Depends(get_session)):
     errors = []
     try:
