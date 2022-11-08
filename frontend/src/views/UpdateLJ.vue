@@ -368,6 +368,8 @@ export default {
     onClickModal() {
       // modal is closed
       if (this.isSuccess) {
+        // refresh page
+        // this.resetErrors();
         // go back to View All
         this.$router.replace({ name: "learningjourney" });
       }
@@ -377,7 +379,16 @@ export default {
       // reset fields
       this.isSubmitted = NaN;
       this.isSuccess = NaN;
-      this.clicked = NaN;
+      this.checked = NaN;
+      this.noLJFound = NaN;
+      // reload stuff
+      this.loadCourses();
+      var LJInfo = this.getLJInfo(this.currentLJ_ID);
+      this.noLJFound = LJInfo.data.success;
+      // load data into the v-model and array
+      this.courses = LJInfo.data.data.Courses;
+      this.skills = LJInfo.data.data.Skills;
+      // skip getting role, skills and courses info
     },
 
     addModalClicked() {
