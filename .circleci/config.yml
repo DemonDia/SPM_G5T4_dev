@@ -13,9 +13,22 @@ jobs:
       name: python/default
       tag: '3.9'
     working_directory: ~/project/Backend
+    runs-on: ubuntu-latest
     steps:
+  
       - checkout:
           path: ~/project/Backend
+
+      - run:
+          name: Install python virtual env
+          command: pip3 install virtualenv
+      
+
+      - run:
+          name: Install Python deps in a venv
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
 
       # - save_cache:
       #     paths:
@@ -27,6 +40,7 @@ jobs:
       #         # fallback to using the latest cache if no exact match is found
       #         - v1-dependencies-
       # - checkout
+
 
       - run:
           name: Find requirements.txt
