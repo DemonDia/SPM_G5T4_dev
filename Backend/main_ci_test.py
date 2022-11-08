@@ -26,7 +26,7 @@ client = TestClient(app)
 
 def seedAllData():
     for entity in entities:
-        client.post(entities[entity]+"/seedall")
+        client.post(entity+"/seedall")
 
 # delete ALL the testing data
 
@@ -38,8 +38,8 @@ def cleanUp():
 # ============================FastAPI test============================
 
 
-@pytest.fixture()
-def test_setup():
+@pytest.fixture(autouse=True)
+def tests():
     cleanUp()
     seedAllData()
     yield
@@ -54,15 +54,22 @@ def test_read_main():
 # ========================== Role Tests ==========================
 def test_get_roles():
     response = client.get("/roles/")
-    assert response.status_code == 200
+    assert response.json()["success"] == True
 
 
 def test_post_roles():
-    createRole = client.post("/roles/",
+    createNewRole = client.post("/roles/",
                              json={
                                  "Role_Name": "Product Manager",
                                  "Role_Description": "Product Manager needs to collaborate effectively with cross-functional stakeholders to create a smooth user experience for job seekers and employers",
                                  "Active": True
                              })
-    print(createRole)
-    assert createRole.status_code == 200
+    
+    assert createNewRole.json()["success"] == True
+    createDuplicateRole = client.post("/roles/",
+                             json={
+                                 "Role_Name": "Product Manager",
+                                 "Role_Description": "Product Manager needs to collaborate effectively with cross-functional stakeholders to create a smooth user experience for job seekers and employers",
+                                 "Active": True
+                             })
+    assert createDuplicateRole.json()["success"] == False
