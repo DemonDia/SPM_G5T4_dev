@@ -144,12 +144,12 @@ def test_read_main():
 #     print(response)
 #     assert response.status_code == 200
 
-# def test_get_roles():
-#     response = client.get("/roles")
-#     assert response.status_code == 200
+def test_get_roles():
+    response = client.get("/dev/roles/")
+    assert response.status_code == 200
 
 # def test_post_roles():
-#     createRole = client.post("/roles",
+#     createRole = client.post("/dev/roles/",
 #                              {
 #                                  "Role_Name": "Product Manager",
 #                                  "Role_Description": "Product Manager needs to collaborate effectively with cross-functional stakeholders to create a smooth user experience for job seekers and employers",

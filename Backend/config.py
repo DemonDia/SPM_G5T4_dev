@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, Request
 from os import getenv
 from dotenv import load_dotenv
 # ============this loads the environment variables from .env============
@@ -71,4 +71,12 @@ app = FastAPI(
 )
 # adding of middleware
 temp = APIRouter()
+prefix_router = APIRouter(prefix="/dev")
+# Add the paths to the router instead
+@prefix_router.get("/paths")
+def service( request : Request ):
+    return { "message" : request.scope.get("root_path")}
+
+# Now add the router to the app
+app.include_router(prefix_router)
 # app = FastAPI()

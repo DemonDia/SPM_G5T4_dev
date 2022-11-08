@@ -3,6 +3,7 @@ from fastapi import Response, Depends
 from database import *
 from sqlmodel import Session, select, delete, join
 from config import app
+from main import prefix_router
 from Models.IndependentModels import RoleModel, SkillModel, CourseModel
 from Models.DependentModels import RoleSkillRelationModel, CourseSkillRelationModel
 from HelperFunctions import *
@@ -66,7 +67,7 @@ def getAllRelatedSkills():
 # ===========================actual CRUD functions===========================
 
 
-@app.get('/roles/',tags=["Roles"])
+@prefix_router.get('/roles/',tags=["Roles"])
 def getRoles(session: Session = Depends(get_session)):
     errors = []
     try:
@@ -200,7 +201,7 @@ def getCoursesByRole(Role_ID: int, session: Session = Depends(get_session)):
         }
 
 
-@app.post("/roles/",tags=["Roles"])
+@prefix_router.post("/roles/",tags=["Roles"])
 def createRoles(role: RoleModel, session: Session = Depends(get_session)):
     errors = []
     try:
