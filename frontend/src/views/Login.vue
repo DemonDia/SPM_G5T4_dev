@@ -93,7 +93,7 @@ export default {
         password: this.form.password,
       })
         .then(() => {
-          this.$router.replace({ name: "home" }).catch(() => {
+          this.$router.replace({ name: "learningjourney" }).catch(() => {
             console.log("error");
           });
         })

@@ -54,6 +54,7 @@
             ctype="skill"
             :skills="skills_array"
             @pillItems="getPill"
+            func="search"
           ></PillSearchComponent>
         </form>
 
@@ -76,9 +77,9 @@
 </template>
 
 <script>
-  import DashboardLayout from "./Dashboard/Layout/DashboardLayout.vue";
-  import FormComponent from "../components/FormComponent.vue";
-  import ModalComponent from "../components/ModalComponent.vue";
+  import DashboardLayout from "@/views/Dashboard/Layout/DashboardLayout.vue";
+  import FormComponent from "@/components/FormComponent.vue";
+  import ModalComponent from "@/components/ModalComponent.vue";
   import axios from "axios";
   import PillSearchComponent from "@/components/PillSearchComponent.vue";
   import PillComponent from "@/components/PillComponent.vue";
@@ -87,13 +88,13 @@
   export default {
     name: "UpdateRole",
     components: {
-    DashboardLayout,
-    FormComponent,
-    ModalComponent,
-    PillSearchComponent,
-    PillComponent,
-    SpinnerComponent
-},
+      DashboardLayout,
+      FormComponent,
+      ModalComponent,
+      PillSearchComponent,
+      PillComponent,
+      SpinnerComponent
+    },
     data() {
       return {
         role_name: {
@@ -318,6 +319,7 @@
   #submitBtn {
     background-color: #434ce8;
     color: #fbfbfb;
+    border: none;
   }
 
   #submitBtn:hover {

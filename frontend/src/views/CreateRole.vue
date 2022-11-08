@@ -23,7 +23,7 @@
         <!-- Progress Tracker -->
         <div class="row gx-4 progress p-0">
           <div
-            class="col-12 col-md-4"
+            class="col-12 col-sm-4"
             v-for="(value, key) in progress"
             :key="key"
           >
@@ -93,6 +93,7 @@
               class="my-5"
               ctype="skill"
               @pillItems="getPill"
+              func="search"
             ></PillSearchComponent>
           </div>
 
@@ -199,12 +200,12 @@
             bg: "#c86bfa",
             description: "Assign skills (optional)",
             button1: "Back to Step 1",
-            button2: "Next: Confirm summary",
+            button2: "Next: Confirm choices",
           },
           {
             title: "STEP 3",
             bg: "#2d0f51",
-            description: "Confirm summary",
+            description: "Summary",
             button1: "Back to Step 2",
             button2: "Submit",
           },
@@ -218,10 +219,10 @@
           var roleStatus = res.data;
           this.assignSkills(roleStatus.data).then((result) => {
             var assignSkillStatus = result.data;
-            
             this.resetErrors();
+            this.isSubmitted = true;
             if (roleStatus.success || assignSkillStatus.success) {
-              this.resetForm(); // throw error message if role is duplicated
+              this.resetForm();
               this.isSuccess = true;
             } else {
               // failure case
@@ -285,54 +286,6 @@
         // modal is closed
         // reset checked value:
         this.checked = value;
-        if (this.isSubmitted && this.isSuccess) {
-          // go back to View All
-          this.$router.replace({ name: "roles" });
-        }
-      },
-      
-      createRole() {
-        var createRoleUrl =
-          "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roles/";
-        return new Promise((resolve, reject) => {
-          axios
-            .post(createRoleUrl, {
-              Role_Name: this.role_name.role_name,
-              Role_Description: this.role_description.role_description,
-              Active: true,
-            })
-            .then((response) => {
-              resolve(response);
-            })
-            .catch((err) => reject(err));
-        });
-      },
-      
-      assignSkills(role_id) {
-        var assignSkillsUrl =
-          "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/roleskillrelations/";
-        return new Promise((resolve, reject) => {
-          axios
-            .post(assignSkillsUrl, {
-              Role_ID: role_id,
-              Skills: this.pillSkill_IDArray,
-            })
-            .then((response) => {
-              resolve(response);
-            })
-            .catch((err) => reject(err));
-        });
-      },
-
-      resetForm() {
-        this.role_name.role_name = "";
-        this.role_description.role_description = "";
-      },
-
-      onClickModal(value) {
-        // modal is closed
-        // reset checked value:
-        this.checked = value;
         if (this.isSuccess) {
           // go back to View All
           this.$router.replace({ name: "roles" });
@@ -350,10 +303,6 @@
         } else {
           this.currFormPg += 1;
         }
-      },
-
-      goToPg(x) {
-        this.currFormPg = x;
       },
 
       getPill(item) {
@@ -395,7 +344,7 @@
     },
     
     mounted() {
-        document.title = "LJMS - Create Roles";
+      document.title = "LJMS - Create Role";
     },
   };
 </script>

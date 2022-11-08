@@ -22,13 +22,14 @@ class RunTest(unittest.TestCase):
     def setUp(self):
         localUrl = "http://localhost:8080/login"
         prodUrl = "http://spm-smallbucket.s3-website-us-east-1.amazonaws.com/login"
-
+        self.driver.maximize_window()
         self.driver = Browser().getbrowser(browsername)
         self.driver.get(prodUrl)
+
         self.LoginLJMS = LoginLJMS(self.driver)
         self.Roles = Roles(self.driver)
 
-    def testRoles(self):
+    def test_roles(self):
         self.LoginLJMS.login("Admin")
         params = {"Role_Name": "Product Manager4", 
         "Role_Description": "Product Manager needs to collaborate effectively with cross-functional stakeholders from Product, Design, Engineering",

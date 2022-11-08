@@ -8,6 +8,7 @@
         type="text"
         :placeholder="this.placeholder"
         v-model="search"
+        name="pillSearch"
         v-on:keyup="searchItem"
       />
       <div class="autocomplete-box">
@@ -55,10 +56,10 @@ export default {
       currUrl: "",
       currName: "",
       currID: "",
-      placeholder: "Search for " + this.ctype + "s"
+      placeholder: ""
     };
   },
-  props: ["ctype", "skills", "roles"],
+  props: ["ctype", "skills", "roles", "courses", "func"],
   methods: {
     searchItem() {
       // only search if the search bar is not empty
@@ -107,6 +108,13 @@ export default {
     // This is for update role page, to get the skills that are already assigned to the role
     if (this.skills) {
       this.pillItems = this.skills;
+    }
+
+    // Placeholder text changes accordingly to function of pillsearch
+    if (this.func == "filter") {
+      this.placeholder = "Filter by " + this.ctype + "s..."
+    } else if (this.func == "search") {
+      this.placeholder = "Search for " + this.ctype + "s..."
     }
   },
 };

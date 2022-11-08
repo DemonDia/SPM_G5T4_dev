@@ -3,33 +3,25 @@ from TestScripts.Dependent.RoleSkillRelationTest import testAllRoleSkillRelation
 from TestScripts.Dependent.CourseSkillRelationTest import testAllCourseSkillRelationCases
 from TestScripts.Independent.RoleTest import testAllRoleCases
 from TestScripts.Independent.SkillTest import testAllSkillCases
-from TestScripts.Dependent.StaffTest import testAllStaffCases
 from TestScripts.Dependent.LearningJourneyTest import testAllLearningJourneyCases
 from TestScripts.Dependent.CourseLearningJourneyTest import testAllCourseLearningJourneyCases
-from TestScripts.Dependent.LearningJourneySkillTest import testAllLearningJourneySkillRelationCases
-import pytest
-
-@pytest.fixture(autouse=True)
-def start():
-    cleanUp()
-    seedAllData()
-    yield
-    # cleanUp()
-
 
 def mainTest():
-    # trigger test cases for each entity
-    testAllRoleCases()
+    # Ensures ALL existing data is wiped out to prevent inconsistencies
+    cleanUp()
+
+    # Seeds default test data
+    seedAllData()
+
+    #testAllRoleCases()
     testAllSkillCases()
-    testAllRoleSkillRelationCases()
-    testAllCourseSkillRelationCases()
-    testAllLearningJourneyCases()
+    # testAllRoleSkillRelationCases()
+    #testAllCourseSkillRelationCases()
     testAllCourseLearningJourneyCases()
-    testAllLearningJourneySkillRelationCases()
+
     # remove all the test data after testing is complete
+    #cleanUp()
+    return
 
 if __name__ == "__main__":
-    cleanUp()
-    seedAllData()
-    # mainTest()
-    # cleanUp()
+    mainTest()

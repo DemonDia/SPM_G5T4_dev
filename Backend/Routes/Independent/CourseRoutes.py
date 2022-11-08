@@ -7,12 +7,12 @@ from HelperFunctions import *
 # ===========================test functions===========================
 
 
-@app.delete("/course/deleteall")
+@app.delete("/course/deleteall",tags=["Course","DeleteAll"])
 def deleteAll():
     return deleteAllData(CourseModel)
 
 
-@app.post("/course/seedall")
+@app.post("/course/seedall",tags=["Course","SeedAll"])
 def addSeedData():
     return seedInitialData("course", CourseModel, 25, False, "courses")
 
@@ -63,7 +63,7 @@ def getAllRelatedSkills():
 # ===========================actual CRUD functions===========================
 
 
-@app.get('/course/')
+@app.get('/course/',tags=["Course"])
 def getCourse(session: Session = Depends(get_session)):
     errors = []
     try:
@@ -95,7 +95,7 @@ def getCourse(session: Session = Depends(get_session)):
         }
 
 
-@app.get('/course/available/')
+@app.get('/course/available/',tags=["Course"])
 def getCourse(session: Session = Depends(get_session)):
     errors = []
     try:
@@ -125,7 +125,7 @@ def getCourse(session: Session = Depends(get_session)):
         }
 
 
-@app.get("/course/{course_ID}/")
+@app.get("/course/{course_ID}/",tags=["Course"])
 def course(course_ID: str, session: Session = Depends(get_session)):
     errors = []
     try:
@@ -157,7 +157,7 @@ def course(course_ID: str, session: Session = Depends(get_session)):
         }
 
 
-@app.post("/course/")
+@app.post("/course/",tags=["Course"])
 def createCourse(course: CourseModel, session: Session = Depends(get_session)):
     errors = []
     try:
