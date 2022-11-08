@@ -56,7 +56,6 @@
             }
         },
         onClickButton(event) {
-            console.log("clicked modal close button");
             this.$emit('clicked', false);
         }
     },
