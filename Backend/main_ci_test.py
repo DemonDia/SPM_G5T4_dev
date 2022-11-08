@@ -9,13 +9,17 @@ entities = ["roles", "skills", "course", "userroles", "roleskillrelations", "cou
             "staff", "learningjourney", "courselearningjourney", "learningjourneyskillrelation"]
 client = TestClient(app)
 # setup data
+
+
 def seedAllData():
     for entity in entities:
         req = client.post("/"+entity+"/seedall")
         # if entity == "staff":
         #     assert req.json() == None
- 
+
 # delete ALL the testing data
+
+
 def cleanUp():
     for entity in range(len(entities)-1, -1, -1):
         client.delete("/"+entities[entity]+"/deleteall")
@@ -187,15 +191,18 @@ def test_delete_skill():
     assert getCurrentSkill.json()["data"]["Active"] == False
 
 # ======================================== Staff Tests ========================================
+
+
 def test_get_existing_staff():
-    getExistingByID = client.post("/staff/one",json = {"Staff_ID": "140001g"})
+    getExistingByID = client.post("/staff/one", json={"Staff_ID": "140001g"})
     # assert getExistingByID.json() == None
     assert getExistingByID.json()["success"] == True
 
-    getNonExistingByID = client.post("/staff/one",json = {"Staff_ID": "random"})
+    getNonExistingByID = client.post("/staff/one", json={"Staff_ID": "random"})
     assert getNonExistingByID.json()["success"] == False
 
-    getExistingByEmail = client.post("/staff/one",json = {"Email": "Derek.Tan@allinone.com.sg"})
+    getExistingByEmail = client.post(
+        "/staff/one", json={"Email": "Derek.Tan@allinone.com.sg"})
     assert getExistingByEmail.json()["success"] == True
 
 
@@ -279,3 +286,12 @@ def delete_lj():
     deleteNonExistingLJ = client.delete(
         "/learningjourney/{LearningJourney_ID}/".format(LearningJourney_ID=-1))
     assert deleteNonExistingLJ.json()["success"] == False
+
+# ======================================== Learning Journey Skill Relation Tests ========================================
+def test_skill_to_lj():
+    request = client.post("/learningjourneyskillrelation/",
+                          json={
+                              "LearningJourney_ID": 1,
+                              "Skills": [1, 2, 3]
+                          })
+    assert request.json()["success"] == True
