@@ -9,18 +9,17 @@ entities = ["roles", "skills", "course", "userroles", "roleskillrelations", "cou
             "staff", "learningjourney", "courselearningjourney", "learningjourneyskillrelation"]
 client = TestClient(app)
 # setup data
-
-
 def seedAllData():
     for entity in entities:
-        client.post("/"+entity+"/seedall")
-
+        req = client.post("/"+entity+"/seedall")
+        # if entity == "staff":
+        #     assert req.json() == None
+ 
 # delete ALL the testing data
-
-
 def cleanUp():
     for entity in range(len(entities)-1, -1, -1):
         client.delete("/"+entities[entity]+"/deleteall")
+
 
 # ========================================FastAPI test========================================
 
@@ -241,6 +240,8 @@ def test_add_role_skill_relation():
     assert viewRelatedSkillsRoleDontExist.json()["success"] == False
 
 # ======================================== Learning Journey Tests ========================================
+
+
 def test_create_lj():
     createLearningJourney = client.post("/learningjourney/", json={
         "Staff_ID": 130001,
@@ -250,23 +251,31 @@ def test_create_lj():
     })
     assert createLearningJourney.json()["success"]
 
+
 def test_view_lj():
     viewAllLjs = client.get("/learningjourney/")
     assert viewAllLjs.json()["success"]
 
-    viewExistingLJ = client.get("/learningjourney/{LearningJourney_ID}/".format(LearningJourney_ID = 1))
+    viewExistingLJ = client.get(
+        "/learningjourney/{LearningJourney_ID}/".format(LearningJourney_ID=1))
     assert viewExistingLJ.json()["success"]
-    viewNonExistingLJ = client.get("/learningjourney/{LearningJourney_ID}/".format(LearningJourney_ID = -1))
+    viewNonExistingLJ = client.get(
+        "/learningjourney/{LearningJourney_ID}/".format(LearningJourney_ID=-1))
     assert viewNonExistingLJ.json()["success"] == False
 
-    viewExistingStaffLJ = client.get("/learningjourney/staff/{Staff_ID}".format(Staff_ID = 130001))
+    viewExistingStaffLJ = client.get(
+        "/learningjourney/staff/{Staff_ID}".format(Staff_ID=130001))
     assert viewExistingStaffLJ.json()["success"]
-    
-    viewExistingStaffLJ = client.get("/learningjourney/staff/{Staff_ID}".format(Staff_ID = -1))
+
+    viewExistingStaffLJ = client.get(
+        "/learningjourney/staff/{Staff_ID}".format(Staff_ID=-1))
     assert viewExistingStaffLJ.json()["success"] == False
 
+
 def delete_lj():
-    deleteExistingLJ = client.delete("/learningjourney/{LearningJourney_ID}/".format(LearningJourney_ID = 1))
+    deleteExistingLJ = client.delete(
+        "/learningjourney/{LearningJourney_ID}/".format(LearningJourney_ID=1))
     assert deleteExistingLJ.json()["success"]
-    deleteNonExistingLJ = client.delete("/learningjourney/{LearningJourney_ID}/".format(LearningJourney_ID = -1))
+    deleteNonExistingLJ = client.delete(
+        "/learningjourney/{LearningJourney_ID}/".format(LearningJourney_ID=-1))
     assert deleteNonExistingLJ.json()["success"] == False
