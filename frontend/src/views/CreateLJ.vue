@@ -92,7 +92,7 @@
                 <div 
                   v-for="(value, key) in this.roles.roles" 
                   :key="key"
-                  class="p-1 overflow-scroll d-sm-block d-md-inline-block"
+                  class="p-1 overflow-scroll"
                 >
                   <TileComponent 
                     :id="value.Role_ID"
@@ -134,7 +134,7 @@
             </div>
             <!-- Course Selection -->
             <div v-else v-if="!noSkillFound">
-              <div class="text-sm-start text-md-center fw-bold my-2 px-3">
+              <div class="text-sm-start text-md-center fw-bold my-2">
                 You have selected: 
                 <span 
                   id="selected" 
@@ -144,7 +144,7 @@
               </div>
               <div 
                 id="tiles"
-                class="d-sm-inline-flex d-md-flex flex-wrap justify-content-sm-start justify-content-md-center"
+                class="d-sm-inline-flex d-md-flex flex-wrap justify-content-around"
               >
                 <div 
                   v-for="(value, key) in this.skills.skills" 
@@ -402,6 +402,7 @@
 
       loadCourses() {
         var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/skillcourserelations/byid";
+
         axios.post(url, {"Skills": this.selectedS}).then((response) => {
           var result = response.data.data;
           if (result.length == 0) {
@@ -486,7 +487,7 @@
             } else {
               this.selectedS.push(value.id);
               this.selectedSname.push(value.name);
-              this.loadCourses();
+              this.loadCourses()
             }
           }
 
