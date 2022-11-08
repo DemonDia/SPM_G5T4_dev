@@ -117,7 +117,7 @@
 
 # ===============test client===============
 from fastapi.testclient import TestClient
-from main import *
+from main import app
 # ============================adding tests============================
 # def mainTest():
 #     # trigger test cases for each entity
