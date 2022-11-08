@@ -66,7 +66,7 @@ database_route = getenv("DATABASE_URL")
 app = FastAPI(
     title="SPM G5T4 Backend",
     openapi_tags=tags_metadata,
-    # root_path="/dev/"
+    root_path="/dev/"
       # when making pushes nid this line
 )
 # adding of middleware
