@@ -18,7 +18,7 @@ from Routes.Dependent.LearningJourneySkillRoutes import *
 
 from HelperFunctions import *
 from ErrorHandler import *
-from mangum import Mangum
+# from mangum import Mangum
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -38,4 +38,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-handler = Mangum(app)
+# handler = Mangum(app)
