@@ -145,7 +145,7 @@ def test_read_main():
 #     assert response.status_code == 200
 
 def test_get_roles():
-    response = client.get("/dev/roles/")
+    response = client.get("/roles/")
     assert response.status_code == 200
 
 # def test_post_roles():

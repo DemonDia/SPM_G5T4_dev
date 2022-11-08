@@ -67,7 +67,7 @@ def getAllRelatedSkills():
 # ===========================actual CRUD functions===========================
 
 
-@prefix_router.get('/roles/',tags=["Roles"])
+@app.get('/roles/',tags=["Roles"])
 def getRoles(session: Session = Depends(get_session)):
     errors = []
     try:
