@@ -201,7 +201,6 @@ def test_delete_skill():
 
 
 # ======================================== Role Skill Relation Tests ========================================
-
 def test_add_role_skill_relation():
     addSkillsToRole = client.post("/roleskillrelations/", json={
         "Role_ID": 8,
@@ -215,7 +214,7 @@ def test_add_role_skill_relation():
     })
     assert addRolesToSkill.json()["success"]
 
-    updateSkillsToRole = client.put("/roleskillrelations/{Role_ID}".format(Role_ID = 2), json={
+    updateSkillsToRole = client.put("/roleskillrelations/{Role_ID}".format(Role_ID=2), json={
         "Skills": [10, 11, 12]
     })
     assert updateSkillsToRole.json()["success"]
@@ -225,14 +224,49 @@ def test_add_role_skill_relation():
     })
     assert updateRolesToSkill.json()["success"]
 
-    viewRelatedSkillsRoleExist = client.get("/roleskillrelations/{Role_ID}".format(Role_ID = 2))
+    viewRelatedSkillsRoleExist = client.get(
+        "/roleskillrelations/{Role_ID}".format(Role_ID=2))
     assert viewRelatedSkillsRoleExist.json()["success"] == True
 
-    viewRelatedSkillsRoleDontExist = client.get("/roleskillrelations/{Role_ID}".format(Role_ID = -1))
+    viewRelatedSkillsRoleDontExist = client.get(
+        "/roleskillrelations/{Role_ID}".format(Role_ID=-1))
     assert viewRelatedSkillsRoleDontExist.json()["success"] == False
 
-    viewRelatedRolesSkillExist = client.get("/skillrolerelations/{Skill_ID}".format(Skill_ID = 1))
+    viewRelatedRolesSkillExist = client.get(
+        "/skillrolerelations/{Skill_ID}".format(Skill_ID=1))
     assert viewRelatedRolesSkillExist.json()["success"] == True
 
-    viewRelatedSkillsRoleDontExist = client.get("/skillrolerelations/{Skill_ID}".format(Skill_ID = -1))
+    viewRelatedSkillsRoleDontExist = client.get(
+        "/skillrolerelations/{Skill_ID}".format(Skill_ID=-1))
     assert viewRelatedSkillsRoleDontExist.json()["success"] == False
+
+# ======================================== Learning Journey Tests ========================================
+def test_create_lj():
+    createLearningJourney = client.post("/learningjourney/", json={
+        "Staff_ID": 130001,
+        "Courses": ["COR001", "COR002"],
+        "Skills": [1, 2, 3],
+        "Role_ID": 1
+    })
+    assert createLearningJourney.json()["success"]
+
+def test_view_lj():
+    viewAllLjs = client.get("/learningjourney/")
+    assert viewAllLjs.json()["success"]
+
+    viewExistingLJ = client.get("/learningjourney/{LearningJourney_ID}/".format(LearningJourney_ID = 1))
+    assert viewExistingLJ.json()["success"]
+    viewNonExistingLJ = client.get("/learningjourney/{LearningJourney_ID}/".format(LearningJourney_ID = -1))
+    assert viewNonExistingLJ.json()["success"] == False
+
+    viewExistingStaffLJ = client.get("/learningjourney/staff/{Staff_ID}".format(Staff_ID = 130001))
+    assert viewExistingStaffLJ.json()["success"]
+    
+    viewExistingStaffLJ = client.get("/learningjourney/staff/{Staff_ID}".format(Staff_ID = -1))
+    assert viewExistingStaffLJ.json()["success"] == False
+
+def delete_lj():
+    deleteExistingLJ = client.delete("/learningjourney/{LearningJourney_ID}/".format(LearningJourney_ID = 1))
+    assert deleteExistingLJ.json()["success"]
+    deleteNonExistingLJ = client.delete("/learningjourney/{LearningJourney_ID}/".format(LearningJourney_ID = -1))
+    assert deleteNonExistingLJ.json()["success"] == False
