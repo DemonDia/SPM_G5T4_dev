@@ -13,14 +13,14 @@ client = TestClient(app)
 
 def seedAllData():
     for entity in entities:
-        client.post(entity+"/seedall")
+        client.post("/"+entity+"/seedall")
 
 # delete ALL the testing data
 
 
 def cleanUp():
     for entity in range(len(entities)-1, -1, -1):
-        client.delete(entities[entity]+"/deleteall")
+        client.delete("/"+entities[entity]+"/deleteall")
 
 # ========================================FastAPI test========================================
 
@@ -31,6 +31,7 @@ def tests():
     seedAllData()
     yield
     cleanUp()
+    # seedAllData()
 
 
 def test_read_main():
@@ -62,19 +63,19 @@ def test_post_roles():
     assert createDuplicateRole.json()["success"] == False
 
     createRoleWithLongName = client.post("/roles/",
-                                      json={
-                                          "Role_Name": "This is a role with long name!a",
-                                          "Role_Description": "Product Manager needs to collaborate effectively with cross-functional stakeholders to create a smooth user experience for job seekers and employers",
-                                          "Active": True
-                                      })
+                                         json={
+                                             "Role_Name": "This is a role with long name!a",
+                                             "Role_Description": "Product Manager needs to collaborate effectively with cross-functional stakeholders to create a smooth user experience for job seekers and employers",
+                                             "Active": True
+                                         })
     assert createRoleWithLongName.json()["success"] == False
 
     createRoleWithLongDesc = client.post("/roles/",
-                                      json={
-                                          "Role_Name": "Product Manager Head",
-                                          "Role_Description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,nasaaa",
-                                          "Active": True
-                                      })
+                                         json={
+                                             "Role_Name": "Product Manager Head",
+                                             "Role_Description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,nasaaa",
+                                             "Active": True
+                                         })
     assert createRoleWithLongDesc.json()["success"] == False
 
 
@@ -103,7 +104,8 @@ def test_role_update():
     })
     afterUpdate = client.get("/roles/{id}/".format(id=1))
     afterUpdateData = afterUpdate.json()["data"]
-    assert updateRole.json()["success"] == True and beforeUpdateData["Role_Name"] != afterUpdateData["Role_Name"] and beforeUpdateData["Role_Description"] != afterUpdateData["Role_Description"]
+    assert updateRole.json()["success"] == True and beforeUpdateData["Role_Name"] != afterUpdateData[
+        "Role_Name"] and beforeUpdateData["Role_Description"] != afterUpdateData["Role_Description"]
 
 
 def test_delete_role():
@@ -117,6 +119,7 @@ def test_delete_role():
 def test_get_skills():
     response = client.get("/skills/")
     assert response.json()["success"] == True
+
 
 def test_add_skill():
     createNewSkill = client.post("/skills/", json={
@@ -140,16 +143,18 @@ def test_add_skill():
     })
     assert createSkillWithLongName.json()["success"] == False
 
-    createSkillWithLongDesc = client.post("/skills/",json={
-        "Skill_Name":"Long name",
-        "Skill_Description":"...........................................................................................................................................................................",
-        "Active":True
+    createSkillWithLongDesc = client.post("/skills/", json={
+        "Skill_Name": "Long name",
+        "Skill_Description": "...........................................................................................................................................................................",
+        "Active": True
     })
     assert createSkillWithLongDesc.json()["success"] == False
 
+
 def test_view_available_skills():
     beforeAllSkills = len(client.get("/skills/").json()["data"])
-    beforeAvailableSkills = len(client.get("/skills/available/").json()["data"])
+    beforeAvailableSkills = len(client.get(
+        "/skills/available/").json()["data"])
     client.post("/skills/",
                 json={
                     "Skill_Name": "Unavailable skill",
@@ -160,6 +165,7 @@ def test_view_available_skills():
     afterAvailableSkills = len(client.get("/skills/available/").json()["data"])
     assert afterAllSkills > beforeAllSkills
     assert beforeAvailableSkills == afterAvailableSkills
+
 
 def test_skill_update():
     beforeUpdate = client.get("/skills/{id}/".format(id=1))
@@ -174,8 +180,59 @@ def test_skill_update():
     assert updateRole.json()["success"] == True and beforeUpdateData["Skill_Name"] != afterUpdateData["Skill_Name"] \
         and beforeUpdateData["Skill_Description"] != afterUpdateData["Skill_Description"]
 
+
 def test_delete_skill():
     deleteSkill = client.put("/skills/delete/{id}/".format(id=1))
     assert deleteSkill.json()["success"] == True
     getCurrentSkill = client.get("/skills/{id}/".format(id=1))
     assert getCurrentSkill.json()["data"]["Active"] == False
+
+# ======================================== Staff Tests ========================================
+# def test_get_existing_staff():
+#     getExistingByID = client.post("/staff/one",json = {"Staff_ID": "140001g"})
+#     # assert getExistingByID.json() == None
+#     assert getExistingByID.json()["success"] == True
+
+#     getNonExistingByID = client.post("/staff/one",json = {"Staff_ID": "random"})
+#     assert getNonExistingByID.json()["success"] == False
+
+#     getExistingByEmail = client.post("/staff/one",json = {"Email": "Derek.Tan@allinone.com.sg"})
+#     assert getExistingByEmail.json()["success"] == True
+
+
+# ======================================== Role Skill Relation Tests ========================================
+
+def test_add_role_skill_relation():
+    addSkillsToRole = client.post("/roleskillrelations/", json={
+        "Role_ID": 8,
+        "Skills": [1, 2, 3]
+    })
+    assert addSkillsToRole.json()["success"]
+
+    addRolesToSkill = client.post("/skillrolerelations/", json={
+        "Skill_ID": 1,
+        "Roles": [1, 2, 3]
+    })
+    assert addRolesToSkill.json()["success"]
+
+    updateSkillsToRole = client.put("/roleskillrelations/{Role_ID}".format(Role_ID = 2), json={
+        "Skills": [10, 11, 12]
+    })
+    assert updateSkillsToRole.json()["success"]
+
+    updateRolesToSkill = client.put("/skillrolerelations/{Skill_ID}".format(Skill_ID=2), json={
+        "Roles": [10, 11, 12]
+    })
+    assert updateRolesToSkill.json()["success"]
+
+    viewRelatedSkillsRoleExist = client.get("/roleskillrelations/{Role_ID}".format(Role_ID = 2))
+    assert viewRelatedSkillsRoleExist.json()["success"] == True
+
+    viewRelatedSkillsRoleDontExist = client.get("/roleskillrelations/{Role_ID}".format(Role_ID = -1))
+    assert viewRelatedSkillsRoleDontExist.json()["success"] == False
+
+    viewRelatedRolesSkillExist = client.get("/skillrolerelations/{Skill_ID}".format(Skill_ID = 1))
+    assert viewRelatedRolesSkillExist.json()["success"] == True
+
+    viewRelatedSkillsRoleDontExist = client.get("/skillrolerelations/{Skill_ID}".format(Skill_ID = -1))
+    assert viewRelatedSkillsRoleDontExist.json()["success"] == False
