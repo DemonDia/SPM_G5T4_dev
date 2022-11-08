@@ -127,6 +127,21 @@ async def addLearningJourney(request: Request, session: Session = Depends(get_se
             newCourseLearningJourneyRelation.Course_ID = Course_ID
             newCourseLearningJourneyRelation.LearningJourney_ID = newLearningJourney.LearningJourney_ID
             session.add(newCourseLearningJourneyRelation)
+        
+        skills = requestData["Skills"]
+        for Skill_ID in skills:
+            selectedSkillStatement = select(SkillModel).where(
+                SkillModel.Skill_ID == Skill_ID)
+            selectedSkillStatementResult = session.exec(
+                selectedSkillStatement)
+            selectedSkillStatementResult = selectedSkillStatementResult.all()
+            if (len(selectedSkillStatementResult) == 0):
+                errors.append("Skill does not exist")
+                break
+            newSkillLearningJourneyRelation = LearningJourneySkillRelationModel()
+            newSkillLearningJourneyRelation.Skill_ID = Skill_ID
+            newSkillLearningJourneyRelation.LearningJourney_ID = newLearningJourney.LearningJourney_ID
+            session.add(newSkillLearningJourneyRelation)
 
         if (len(errors) > 0):
             return {
