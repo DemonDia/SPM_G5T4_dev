@@ -51,10 +51,10 @@ Our project is hosted live at:
 
 ### Built With
 
-[![Vue][Vue.js]][Vue-url] [![FastAPI][FastAPI]][FastAPI-url] [![MYSQL][MYSQL]][MYSQL-url]
+[![Vue][Vue.js]][Vue-url] [![FastAPI][FastAPI]][FastAPI-url] [![MYSQL][MYSQL]][MYSQL-url] [![Amazon][Amazon]][Amazon-url] [![Playwright][Playwright]][Playwright-url]
 
 ## Frontend
-Our Vue development/production application is hosted in Amazon S3 buckets.
+Our Vue development application is hosted on Amazon S3 buckets.
 
 #### Frontend Folder structure
 ```bash 
@@ -90,23 +90,18 @@ frontend
 |   |
 |   ├── main.js
 |   
-├── tests
-|   ├── driverutil
-|   |   ├── __init__.py
-|   |   ├── Browser.py
-|   
-|   ├── pageobjects
-|   |   ├── __init__.py
-|   |   ├── <TestFunctionsName>.py
-|   
-|   ├── tests
-|   |   ├── RunTest.py
+├── test
+|   ├── role.spec.js
+|   ├── role.test.js
+|   ├── skill.test.js
 |
 ├── .gitignore
 |
 ├── babel.config.js
 |
 ├── package-lock.json
+|
+├── playwright.config.json
 |
 ├── App.vue
 
@@ -116,7 +111,7 @@ frontend
 
 
 ### Running frontend
-To run the frontend UI, type the following in your terminal:
+To run the frontend UI and hot-reload, type the following in your terminal:
 ```
 cd frontend
 npm i 
@@ -126,18 +121,27 @@ Note:
 - Make sure you are in the Frontend folder before you do any of the above in the CLI
 - npm i installs all the required dependencies 
 
+### Frontend Compiles and minifies for production
+```
+npm run build
+```
+
+### Frontend Testing Prerequisites
+* Node.JS installed on your computer
+* Playwright installed
+
 ### To run the test cases, type the following in your terminal
 ```
-cd Tests
-python3 RunTest.py
+npm ci
+npm run test
 ```
 Note: 
 - Make sure you are inside the Frontend folder and you've run "npm run serve" before the test scripts
-- cd Tests: you go to the path of the Tests folder
-- IMPORTANT: before you run your test file inside the 'Tests' folder
+- Make sure you run 'npm ci' to install all the dependencies needed
+
 
 ## Backend 
-Our FastAPI backend development/production application is hosted in Amazon Lambda services.
+Our FastAPI backend development application is hosted on Amazon Lambda services.
 
 #### Backend Folder structure
 
@@ -244,12 +248,12 @@ Note:
 
 
 ## Database
-Development/Production database is a hosted MySQL AWS RDS instance. 
+Development database is a hosted MySQL AWS RDS instance. 
 
 ## Continuous Integration
 Continuous Integration is enabled for this repository via CircleCI. Deployment to the development server is handled when a PR merge to main is successful.
 
-Refer the CI pipeline scripts in `/.circleci/config.yml`.
+Refer the CI pipeline scripts in `.circleci/config.yml`.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -260,3 +264,7 @@ Refer the CI pipeline scripts in `/.circleci/config.yml`.
 [FastAPI-url]: https://fastapi.tiangolo.com/
 [MYSQL]: https://img.shields.io/badge/mysql-205571.svg?style=for-the-badge&logo=mysql&logoColor=white
 [MYSQL-url]: https://www.sqlalchemy.org/
+[Amazon]: https://img.shields.io/badge/AWS-005571.svg?style=for-the-badge&logo=amazon-aws&logoColor=white
+[Amazon-url]: https://aws.amazon.com/
+[Playwright]: https://img.shields.io/badge/-playwright-005571?style=for-the-badge&logo=playwright&logoColor=33AD33
+[Playwright-url]: https://playwright.dev/
