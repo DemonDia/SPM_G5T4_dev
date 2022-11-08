@@ -187,16 +187,16 @@ def test_delete_skill():
     assert getCurrentSkill.json()["data"]["Active"] == False
 
 # ======================================== Staff Tests ========================================
-# def test_get_existing_staff():
-#     getExistingByID = client.post("/staff/one",json = {"Staff_ID": "140001g"})
-#     # assert getExistingByID.json() == None
-#     assert getExistingByID.json()["success"] == True
+def test_get_existing_staff():
+    getExistingByID = client.post("/staff/one",json = {"Staff_ID": "140001g"})
+    # assert getExistingByID.json() == None
+    assert getExistingByID.json()["success"] == True
 
-#     getNonExistingByID = client.post("/staff/one",json = {"Staff_ID": "random"})
-#     assert getNonExistingByID.json()["success"] == False
+    getNonExistingByID = client.post("/staff/one",json = {"Staff_ID": "random"})
+    assert getNonExistingByID.json()["success"] == False
 
-#     getExistingByEmail = client.post("/staff/one",json = {"Email": "Derek.Tan@allinone.com.sg"})
-#     assert getExistingByEmail.json()["success"] == True
+    getExistingByEmail = client.post("/staff/one",json = {"Email": "Derek.Tan@allinone.com.sg"})
+    assert getExistingByEmail.json()["success"] == True
 
 
 # ======================================== Role Skill Relation Tests ========================================
