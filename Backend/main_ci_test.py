@@ -91,3 +91,53 @@ def test_delete_role():
     assert deleteRole.json()["success"] == True
     getCurrentRole = client.get("/roles/{id}/".format(id=1))
     assert getCurrentRole.json()["data"]["Active"] == False
+
+
+# ======================================== Skill Tests ========================================
+def test_get_skills():
+    response = client.get("/skills/")
+    assert response.json()["success"] == True
+
+def test_add_skill():
+    createNewSkill = client.post("/skills/", json={
+        "Skill_Name": "Leadership",
+        "Skill_Description": "“Strengths and abilities individuals demonstrate that help to oversee processes, guide initiatives and steer their employees toward the achievement of goals.",
+        "Active": True
+    })
+    assert createNewSkill.json()["success"] == True
+
+    createDuplicateSkill = client.post("/skills/", json={
+        "Skill_Name": "Leadership",
+        "Skill_Description": "Analytical skills in data science to visualise data",
+        "Active": True
+    })
+    assert createDuplicateSkill.json()["success"] == False
+
+    createSkillWithLongName = client.post("/skills/", json={
+        "Skill_Name": "Teamworkkkkkkkkkkkkkkkkkkkkkkkk",
+        "Skill_Description": "Working with people from different places",
+        "Active": True
+    })
+    assert createSkillWithLongName.json()["success"] == False
+
+    createSkillWithLongDesc = client.post("/skills/",json={
+        "Skill_Name":"Long name",
+        "Skill_Description":"...........................................................................................................................................................................",
+        "Active":True
+    })
+    assert createSkillWithLongDesc.json()["success"] == False
+
+def test_view_existing_skills():
+    beforeAllSkills = len(client.get("/skills/").json()["data"])
+    beforeAvailableSkills = len(client.get("/skills/available/").json()["data"])
+    client.post("/skills/",
+                json={
+                    "Role_Name": "Unavailable role",
+                    "Role_Description": "....",
+                    "Active": False
+                })
+    afterAllSkills = len(client.get("/skills/").json()["data"])
+    afterAvailableSkills = len(client.get("/skills/available/").json()["data"])
+    assert afterAllSkills > beforeAllSkills
+    assert beforeAvailableSkills == afterAvailableSkills
+
