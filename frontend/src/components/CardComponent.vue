@@ -63,6 +63,7 @@ export default {
               closeButton: true,
               icon: true,
               rtl: false,
+              toastBackgroundColor: '#57cc99',
             });
 
             this.$emit('reload');
@@ -79,6 +80,7 @@ export default {
               closeButton: true,
               icon: true,
               rtl: false,
+              toastBackgroundColor: '#d5465c',
             });
             this.$emit('reload');
           }
@@ -102,6 +104,7 @@ export default {
               closeButton: true,
               icon: true,
               rtl: false,
+              toastBackgroundColor: '#57cc99',
             });
 
             this.$emit('reload');
@@ -118,6 +121,7 @@ export default {
               closeButton: true,
               icon: true,
               rtl: false,
+              toastBackgroundColor: '#d5465c',
             });
             this.$emit('reload');
           }

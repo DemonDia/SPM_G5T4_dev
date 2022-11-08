@@ -144,7 +144,7 @@
                   data-bs-target="#submitModal" 
                   data-bs-toggle="modal" 
                   data-bs-dismiss="modal"
-                  @click="handleSubmit()"
+                  @click="handleSubmitAdd()"
                 >
                   Submit
                 </button>
@@ -221,7 +221,7 @@
                 </div>
               </div>
               <div class="col-auto p-4 pt-0 m-sm-0 m-md-2 pt-md-2 pe-md-2">
-                <button type="button" class="btn mx-auto" id="removeBtn" @click="removeCourse()">
+                <button type="button" class="btn mx-auto" id="removeBtn" @click="handleSubmitRemove(value.Course_ID)">
                   Remove
                 </button>
               </div>
@@ -240,6 +240,7 @@ import axios from "axios";
 import SpinnerComponent from "@/components/SpinnerComponent.vue";
 import TileComponent from "@/components/TileComponent.vue";
 import ModalComponent from "@/components/ModalComponent.vue";
+import { createToast } from 'mosha-vue-toastify';
 
 export default {
   name: "UpdateLJ",
@@ -387,7 +388,6 @@ export default {
       this.noLJFound = LJInfo.data.success;
       // load data into the v-model and array
       this.courses = LJInfo.data.data.Courses;
-      this.skills = LJInfo.data.data.Skills;
       // skip getting role, skills and courses info
     },
 
@@ -444,7 +444,7 @@ export default {
       this.addCourseActive = true;
     },
 
-    handleSubmit() {
+    handleSubmitAdd() {
       this.isSubmitted = true;
       if (this.selectedC.length > 0) {
         this.errorMsg = "";
@@ -476,6 +476,71 @@ export default {
             resolve(response);
           })
           .catch((err) => reject(err));
+      });
+    },
+
+    handleSubmitRemove(id) {
+      console.log("clicked remove")
+      var currCourseLen = this.courses.length;
+      if (currCourseLen > 1) {
+        this.removeCoursefromLJ(id);
+      } else {
+        // reject removal - need to keep at least one
+        createToast('Learning Journeys must have at least one course!', {
+          type: 'warning',
+          position: 'top-center',
+          timeout: 3000,
+          dismissible: true,
+          pauseOnFocusLoss: true,
+          pauseOnHover: true,
+          closeOnClick: true,
+          closeButton: true,
+          icon: true,
+          rtl: false,
+          toastBackgroundColor: '#d5465c',
+        });
+      }
+    },
+
+    removeCoursefromLJ(id) {
+      console.log("removing.....")
+      var dltCourseLJUrl = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/courselearningjourney/";
+      axios.delete(dltCourseLJUrl, {
+        'LearningJourney_ID': this.currentLJ_ID,
+        'Course_ID': id,
+      }).then((response) => {
+        var result = response.data.success
+        console.log(response.data)
+        if (result) {
+          createToast('Course removed successfully!', {
+            type: 'success',
+            position: 'top-center',
+            timeout: 3000,
+            dismissible: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            closeOnClick: true,
+            closeButton: true,
+            icon: true,
+            rtl: false,
+            toastBackgroundColor: '#57cc99',
+          });
+          this.resetErrors();
+        } else {
+          createToast('Course cannot be removed!', {
+            type: 'danger',
+            position: 'top-center',
+            timeout: 3000,
+            dismissible: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            closeOnClick: true,
+            closeButton: true,
+            icon: true,
+            rtl: false,
+            toastBackgroundColor: '#d5465c',
+          });
+        }
       });
     },
   },
