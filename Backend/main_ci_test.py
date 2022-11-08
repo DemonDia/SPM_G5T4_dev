@@ -25,7 +25,7 @@ def cleanUp():
 # ========================================FastAPI test========================================
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(autouse=True, scope="session")
 def tests():
     cleanUp()
     seedAllData()
