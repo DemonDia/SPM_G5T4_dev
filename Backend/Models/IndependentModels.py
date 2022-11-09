@@ -11,7 +11,8 @@ class CourseModel(SQLModel,table=True):
     Course_Type: str
     Course_Category: str
     Skills: List['SkillModel'] = Relationship(back_populates="Courses", link_model=CourseSkillRelationModel)
-
+    LearningJourneys: List['LearningJourneyModel'] = Relationship(back_populates="Courses",link_model=CourseLearningJourneyModel)
+    
 
 class SkillModel(SQLModel,table=True):
     __tablename__: "skillmodel"
@@ -21,6 +22,7 @@ class SkillModel(SQLModel,table=True):
     Active: bool
     Roles: List['RoleModel'] = Relationship(back_populates="Skills", link_model=RoleSkillRelationModel)
     Courses: List['CourseModel'] = Relationship(back_populates="Skills", link_model=CourseSkillRelationModel)
+    LearningJourneys: List['LearningJourneyModel'] = Relationship(back_populates="Skills",link_model=LearningJourneySkillRelationModel)
 
 class RoleModel(SQLModel,table=True):
     __tablename__: "rolemodel"
@@ -29,7 +31,6 @@ class RoleModel(SQLModel,table=True):
     Role_Description:str
     Active:bool
     Skills: List['SkillModel'] = Relationship(back_populates="Roles", link_model=RoleSkillRelationModel)
-
 
 class UserRoleModel(SQLModel,table=True):
     __tablename__: "userrolemodel"
