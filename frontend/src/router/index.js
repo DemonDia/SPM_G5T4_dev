@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import RoleView from '../views/RoleView.vue'
 import CourseView from '../views/CourseView.vue'
 import SkillView from '../views/SkillView.vue'
@@ -18,7 +17,14 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: Login
+    component: Login,
+    beforeEnter: (to, from, next) => {
+      if (store.getters['auth/authenticated']) {
+        
+        return next({ name: 'home' })
+      }
+      next()
+    },
   },
   {
     path: '/',

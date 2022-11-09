@@ -132,7 +132,6 @@
           this.updateskill(this.currentSkill_ID).then((res) => {
             var skillStatus = res.data;
             // check success
-            console.log(skillStatus)
             if (skillStatus.success) {
               this.assignSkills(this.currentSkill_ID).then((result) => {
                 this.resetErrors();

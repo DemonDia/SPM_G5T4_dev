@@ -338,9 +338,11 @@ export default {
       }
       // find skill details
       let filtered = this.allSkills.filter(function(skill) {return skill.Skill_ID==id})[0];
-      if (resultType == "desc") {
-        return filtered.Skill_Description
-      }
+      try {
+        if (resultType == "desc") {
+          return filtered.Skill_Description
+        }
+      } catch(err) {}
     },
 
     getAvailCourses() {
@@ -357,13 +359,16 @@ export default {
 
     getCourseInfo(id, resultType) {
       let course = this.allCourses.filter(function(course) {return course.Course_ID==id})[0];
-      if (resultType == "type") {
-        return course.Course_Type
-      } else if (resultType == "cat") {
-        return course.Course_Category
-      } else if (resultType == "desc") {
-        return course.Course_Desc
-      } 
+    
+      try {
+        if (resultType == "type") {
+          return course.Course_Type
+        } else if (resultType == "cat") {
+          return course.Course_Category
+        } else if (resultType == "desc") {
+          return course.Course_Desc
+        } 
+      } catch (error) {}
     },
 
     onClickModal() {
@@ -479,10 +484,10 @@ export default {
       });
     },
 
-    handleSubmitRemove(id) {
+    async handleSubmitRemove(id) {
       var currCourseLen = this.courses.length;
       if (currCourseLen > 1) {
-        var removeStatus = this.removeCoursefromLJ(id);
+        var removeStatus = await this.removeCoursefromLJ(id).then((response) => { return response });
         if (removeStatus) {
           createToast('Course removed successfully!', {
             type: 'success',
@@ -532,20 +537,22 @@ export default {
     },
 
     removeCoursefromLJ(id) {
-      var dltCourseLJUrl = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/courselearningjourney/delete";
-      axios.post(dltCourseLJUrl, {
-        'LearningJourney_ID': this.currentLJ_ID,
-        'Course_ID': id,
-      }).then((response) => {
-        var result = response.data.success
-        console.log(response.data)
-        if (result) {
-          return true;
-        }
-        return false;
-      }).catch (error => {
-        return false;
-      });
+      return new Promise((resolve, reject) => {
+        var dltCourseLJUrl = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/courselearningjourney/delete";
+        axios.post(dltCourseLJUrl, {
+          'LearningJourney_ID': this.currentLJ_ID,
+          'Course_ID': id,
+        }).then((response) => {
+          var result = response.data.success
+          if (result) {
+            resolve(true)
+          }
+          resolve(false)
+        }).catch (error => {
+          resolve(false)
+          reject(error)
+        });
+      })
     },
   },
   computed: {

@@ -215,7 +215,6 @@ export default {
   async mounted() {
     document.title = "LJMS - Update Course";
     // get course information from backend
-    console.log(this.currentCourse_ID);
     var courseInfo = await this.getCourseInfo(this.currentCourse_ID);
     courseInfo
       ? (this.noCourseFound = true)
