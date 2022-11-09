@@ -1,6 +1,6 @@
-from typing import Optional
-from sqlmodel import Field, SQLModel
-
+from typing import List,Optional
+from sqlmodel import Field, SQLModel,Relationship
+from Models.IndependentModels import *
 
 class RoleSkillRelationModel(SQLModel, table=True):
     __tablename__: "roleskillrelationmodel"
@@ -33,15 +33,6 @@ class StaffModel(SQLModel, table=True):
         default=None, foreign_key="userrolemodel.Role_ID")
 
 
-class LearningJourneyModel(SQLModel, table=True):
-    __tablename__: "learningjourneymodel"
-    LearningJourney_ID: Optional[int] = Field(default=None, primary_key=True)
-    Staff_ID: Optional[int] = Field(
-        default=None, foreign_key="staffmodel.Staff_ID")
-    Role_ID: Optional[int] = Field(
-        default=None, foreign_key="rolemodel.Role_ID")
-
-
 class CourseLearningJourneyModel(SQLModel, table=True):
     __tablename__: "courselearningjourneymodel"
     Course_ID: Optional[str] = Field(
@@ -57,3 +48,14 @@ class LearningJourneySkillRelationModel(SQLModel, table=True):
     Skill_ID: Optional[int] = Field(
         default=None, foreign_key="skillmodel.Skill_ID", primary_key=True
     )
+
+class LearningJourneyModel(SQLModel, table=True):
+    __tablename__: "learningjourneymodel"
+    LearningJourney_ID: Optional[int] = Field(default=None, primary_key=True)
+    Staff_ID: Optional[int] = Field(
+        default=None, foreign_key="staffmodel.Staff_ID")
+    Role_ID: Optional[int] = Field(
+        default=None, foreign_key="rolemodel.Role_ID")
+
+    Skills: List['SkillModel'] = Relationship(back_populates="LearningJourneys", link_model=LearningJourneySkillRelationModel)
+    Courses: List['CourseModel'] = Relationship(back_populates="LearningJourneys", link_model=CourseLearningJourneyModel)

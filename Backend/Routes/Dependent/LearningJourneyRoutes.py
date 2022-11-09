@@ -302,14 +302,22 @@ def deleteLearningJourney(LearningJourney_ID: int, session: Session = Depends(ge
 
         # delete all the relations
         # hard delete the relations
-        allRelatedRelationStatement = select(CourseLearningJourneyModel).where(
+        allCourseRelatedRelationStatement = select(CourseLearningJourneyModel).where(
             CourseLearningJourneyModel.LearningJourney_ID == LearningJourney_ID)
-        relationResults = session.exec(allRelatedRelationStatement)
-        allRelations = relationResults.all()
-        for relation in allRelations:
+        courseRelationResults = session.exec(allCourseRelatedRelationStatement)
+        allCourseRelations = courseRelationResults.all()
+        for relation in allCourseRelations:
             session.delete(relation)
-        session.delete(selectedLearningJourney)
+        
 
+        allSkillRelatedRelationStatement = select(LearningJourneySkillRelationModel).where(
+            LearningJourneySkillRelationModel.LearningJourney_ID == LearningJourney_ID)
+        skillRelationResults = session.exec(allSkillRelatedRelationStatement)
+        allSkillRelations = skillRelationResults.all()
+        for skill in allSkillRelations:
+            session.delete(skill)
+    
+        session.delete(selectedLearningJourney)
         session.commit()
         session.close()
         return {

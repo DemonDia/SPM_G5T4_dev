@@ -17,4 +17,3 @@ store.dispatch('auth/attempt', localStorage.getItem('token')).then(() => {
     createApp(App).use(store).use(Vuex).use(router).use(axios).use(moshaToast).mount('#app')
 })
 
-
