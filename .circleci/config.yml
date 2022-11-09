@@ -106,23 +106,6 @@ jobs:
       - run:
           name: Deploy on S3 
           command: aws s3 sync ./dist s3://spm-smallbucket
-
-  # frontend-integration-test:
-  #   executor: node/default # use the default executor defined within the orb
-  #   working_directory: ~/project/Frontend/frontend
-  #   docker:
-  #     - image: mcr.microsoft.com/playwright:v1.27.1-focal
-  #   steps:
-  #     - checkout:
-  #         path: ~/project/Frontend
-  #     - node/install-packages:
-  #         pkg-manager: npm
-  #     - run:
-  #         name: Download playwright dependencies
-  #         command: npm ci
-  #     - run:
-  #         command: npm run test
-  #         name: Run playwright dev servers
       
 workflows:
   build-test-and-deploy:
@@ -154,7 +137,7 @@ workflows:
                 - "main"
                 - "frontend-testing"
                 - "backend-testing"
-      - frontend_build:
+      - frontend-build-and-test:
           context:
             - Deployment
           requires:
@@ -181,19 +164,3 @@ workflows:
                 - "main"
                 - "frontend-testing"
                 - "backend-testing"
-      - frontend-integration-test:
-          context:
-            - Deployment
-          requires:
-            - frontend_build
-            - backend-build-and-test
-            - backend-deploy-dev
-            - frontend-deploy-dev
-          filters:        
-            branches:
-              only:
-                - "circleci-testing"
-                - "main"
-                - "frontend-testing"
-                - "backend-testing"
-                
