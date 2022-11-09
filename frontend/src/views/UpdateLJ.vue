@@ -480,38 +480,10 @@ export default {
     },
 
     handleSubmitRemove(id) {
-      console.log("clicked remove")
       var currCourseLen = this.courses.length;
       if (currCourseLen > 1) {
-        this.removeCoursefromLJ(id);
-      } else {
-        // reject removal - need to keep at least one
-        createToast('Learning Journeys must have at least one course!', {
-          type: 'warning',
-          position: 'top-center',
-          timeout: 3000,
-          dismissible: true,
-          pauseOnFocusLoss: true,
-          pauseOnHover: true,
-          closeOnClick: true,
-          closeButton: true,
-          icon: true,
-          rtl: false,
-          toastBackgroundColor: '#d5465c',
-        });
-      }
-    },
-
-    removeCoursefromLJ(id) {
-      console.log("removing.....")
-      var dltCourseLJUrl = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/courselearningjourney/";
-      axios.delete(dltCourseLJUrl, {
-        'LearningJourney_ID': this.currentLJ_ID,
-        'Course_ID': id,
-      }).then((response) => {
-        var result = response.data.success
-        console.log(response.data)
-        if (result) {
+        var removeStatus = this.removeCoursefromLJ(id);
+        if (removeStatus) {
           createToast('Course removed successfully!', {
             type: 'success',
             position: 'top-center',
@@ -541,6 +513,38 @@ export default {
             toastBackgroundColor: '#d5465c',
           });
         }
+      } else {
+        // reject removal - need to keep at least one
+        createToast('Learning Journeys must have at least one course!', {
+          type: 'warning',
+          position: 'top-center',
+          timeout: 3000,
+          dismissible: true,
+          pauseOnFocusLoss: true,
+          pauseOnHover: true,
+          closeOnClick: true,
+          closeButton: true,
+          icon: true,
+          rtl: false,
+          toastBackgroundColor: '#d5465c',
+        });
+      }
+    },
+
+    removeCoursefromLJ(id) {
+      var dltCourseLJUrl = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/courselearningjourney/delete";
+      axios.post(dltCourseLJUrl, {
+        'LearningJourney_ID': this.currentLJ_ID,
+        'Course_ID': id,
+      }).then((response) => {
+        var result = response.data.success
+        console.log(response.data)
+        if (result) {
+          return true;
+        }
+        return false;
+      }).catch (error => {
+        return false;
       });
     },
   },
