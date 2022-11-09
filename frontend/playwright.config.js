@@ -36,7 +36,7 @@ const config = {
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run serve',
+    command: 'npm run dev',
     timeout: 120000,
     port: 8080,
     reuseExistingServer: !process.env.CI,
