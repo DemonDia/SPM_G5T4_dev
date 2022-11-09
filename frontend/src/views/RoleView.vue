@@ -117,6 +117,7 @@
     },
     mounted() {
       document.title = "LJMS - Roles";
+      console.clear()
       this.reload()
     },
     computed: {
