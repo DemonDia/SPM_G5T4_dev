@@ -107,16 +107,18 @@ export default {
       authenticated: "auth/authenticated",
     }),
     imageURL() {
-      if (this.user) {
-        return (
-          "https://ui-avatars.com/api/?name=" +
-          this.user.Staff_FName +
-          "+" +
-          this.user.Staff_LName
-        );
-      } else {
-        return "https://ui-avatars.com/api/?background=random";
-      }
+      try {
+        if (this.user) {
+          return (
+            "https://ui-avatars.com/api/?name=" +
+            this.user.Staff_FName +
+            "+" +
+            this.user.Staff_LName
+          );
+        } else {
+          return "https://ui-avatars.com/api/?background=random";
+        }
+      } catch(err) {}
     },
   },
 };

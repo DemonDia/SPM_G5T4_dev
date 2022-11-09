@@ -81,6 +81,7 @@
             'Content-Type': 'application/json'
         }}).then((response) => {
           var result = response.data.success
+          console.log(response.data)
           if (result) {
             createToast('Learning Journey deleted successfully!', {
               type: 'success',
@@ -93,6 +94,7 @@
               closeButton: true,
               icon: true,
               rtl: false,
+              toastBackgroundColor: '#57cc99',
             });
             this.$emit('reload');
           } else {
@@ -107,6 +109,7 @@
               closeButton: true,
               icon: true,
               rtl: false,
+              toastBackgroundColor: '#d5465c',
             });
             this.$emit('reload');
           }
