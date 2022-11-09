@@ -24,6 +24,7 @@ class LearningJourney(BaseModel):
     Staff_ID: Optional[int] = None
     Role_ID: Optional[int] = None
     Skills: List[Skill]
+    Courses:List[Course]
 
 class CourseLearningJourneyModel(BaseModel):
     Course_ID: Optional[str] = None
