@@ -338,10 +338,11 @@ export default {
       }
       // find skill details
       let filtered = this.allSkills.filter(function(skill) {return skill.Skill_ID==id})[0];
-    
-        if (resultType == "desc") {
-          return filtered.Skill_Description
-        }
+        try {
+          if (resultType == "desc") {
+            return filtered.Skill_Description
+          }
+        } catch(err) {}
 
     },
 
@@ -359,7 +360,7 @@ export default {
 
     getCourseInfo(id, resultType) {
       let course = this.allCourses.filter(function(course) {return course.Course_ID==id})[0];
-    
+      try {
         if (resultType == "type") {
           return course.Course_Type
         } else if (resultType == "cat") {
@@ -367,6 +368,7 @@ export default {
         } else if (resultType == "desc") {
           return course.Course_Desc
         } 
+      } catch(err) {}
   
     },
 
@@ -380,7 +382,7 @@ export default {
       }
     },
 
-    resetErrors() {
+    async resetErrors() {
       // reset fields
       this.isSubmitted = NaN;
       this.isSuccess = NaN;
@@ -388,7 +390,7 @@ export default {
       this.noLJFound = NaN;
       // reload stuff
       this.loadCourses();
-      var LJInfo = this.getLJInfo(this.currentLJ_ID);
+      var LJInfo = await this.getLJInfo(this.currentLJ_ID);
       this.noLJFound = LJInfo.data.success;
       // load data into the v-model and array
       this.courses = LJInfo.data.data.Courses;
@@ -483,10 +485,10 @@ export default {
       });
     },
 
-     handleSubmitRemove(id) {
+    async handleSubmitRemove(id) {
       var currCourseLen = this.courses.length;
       if (currCourseLen > 1) {
-        var removeStatus =  this.removeCoursefromLJ(id);
+        var removeStatus = await this.removeCoursefromLJ(id).then((response) => { return response});
         if (removeStatus) {
           createToast('Course removed successfully!', {
             type: 'success',
@@ -536,32 +538,37 @@ export default {
     },
 
     removeCoursefromLJ(id) {
+      return new Promise((resolve, reject) => {
         var dltCourseLJUrl = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/courselearningjourney/delete";
         axios.post(dltCourseLJUrl, {
           'LearningJourney_ID': this.currentLJ_ID,
           'Course_ID': id,
         }).then((response) => {
-          var result = response.data.success
-          if (result) {
-            return true
-          }
-         return false
+          var result = response.data
+          resolve(result)
         }).catch (error => {
-          return false
+          reject(error)
         });
-
+      });
     },
   },
   computed: {
     goBack() {
       this.$router.replace({ name: "learningjourney" });
     },
+    checkLoaded() {
+      if (this.courses.length > 0 && this.skills.length > 0 && this.role.length > 0 && this.allSkills.length > 0 && this.allCourses.length > 0) {
+        return true;
+      }
+      return false;
+    },
+    
   },
   async mounted() {
     document.title = "LJMS - Update Learning Journey";
     // get LJ information from backend
     var LJInfo = await this.getLJInfo(this.currentLJ_ID);
-    this.noLJFound = LJInfo.data.success;
+    
 
     // load data into the v-model and array
     this.courses = LJInfo.data.data.Courses;
@@ -580,6 +587,7 @@ export default {
     // get courses info
     var availCourses = await this.getAvailCourses();
     this.allCourses = availCourses.data.data;
+    this.noLJFound = LJInfo.data.success;
 
     this.loadCourses();
   },
