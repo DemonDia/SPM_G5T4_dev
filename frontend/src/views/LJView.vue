@@ -60,8 +60,15 @@
         var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/learningjourney/staff/" + this.user.StaffID;
         await axios.get(url).then((response) => {
           let result = response.data.data;
-          this.LJ = result;
-          this.LJ.length == 0 ? (this.noLJFound = true) : null;
+          if (result) {
+            this.LJ = result;
+            this.numLJFound = this.LJ.length;
+            this.LJ.length == 0 ? (this.noLJFound = true) : null;
+            this.LJ = result;
+          } else {
+            this.noLJFound = true;
+          }
+          
         });
       },
     },

@@ -1,5 +1,5 @@
 
-from config import app
+from config import app, prefix_router
 # routes of independent entities
 from Routes.Independent.CourseRoutes import *
 from Routes.Independent.SkillRoutes import *
@@ -22,10 +22,17 @@ from mangum import Mangum
 from fastapi.middleware.cors import CORSMiddleware
 
 
+# Add the paths to the router instead
+@prefix_router.get("/paths")
+def service( request : Request ):
+    return { "message" : request.scope.get("root_path")}
+
+# Now add the router to the app
+app.include_router(prefix_router)
 
 @app.get("/",tags=["HealthCheck"])
-async def healthCheck():
-    return "OK"
+async def healthCheck(request: Request):
+    return {"message": "Hello World", "root_path": request.scope.get("root_path")}
 
 
 origins = ["*"]

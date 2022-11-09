@@ -336,7 +336,6 @@ def updateSkill(Skill_ID: int, updated_skill: SkillModel, session: Session = Dep
 # soft delete
 @app.put("/skills/delete/{Skill_ID}/",tags=["Skills"])
 def softDeleteSkill(Skill_ID: int,session: Session = Depends(get_session)):
-    #skill = session.get(SkillModel).where(SkillModel.Skill_Name == Skill_Name)
     statement = select(SkillModel).where(SkillModel.Skill_ID == Skill_ID)
     result = session.exec(statement).all()
     if len(result) == 0:

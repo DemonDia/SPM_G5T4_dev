@@ -19,8 +19,6 @@ async def addRelatedRoles(request: Request, session: Session = Depends(get_sessi
         statement = select(SkillModel).where(
             SkillModel.Skill_ID == requestData["Skill_ID"])
         result = session.exec(statement)
-        #role = result.one()
-
         chosenSkillResult = result.all()
         if len(chosenSkillResult) == 0:
             return  # yes this returns the success = false json
@@ -28,7 +26,6 @@ async def addRelatedRoles(request: Request, session: Session = Depends(get_sessi
             role = chosenSkillResult[0]
         if role == None:
             errors.append("Role does not exist!")
-            errors.append(str(e))
             return {
                 "success": False,
                 "message": errors
@@ -108,7 +105,6 @@ async def updateRelatedRolesOfSkill(Skill_ID: int, request: Request, session: Se
             role = chosenSkillResult[0]
         if role == None:
             errors.append("Skill does not exist!")
-            errors.append(str(e))
             return {
                 "success": False,
                 "message": errors

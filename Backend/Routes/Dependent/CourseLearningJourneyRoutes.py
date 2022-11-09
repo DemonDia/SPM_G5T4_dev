@@ -1,6 +1,4 @@
-from imp import reload
-from fastapi import Response, Depends
-from Schema.IndependentSchema import Skill
+from fastapi import Depends
 from database import *
 from sqlmodel import Session, select, delete, join
 from config import app
@@ -97,21 +95,27 @@ async def AddCourseLearningJourney(request: Request, session: Session = Depends(
         }
 
 
-@app.delete("/courselearningjourney/", tags=["CourseLearningJourney"])
+@app.post("/courselearningjourney/delete", tags=["CourseLearningJourney"])
 async def deleteCourseLearningJourney(request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
-        # find the course
+        # valid course
         requestData = await request.json()
         selectedCourseStatement = select(CourseModel).where(
             CourseModel.Course_ID == requestData["Course_ID"])
         selectedCourse = session.exec(selectedCourseStatement).all()
         if (len(selectedCourse) == 0):
             errors.append("Course does not exist!")
-        elif (len(selectedCourse) == 1):
-            errors.append("Only one course left cannot delete!")
         else:
             selectedCourse = selectedCourse[0]
+        
+        # no of relations
+        noOfRelatedCourseStatement = select(CourseLearningJourneyModel).where(
+            CourseLearningJourneyModel.LearningJourney_ID  == requestData["LearningJourney_ID"]
+        )
+        noOfRelatedCourses = session.exec(noOfRelatedCourseStatement).all()
+        if (len(noOfRelatedCourses) == 1):
+            errors.append("Only one course in learning journey; cannot delete!!")
 
         # delete all the relations
         # hard delete the relations
@@ -121,6 +125,7 @@ async def deleteCourseLearningJourney(request: Request, session: Session = Depen
         allRelations = relationResults.all()
         if len(allRelations) == 0:
             errors.append("Course not inside learning journey!")
+
         if len(errors) > 0:
             return {
                 "success": False,

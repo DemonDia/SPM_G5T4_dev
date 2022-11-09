@@ -1,6 +1,6 @@
-from fastapi import Response, Depends
+from fastapi import Depends
 from database import *
-from sqlmodel import Session, select, delete, join
+from sqlmodel import Session, delete, join
 from config import app
 from Models.DependentModels import LearningJourneySkillRelationModel
 
