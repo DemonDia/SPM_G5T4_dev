@@ -58,8 +58,8 @@ jobs:
           command: aws lambda update-function-code --function-name spm_fastapi --s3-bucket spm-bigbucket --s3-key function.zip
       
 
-  frontend-build-and-test: # this can be any name you choose
-    executor: node/default # use the default executor defined within the orb
+  frontend-build-and-test: 
+    executor: node/default 
     working_directory: ~/project/Frontend/frontend
     docker:
       - image: mcr.microsoft.com/playwright:v1.27.1-focal
