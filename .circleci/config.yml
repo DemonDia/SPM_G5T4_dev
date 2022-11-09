@@ -33,7 +33,13 @@ jobs:
           command: python ./Backend/testrun.py
       - run:
           name: Run test scripts
-          command: python ./Backend/Tests/main_test.py
+          # command: python ./Backend/Tests/main_test.py
+          command: pytest
+
+      # - run:
+      #     name: Run the API
+      #     command: uvicorn Backend.main:app --reload  
+
       - run:
           name: Add backend to Zipfile
           command: |
@@ -129,6 +135,7 @@ workflows:
                 - "refactoring-test-case"
                 - "main"
                 - "frontend-testing"
+                - "backend-testing"
           context:
             - Database
             - Deployment
@@ -146,7 +153,8 @@ workflows:
                 - "refactoring-test-case"
                 - "main"
                 - "frontend-testing"
-      - frontend-build-and-test:
+                - "backend-testing"
+      - frontend_build:
           context:
             - Deployment
           requires:
@@ -158,6 +166,7 @@ workflows:
                 - "circleci-testing"
                 - "main"
                 - "frontend-testing"
+                - "backend-testing"
       - frontend-deploy-dev:
           context:
             - Deployment
@@ -171,18 +180,20 @@ workflows:
                 - "circleci-testing"
                 - "main"
                 - "frontend-testing"
-      # - frontend-integration-test:
-      #     context:
-      #       - Deployment
-      #     requires:
-      #       - frontend_build
-      #       - backend-build-and-test
-      #       - backend-deploy-dev
-      #       - frontend-deploy-dev
-      #     filters:        
-      #       branches:
-      #         only:
-      #           - "circleci-testing"
-      #           - "main"
-      #           - "frontend-testing"
+                - "backend-testing"
+      - frontend-integration-test:
+          context:
+            - Deployment
+          requires:
+            - frontend_build
+            - backend-build-and-test
+            - backend-deploy-dev
+            - frontend-deploy-dev
+          filters:        
+            branches:
+              only:
+                - "circleci-testing"
+                - "main"
+                - "frontend-testing"
+                - "backend-testing"
                 
