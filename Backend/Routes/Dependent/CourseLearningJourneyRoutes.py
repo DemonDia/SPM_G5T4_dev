@@ -1,5 +1,4 @@
-from fastapi import Response, Depends
-from Schema.IndependentSchema import Skill
+from fastapi import Depends
 from database import *
 from sqlmodel import Session, select, delete, join
 from config import app
