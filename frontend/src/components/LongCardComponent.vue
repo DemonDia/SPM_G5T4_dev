@@ -31,8 +31,7 @@
                 aria-expanded="false"
           ></button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <!-- <li><a class="dropdown-item" @click="updateItem(this.courseID,'course')" v-if="authenticated && (user.Role == 1)">Update</a></li> -->
-            <li><a class="dropdown-item" href="#">Edit</a></li>
+            <li><a class="dropdown-item" @click="updateItem(this.LJ_ID)">Update</a></li>
             <li><a class="dropdown-item" @click="deleteItem(this.LJ_ID)">Delete</a></li>
           </ul>
         </div>
@@ -76,8 +75,8 @@
     },
     methods: {
       deleteItem(id) {
-      var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/learningjourney/" +id;
-      axios.delete(url, {
+        var url = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/learningjourney/" + id;
+        axios.delete(url, {
           headers: {
             'Content-Type': 'application/json'
         }}).then((response) => {
@@ -94,10 +93,9 @@
               closeButton: true,
               icon: true,
               rtl: false,
+              toastBackgroundColor: '#57cc99',
             });
-
             this.$emit('reload');
-  
           } else {
             createToast('Learning Journey deletion failed!', {
               type: 'error',
@@ -110,10 +108,14 @@
               closeButton: true,
               icon: true,
               rtl: false,
+              toastBackgroundColor: '#d5465c',
             });
             this.$emit('reload');
           }
         });
+      },
+      updateItem(id) {
+        router.push({ name: 'update-journey', params: { lj_id: id } });
       }
     },
   };

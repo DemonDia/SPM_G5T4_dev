@@ -4,10 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",
+    "production": "vue-cli-service build",
     "serve": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
     "build": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build",
-    "lint": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service lint"
-},
+    "lint": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service lint",
+    "postinstall": "npx playwright install",
+    "test": "npx playwright test",
+    "report": "npx playwright show-report"
+  },
   "dependencies": {
     "@fortawesome/vue-fontawesome": "^3.0.1",
     "@popperjs/core": "^2.11.6",
@@ -20,6 +24,8 @@
     "vuex": "^4.0.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "@playwright/test": "^1.27.1",
     "@vue/cli-plugin-babel": "~4.5.14",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",

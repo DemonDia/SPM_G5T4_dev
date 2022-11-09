@@ -16,59 +16,26 @@ jobs:
     steps:
       - checkout:
           path: ~/project/Backend
-
-      # - save_cache:
-      #     paths:
-      #       - ./venv
-      #     key: v1-dependencies-{{ checksum "./Backend/requirements.txt" }}
-      # - restore_cache:
-      #       keys:
-      #         - v1-dependencies-{{ checksum "./Backend/requirements.txt" }}
-      #         # fallback to using the latest cache if no exact match is found
-      #         - v1-dependencies-
-      # - checkout
-
       - run:
           name: Find requirements.txt
           command: find . -regex '.*requirements.txt$'
-
       - run: 
           name: Checking of backend folders
           command: ls ./Backend -a
       - run:
           name: Install dependencies
           command: pip3 install -r ./Backend/requirements.txt
-
-      # - run: cd ./Backend/
-    
-      # - run:
-      #     name: Go back to backend
-      #     command: cd Backend
-
       - run:
           name: Database Setup
           command: echo $DATABASE_URL
-
-      # - run: 
-      #     name: Database setup
-      #     command: python3.9 ./Backend/database.py
-
       - run:
-          name: Run Test File
-          # command: uvicorn Backend.main:app --reload
-          command: python ./Backend/testrun.py
-
-      # - run:
-      #     name: Run the API
-      #     command: uvicorn Backend.main:app --reload  
-
+          name: Run test scripts
+          command: pytest
       - run:
           name: Add backend to Zipfile
           command: |
               cd /home/circleci/project/Backend/Backend/
               zip -g ./function.zip -r .
-
-
       - persist_to_workspace:
           root: ./Backend
           paths:
@@ -91,9 +58,11 @@ jobs:
           command: aws lambda update-function-code --function-name spm_fastapi --s3-bucket spm-bigbucket --s3-key function.zip
       
 
-  frontend_build_and_test: # this can be any name you choose
+  frontend-build-and-test: # this can be any name you choose
     executor: node/default # use the default executor defined within the orb
     working_directory: ~/project/Frontend/frontend
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.27.1-focal
     steps:
       - checkout:
           path: ~/project/Frontend
@@ -103,13 +72,14 @@ jobs:
           command: npm install 
           name: Import Frontend Dependencies
       - run:
-          command: npm run build
+          name: Download playwright dependencies
+          command: npm ci
+      - run:
+          command: npm run test
+          name: Run playwright dev servers
+      - run:
+          command: npm run production
           name: Build Frontend into Production
-      # - run:
-      #     name: Add frontend to Zipfile
-      #     command: |
-      #         cd /home/circleci/project/Frontend/frontend/dist/
-      #         zip -g ../frontend.zip -r .
       - persist_to_workspace:
           root: ./
           paths:
@@ -135,8 +105,6 @@ workflows:
           filters:
             branches:
               only:
-                - "circleci-testing"
-                - "refactoring-test-case"
                 - "main"
           context:
             - Database
@@ -151,10 +119,8 @@ workflows:
           filters:        
             branches:
               only:
-                - "circleci-testing"
-                - "refactoring-test-case"
                 - "main"
-      - frontend_build_and_test:
+      - frontend-build-and-test:
           context:
             - Deployment
           requires:
@@ -163,18 +129,15 @@ workflows:
           filters:        
             branches:
               only:
-                - "circleci-testing"
                 - "main"
       - frontend-deploy-dev:
           context:
             - Deployment
           requires:
-            - frontend_build_and_test
+            - frontend-build-and-test
             - backend-build-and-test
             - backend-deploy-dev
           filters:        
             branches:
               only:
-                - "circleci-testing"
                 - "main"
-                

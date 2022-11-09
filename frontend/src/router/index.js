@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import RoleView from '../views/RoleView.vue'
 import CourseView from '../views/CourseView.vue'
 import SkillView from '../views/SkillView.vue'
@@ -12,17 +11,25 @@ import store from '@/store'
 import UpdateRole from '../views/UpdateRole.vue'
 import UpdateCourse from '../views/UpdateCourse.vue'
 import UpdateSkill from '../views/UpdateSkill.vue'
+import UpdateLJ from '../views/UpdateLJ.vue'
 
 const routes = [
   {
     path: '/login',
     name: 'login',
-    component: Login
+    component: Login,
+    beforeEnter: (to, from, next) => {
+      if (store.getters['auth/authenticated']) {
+        
+        return next({ name: 'home' })
+      }
+      next()
+    },
   },
   {
     path: '/',
     name: 'home',
-    component: HomeView,
+    component: LJView,
     beforeEnter: (to, from, next) => {
       if (!store.getters['auth/authenticated']) {
         
@@ -50,11 +57,9 @@ const routes = [
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
       }
-
       if (store.getters['auth/user'].Role != 1) {
         return next({ name: 'home' })
       }
-
       next()
     },
   },
@@ -66,11 +71,9 @@ const routes = [
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
       }
-
       if (store.getters['auth/user'].Role != 1) {
         return next({ name: 'home' })
       }
-
       next()
     },
   },
@@ -93,11 +96,9 @@ const routes = [
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
       }
-
       if (store.getters['auth/user'].Role != 1) {
         return next({ name: 'home' })
       }
-
       next()
     },
   },
@@ -109,11 +110,6 @@ const routes = [
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
       }
-      
-      if (store.getters['auth/user'].Role != 1) {
-        return next({ name: 'home' })
-      }
-      
       next()
     },
   },
@@ -125,11 +121,9 @@ const routes = [
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
       }
-
       if (store.getters['auth/user'].Role != 1) {
         return next({ name: 'home' })
       }
-      
       next()
     },
   },
@@ -141,11 +135,9 @@ const routes = [
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
       }
-
       if (store.getters['auth/user'].Role != 1) {
         return next({ name: 'home' })
       }
-
       next()
     },
   },
@@ -168,7 +160,17 @@ const routes = [
       if (!store.getters['auth/authenticated']) {
         return next({ name: 'login' })
       }
-      
+      next()
+    },
+  },
+  {
+    path: '/update-journey/:lj_id',
+    name: 'update-journey',
+    component: UpdateLJ,
+    beforeEnter: (to, from, next) => {
+      if (!store.getters['auth/authenticated']) {
+        return next({ name: 'login' })
+      }
       next()
     },
   },
