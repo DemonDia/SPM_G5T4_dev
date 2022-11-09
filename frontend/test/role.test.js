@@ -29,14 +29,7 @@ test("CRUD Role", async ({ page }) => {
     .fill(roleDescription);
   await page.locator('button:has-text("Next: Assign Skills")').click();
 
-  // Input Skill
-  // await page.locator('input[name="pillSearch"]').waitFor();
-  // await page.locator('input[name="pillSearch"]').click();
-  // await page.locator('input[name="pillSearch"]').fill(skillSearch);
-  // await page.keyboard.press("Enter");
-
-  // await page.locator(`li:has-text("${skillSearch}")`).click();
-  // expect(await page.isVisible(`span:has-text("${skillSearch})`)).toBeTruthy();
+  
   await page.locator('button:has-text("Next: Confirm choices")').click();
 
   // Submit Roles
