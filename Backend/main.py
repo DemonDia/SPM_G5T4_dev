@@ -20,7 +20,6 @@ from HelperFunctions import *
 from ErrorHandler import *
 from mangum import Mangum
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.routing import APIRouter
 
 
 # Add the paths to the router instead
