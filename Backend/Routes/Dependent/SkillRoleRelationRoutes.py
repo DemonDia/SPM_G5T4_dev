@@ -19,8 +19,6 @@ async def addRelatedRoles(request: Request, session: Session = Depends(get_sessi
         statement = select(SkillModel).where(
             SkillModel.Skill_ID == requestData["Skill_ID"])
         result = session.exec(statement)
-        #role = result.one()
-
         chosenSkillResult = result.all()
         if len(chosenSkillResult) == 0:
             return  # yes this returns the success = false json
