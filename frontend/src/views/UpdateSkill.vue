@@ -77,9 +77,9 @@
   </template>
   
   <script>
-    import DashboardLayout from "./Dashboard/Layout/DashboardLayout.vue";
-    import FormComponent from "../components/FormComponent.vue";
-    import ModalComponent from "../components/ModalComponent.vue";
+    import DashboardLayout from "@/views/Dashboard/Layout/DashboardLayout.vue";
+    import FormComponent from "@/components/FormComponent.vue";
+    import ModalComponent from "@/components/ModalComponent.vue";
     import axios from "axios";
     import PillSearchComponent from "@/components/PillSearchComponent.vue";
     import PillComponent from "@/components/PillComponent.vue";
@@ -126,7 +126,6 @@
         };
       },
       methods: {
-    
         handleSubmit() {
           // submitted form
           this.isSubmitted = true;
@@ -267,7 +266,7 @@
         },
       },
       async mounted() {
-        document.title = "LJMS - Update skill";
+        document.title = "LJMS - Update Skill";
         // get skill information from backend
         var skillInfo = await this.getSkillInfo(this.currentSkill_ID);
         var skillRoles = await this.getSkillRole(this.currentSkill_ID);
@@ -307,6 +306,7 @@
     #submitBtn {
       background-color: #434ce8;
       color: #fbfbfb;
+      border: none;
     }
   
     #submitBtn:hover {

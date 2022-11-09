@@ -6,3 +6,4 @@ __pycache__
 settings.json
 *.sql
 config.yml
+.circleci/config.yml

@@ -40,6 +40,23 @@ def getRelatedCourses(targetModelIdValue):
             "data": []
         }
 # returns json
+def getRelatedSkills(targetModelIdValue):
+    try:
+        session = Session(engine)
+        statement = select(SkillModel.Skill_ID, SkillModel.Skill_Name).select_from(join(SkillModel, LearningJourneySkillRelationModel)).where(
+            LearningJourneySkillRelationModel.LearningJourney_ID == targetModelIdValue)
+        results = session.exec(statement).all()
+        return {
+            "success": True,
+            "data": results
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "messaage": e,
+            "data": []
+        }
+# returns json
 
 
 def getAllRelatedCourses():
@@ -110,6 +127,21 @@ async def addLearningJourney(request: Request, session: Session = Depends(get_se
             newCourseLearningJourneyRelation.Course_ID = Course_ID
             newCourseLearningJourneyRelation.LearningJourney_ID = newLearningJourney.LearningJourney_ID
             session.add(newCourseLearningJourneyRelation)
+        
+        skills = requestData["Skills"]
+        for Skill_ID in skills:
+            selectedSkillStatement = select(SkillModel).where(
+                SkillModel.Skill_ID == Skill_ID)
+            selectedSkillStatementResult = session.exec(
+                selectedSkillStatement)
+            selectedSkillStatementResult = selectedSkillStatementResult.all()
+            if (len(selectedSkillStatementResult) == 0):
+                errors.append("Skill does not exist")
+                break
+            newSkillLearningJourneyRelation = LearningJourneySkillRelationModel()
+            newSkillLearningJourneyRelation.Skill_ID = Skill_ID
+            newSkillLearningJourneyRelation.LearningJourney_ID = newLearningJourney.LearningJourney_ID
+            session.add(newSkillLearningJourneyRelation)
 
         if (len(errors) > 0):
             return {
@@ -148,7 +180,6 @@ def getLearningJourney(session: Session = Depends(get_session)):
             for columnName, columnValue in learningJourney:
                 learningJourneyDict[columnName] = columnValue
                 if learningJourney.LearningJourney_ID in allCourses.keys():
-
                     learningJourneyDict["Courses"] = allCourses[learningJourney.LearningJourney_ID]
                 else:
                     learningJourneyDict["Courses"] = []
@@ -185,7 +216,9 @@ def getLearningJourneyById(LearningJourney_ID: int, session: Session = Depends(g
         for columnName, columnValue in learningJourney:
             learningJourneyDict[columnName] = columnValue
         relatedCourses = getRelatedCourses(learningJourney.LearningJourney_ID)
+        relatedSkills = getRelatedSkills(learningJourney.LearningJourney_ID)
         learningJourneyDict["Courses"] = relatedCourses["data"]
+        learningJourneyDict["Skills"] = relatedSkills["data"]
         # return role
         return {
             "success": True,

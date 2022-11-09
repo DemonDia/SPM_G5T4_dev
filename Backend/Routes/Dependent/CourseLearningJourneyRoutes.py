@@ -1,4 +1,3 @@
-from imp import reload
 from fastapi import Response, Depends
 from Schema.IndependentSchema import Skill
 from database import *
@@ -14,7 +13,7 @@ from random import randint
 @app.post("/courselearningjourney/seedall", tags=["CourseLearningJourney", "SeedAll"])
 def seedAll():
     try:
-    # get learning journey
+        # get learning journey
         session = Session(engine)
         getLearningJourneyStatement = select(LearningJourneyModel)
         allLearningJourneys = session.exec(getLearningJourneyStatement).all()
@@ -44,6 +43,7 @@ def seedAll():
             "messaage": str(e)
         }
 
+
 @app.delete("/courselearningjourney/deleteall", tags=["CourseLearningJourney", "DeleteAll"])
 def deleteAll():
     return deleteAllData(CourseLearningJourneyModel)
@@ -65,7 +65,6 @@ async def AddCourseLearningJourney(request: Request, session: Session = Depends(
             learningJourney = chosenLearningJourney[0]
         if learningJourney == None:
             errors.append("learningJourney does not exist!")
-            errors.append(str(e))
             return {
                 "success": False,
                 "message": errors
@@ -85,9 +84,9 @@ async def AddCourseLearningJourney(request: Request, session: Session = Depends(
         session.commit()
         session.close()
         return {
-            "success": True,
-            "message": "Course(s) assigned to Learning Journey"
-        }
+                "success": True,
+                "message": "Course(s) assigned to Learning Journey"
+            }
 
     except Exception as e:
         errors.append(str(e))
@@ -96,31 +95,46 @@ async def AddCourseLearningJourney(request: Request, session: Session = Depends(
             "message": errors
         }
 
-@app.delete("/courselearningjourney/")
-async def deleteLearningJourney(request: Request, session: Session = Depends(get_session)):
+
+@app.post("/courselearningjourney/delete", tags=["CourseLearningJourney"])
+async def deleteCourseLearningJourney(request: Request, session: Session = Depends(get_session)):
     errors = []
     try:
-        # find the course
+        # valid course
         requestData = await request.json()
-        selectedCourseStatement = select(CourseModel).where(CourseModel.Course_ID == requestData["Course_ID"])
+        selectedCourseStatement = select(CourseModel).where(
+            CourseModel.Course_ID == requestData["Course_ID"])
         selectedCourse = session.exec(selectedCourseStatement).all()
-        if(len(selectedCourse) == 0):
-            errors.append("Couse does not exist!")
-        elif(len(selectedCourse) == 1):
-            errors.append("Only one course left cannot delete!")
+        if (len(selectedCourse) == 0):
+            errors.append("Course does not exist!")
         else:
             selectedCourse = selectedCourse[0]
-
+        
+        # no of relations
+        noOfRelatedCourseStatement = select(CourseLearningJourneyModel).where(
+            CourseLearningJourneyModel.LearningJourney_ID  == requestData["LearningJourney_ID"]
+        )
+        noOfRelatedCourses = session.exec(noOfRelatedCourseStatement).all()
+        if (len(noOfRelatedCourses) == 1):
+            errors.append("Only one course in learning journey; cannot delete!!")
 
         # delete all the relations
         # hard delete the relations
         allRelatedRelationStatement = select(CourseLearningJourneyModel).where(
-            CourseLearningJourneyModel.Course_ID == requestData["Course_ID"])
+            CourseLearningJourneyModel.Course_ID == requestData["Course_ID"] and CourseLearningJourneyModel.LearningJourney_ID == requestData["LearningJourney_ID"])
         relationResults = session.exec(allRelatedRelationStatement)
         allRelations = relationResults.all()
+        if len(allRelations) == 0:
+            errors.append("Course not inside learning journey!")
+
+        if len(errors) > 0:
+            return {
+                "success": False,
+                "message": errors
+            }
         for relation in allRelations:
             session.delete(relation)
-            
+
         session.commit()
         session.close()
         return {
@@ -128,7 +142,7 @@ async def deleteLearningJourney(request: Request, session: Session = Depends(get
             "message": "Course Learning journey deleted"
         }
     except Exception as e:
-        errors.append(str(e))
+        errors.append(e)
         return {
             "success": False,
             "message": errors
