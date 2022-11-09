@@ -5,7 +5,7 @@ const { default: login } = require("../scripts/loginScript");
 const { default: delay } = require("../scripts/delay");
 
 test("CRUD Skill", async ({ page }) => {
-  const url = "http://spm-smallbucket.s3-website-us-east-1.amazonaws.com";
+  const url = "http://localhost:8080";
   await page.goto(url);
 
   const skillTitle = `${Date.now()/3}`;
