@@ -7,3 +7,4 @@ settings.json
 *.sql
 config.yml
 .circleci/config.yml
+.pytest_cache
