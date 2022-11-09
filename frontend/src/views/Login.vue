@@ -94,7 +94,6 @@ export default {
       })
         .then(() => {
           this.$router.replace({ name: "learningjourney" }).catch(() => {
-            console.log("error");
           });
         })
         .catch(() => {

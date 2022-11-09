@@ -98,7 +98,6 @@
       },
 
       isFound(arr1) {
-        console.log(arr1)
         // show roles that include SOME of the skills selected
         // return (this.selectedSkills.some( x => arr1.includes(x) ));
 
