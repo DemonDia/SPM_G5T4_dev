@@ -154,19 +154,19 @@ workflows:
                 - "main"
                 - "frontend-testing"
                 - "backend-testing"
-      - frontend_build:
-          context:
-            - Deployment
-          requires:
-            - backend-build-and-test
-            - backend-deploy-dev  
-          filters:        
-            branches:
-              only:
-                - "circleci-testing"
-                - "main"
-                - "frontend-testing"
-                - "backend-testing"
+      # - frontend_build:
+      #     context:
+      #       - Deployment
+      #     requires:
+      #       - backend-build-and-test
+      #       - backend-deploy-dev  
+      #     filters:        
+      #       branches:
+      #         only:
+      #           - "circleci-testing"
+      #           - "main"
+      #           - "frontend-testing"
+      #           - "backend-testing"
       - frontend-deploy-dev:
           context:
             - Deployment
