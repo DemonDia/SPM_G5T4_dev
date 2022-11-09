@@ -477,7 +477,6 @@ export default {
             Courses: selectedCId,
           })
           .then((response) => {
-            console.log(response)
             resolve(response);
           })
           .catch((err) => reject(err));
