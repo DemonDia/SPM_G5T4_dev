@@ -81,7 +81,7 @@ jobs:
           command: npm run test
           name: Run playwright dev servers
       - run:
-          command: npm run build
+          command: npm run production
           name: Build Frontend into Production
       - persist_to_workspace:
           root: ./
