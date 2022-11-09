@@ -28,9 +28,9 @@ jobs:
       - run:
           name: Database Setup
           command: echo $DATABASE_URL
-      - run:
-          name: Run Test File
-          command: python ./Backend/testrun.py
+      # - run:
+      #     name: Run Test File
+      #     command: python ./Backend/testrun.py
       - run:
           name: Run test scripts
           # command: python ./Backend/Tests/main_test.py
