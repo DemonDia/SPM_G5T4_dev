@@ -57,5 +57,5 @@ class LearningJourneyModel(SQLModel, table=True):
     Role_ID: Optional[int] = Field(
         default=None, foreign_key="rolemodel.Role_ID")
 
-    Skills: List['SkillModel'] = Relationship(back_populates="LearningJourney", link_model=LearningJourneySkillRelationModel)
-    Courses: List['CourseModel'] = Relationship(back_populates="LearningJourney", link_model=CourseSkillRelationModel)
+    Skills: List['SkillModel'] = Relationship(back_populates="LearningJourneys", link_model=LearningJourneySkillRelationModel)
+    Courses: List['CourseModel'] = Relationship(back_populates="LearningJourneys", link_model=CourseLearningJourneyModel)
