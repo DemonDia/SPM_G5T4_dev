@@ -16,24 +16,56 @@ jobs:
     steps:
       - checkout:
           path: ~/project/Backend
+
+      # - save_cache:
+      #     paths:
+      #       - ./venv
+      #     key: v1-dependencies-{{ checksum "./Backend/requirements.txt" }}
+      # - restore_cache:
+      #       keys:
+      #         - v1-dependencies-{{ checksum "./Backend/requirements.txt" }}
+      #         # fallback to using the latest cache if no exact match is found
+      #         - v1-dependencies-
+      # - checkout
+
       - run:
           name: Find requirements.txt
           command: find . -regex '.*requirements.txt$'
+
       - run: 
           name: Checking of backend folders
           command: ls ./Backend -a
       - run:
           name: Install dependencies
           command: pip3 install -r ./Backend/requirements.txt
+
+      # - run: cd ./Backend/
+    
+      # - run:
+      #     name: Go back to backend
+      #     command: cd Backend
+
       - run:
           name: Database Setup
           command: echo $DATABASE_URL
+
+      # - run: 
+      #     name: Database setup
+      #     command: python3.9 ./Backend/database.py
+
       - run:
           name: Run Test File
+          # command: uvicorn Backend.main:app --reload
           command: python ./Backend/testrun.py
       - run:
           name: Run test scripts
-          command: python ./Backend/Tests/main_test.py
+          # command: python ./Backend/Tests/main_test.py
+          command: pytest
+
+      # - run:
+      #     name: Run the API
+      #     command: uvicorn Backend.main:app --reload  
+
       - run:
           name: Add backend to Zipfile
           command: |
@@ -43,6 +75,7 @@ jobs:
           root: ./Backend
           paths:
             - function.zip
+
 
   backend-deploy-dev:
     executor: aws-cli/default
