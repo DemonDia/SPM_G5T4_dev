@@ -338,11 +338,11 @@ export default {
       }
       // find skill details
       let filtered = this.allSkills.filter(function(skill) {return skill.Skill_ID==id})[0];
-      try {
+    
         if (resultType == "desc") {
           return filtered.Skill_Description
         }
-      } catch(err) {}
+
     },
 
     getAvailCourses() {
@@ -360,7 +360,6 @@ export default {
     getCourseInfo(id, resultType) {
       let course = this.allCourses.filter(function(course) {return course.Course_ID==id})[0];
     
-      try {
         if (resultType == "type") {
           return course.Course_Type
         } else if (resultType == "cat") {
@@ -368,7 +367,7 @@ export default {
         } else if (resultType == "desc") {
           return course.Course_Desc
         } 
-      } catch (error) {}
+  
     },
 
     onClickModal() {
@@ -478,16 +477,17 @@ export default {
             Courses: selectedCId,
           })
           .then((response) => {
+            console.log(response)
             resolve(response);
           })
           .catch((err) => reject(err));
       });
     },
 
-    async handleSubmitRemove(id) {
+     handleSubmitRemove(id) {
       var currCourseLen = this.courses.length;
       if (currCourseLen > 1) {
-        var removeStatus = await this.removeCoursefromLJ(id).then((response) => { return response });
+        var removeStatus =  this.removeCoursefromLJ(id);
         if (removeStatus) {
           createToast('Course removed successfully!', {
             type: 'success',
@@ -537,7 +537,6 @@ export default {
     },
 
     removeCoursefromLJ(id) {
-      return new Promise((resolve, reject) => {
         var dltCourseLJUrl = "https://01p0cxotkg.execute-api.us-east-1.amazonaws.com/dev/courselearningjourney/delete";
         axios.post(dltCourseLJUrl, {
           'LearningJourney_ID': this.currentLJ_ID,
@@ -545,14 +544,13 @@ export default {
         }).then((response) => {
           var result = response.data.success
           if (result) {
-            resolve(true)
+            return true
           }
-          resolve(false)
+         return false
         }).catch (error => {
-          resolve(false)
-          reject(error)
+          return false
         });
-      })
+
     },
   },
   computed: {
